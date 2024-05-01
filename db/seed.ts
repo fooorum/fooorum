@@ -22,13 +22,13 @@ export default async function () {
     {
       id: 0,
       title: "Ich bin lustig.",
-      content: "Hallo, Welt!",
+      description: "Hallo, Welt!",
       user: 0,
       forum: 0,
     },
     {
       id: 1,
-      content: "Nein, bist du nicht.",
+      description: "Nein, bist du nicht.",
       user: 1,
       forum: 0,
       parent: 0,

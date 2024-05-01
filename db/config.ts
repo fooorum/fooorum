@@ -33,7 +33,7 @@ const Post = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
     title: column.text({ optional: true }),
-    content: column.text(),
+    description: column.text(),
     user: column.number({ references: () => User.columns.id }),
     forum: column.number({ references: () => Forum.columns.id }),
     parent: column.number({

@@ -1,4 +1,5 @@
 ---
+import Feed from "@components/Feed.astro";
 import Layout from "@layouts/Layout.astro";
 import { db, User } from "astro:db";
 
@@ -15,5 +16,17 @@ const user = Astro.props;
 ---
 
 <Layout title={user.name}>
-    {user.name}
+    <div slot="header" class="header">
+        <h2>{user.name}</h2>
+        {user.description}
+    </div>
+    <Feed user={user.id} />
 </Layout>
+
+<style>
+    .header {
+        display: flex;
+        gap: 1em;
+        align-items: center;
+    }
+</style>

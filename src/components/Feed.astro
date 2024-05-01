@@ -1,0 +1,35 @@
+---
+import Stack from "@components/Stack.astro";
+import Card from "@components/Card/Post.astro";
+import { db, and, eq, isNull, desc, Post, User, Forum } from "astro:db";
+
+interface Props {
+    forum?: number;
+    user?: number;
+}
+const { forum, user } = Astro.props;
+
+const filters = [isNull(Post.parent)];
+if (forum !== undefined) filters.push(eq(Post.forum, forum));
+if (user !== undefined) filters.push(eq(Post.user, user));
+
+const posts = await db
+    .select({
+        title: Post.title,
+        description: Post.description,
+        id: Post.id,
+        userName: User.name,
+        userId: User.id,
+        forumName: Forum.name,
+        forumId: Forum.id,
+    })
+    .from(Post)
+    .where(and(...filters))
+    .orderBy(desc(Post.created))
+    .innerJoin(User, eq(Post.user, User.id))
+    .innerJoin(Forum, eq(Post.forum, Forum.id));
+---
+
+<Stack>
+    {posts.map((post) => <Card {...post} />)}
+</Stack>
