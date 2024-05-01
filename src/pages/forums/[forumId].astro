@@ -1,18 +1,15 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Feed from "@components/Feed.astro";
-import { db, Forum } from "astro:db";
+import { db, eq, Forum } from "astro:db";
 
-export async function getStaticPaths() {
-    const forums = await db.select().from(Forum);
-    return forums.map((forum) => ({
-        params: { forum: forum.id },
-        props: forum,
-    }));
-}
+const { forumId } = Astro.params;
+const forums = await db
+    .select()
+    .from(Forum)
+    .where(eq(Forum.id, parseInt(forumId)));
 
-type Props = typeof Forum;
-const forum = Astro.props;
+const forum = forums.at(0);
 ---
 
 <Layout title={forum.name}>

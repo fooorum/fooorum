@@ -1,18 +1,15 @@
 ---
 import Feed from "@components/Feed.astro";
 import Layout from "@layouts/Layout.astro";
-import { db, User } from "astro:db";
+import { db, eq, User } from "astro:db";
 
-export async function getStaticPaths() {
-    const users = await db.select().from(User);
-    return users.map((user) => ({
-        params: { user: user.id },
-        props: user,
-    }));
-}
-type Props = typeof User;
+const { userId } = Astro.params;
+const users = await db
+    .select()
+    .from(User)
+    .where(eq(User.id, parseInt(userId)));
 
-const user = Astro.props;
+const user = users.at(0);
 ---
 
 <Layout title={user.name}>

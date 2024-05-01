@@ -1,0 +1,36 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Comments from "@components/Comments.astro";
+import { db, eq, Post, User, Forum } from "astro:db";
+
+const { postId } = Astro.params;
+const posts = await db
+    .select({
+        title: Post.title,
+        description: Post.description,
+        id: Post.id,
+        userId: User.id,
+        userName: User.name,
+        forumId: Forum.id,
+        forumName: Forum.name,
+    })
+    .from(Post)
+    .where(eq(Post.id, postId))
+    .innerJoin(User, eq(Post.user, User.id))
+    .innerJoin(Forum, eq(Post.forum, Forum.id));
+
+const { title, description, id, userId, userName, forumId, forumName } =
+    posts.at(0);
+---
+
+<Layout title={title}>
+    <div slot="header">
+        <a href={`/users/${userId}`}>{userName}</a>
+         in <a href={`/forums/${forumId}`}>{forumName}</a>
+    </div>
+    <div slot="header">
+        <h2>{title}</h2>
+    </div>
+    <div slot="header">{description}</div>
+    <Comments parent={id} />
+</Layout>
