@@ -2,11 +2,16 @@ import { db, Forum, User, Member, Post, Upvote, Downvote } from "astro:db";
 
 export default async function () {
   await db.insert(Forum).values([
-    { id: 0, name: "Memes" },
-    { id: 1, name: "Fragen" },
+    { id: 0, name: "Memes", description: "Lustige Internetbilder." },
+    { id: 1, name: "Fragen", description: "Ein Forum für alle Fragen." },
   ]);
   await db.insert(User).values([
-    { id: 0, name: "XGamer", password: "passwort" },
+    {
+      id: 0,
+      name: "XGamer",
+      password: "passwort",
+      description: "Ich mag memes.",
+    },
     { id: 1, name: "Xavier", password: "passwort" },
   ]);
   await db.insert(Member).values([

@@ -6,6 +6,7 @@ const Forum = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
     name: column.text({ unique: true }),
+    description: column.text({ optional: true }),
     created: column.date({ default: NOW }),
   },
 });
@@ -14,6 +15,7 @@ const User = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
     name: column.text({ unique: true }),
+    description: column.text({ optional: true }),
     password: column.text(),
     created: column.date({ default: NOW }),
   },

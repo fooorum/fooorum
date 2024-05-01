@@ -15,9 +15,3 @@ body {
 main {
   margin: 0.5em;
 }
-
-a {
-  text-decoration: unset;
-  font-weight: bold;
-  color: var(--accent);
-}

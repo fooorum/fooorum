@@ -1,0 +1,24 @@
+---
+import Card from "./Base.astro";
+import Link from "@components/Link.astro";
+interface Props {
+    title: string | null;
+    content: string;
+    id: number;
+    userName: string;
+    userId: number;
+    forumName: string;
+    forumId: number;
+}
+
+const { title, content, id, userName, userId, forumName, forumId } =
+    Astro.props;
+---
+
+<Card title={title ?? undefined} url={`/posts/${id}`}>
+    <span slot="author">
+        <Link href={`/users/${userId}`}>{userName}</Link>
+         in <Link href={`/forums/${forumId}`}>{forumName}</Link>
+    </span>
+    {content}
+</Card>

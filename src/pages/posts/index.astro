@@ -1,13 +1,28 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Stack from "@components/Stack.astro";
-import { db, Post } from "astro:db";
+import Card from "@components/Card/Post.astro";
+import { db, eq, isNull, desc, Post, User, Forum } from "astro:db";
 
-const posts = await db.select().from(Post);
+const posts = await db
+    .select({
+        title: Post.title,
+        content: Post.content,
+        id: Post.id,
+        userName: User.name,
+        userId: User.id,
+        forumName: Forum.name,
+        forumId: Forum.id,
+    })
+    .from(Post)
+    .where(isNull(Post.parent))
+    .orderBy(desc(Post.created))
+    .innerJoin(User, eq(Post.user, User.id))
+    .innerJoin(Forum, eq(Post.forum, Forum.id));
 ---
 
-<Layout>
+<Layout title="Foren">
     <Stack>
-        {posts.map((p) => <a href={`${Astro.url}/${p.id}`}>{p.title}</a>)}
+        {posts.map((post) => <Card {...post} />)}
     </Stack>
 </Layout>

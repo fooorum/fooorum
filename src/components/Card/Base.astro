@@ -1,0 +1,45 @@
+---
+import Link from "@components/Link.astro";
+interface Props {
+    title?: string;
+    url?: string;
+    content?: string;
+}
+
+const { title, url } = Astro.props;
+---
+
+<div class="card">
+    <header>
+        <slot name ="author" />
+        {
+            title && 
+                    <Link href={url}><h3>{title}</h3></Link>
+            <slot name="header"/>
+        }
+    </header>
+    <slot />
+    <footer>
+    <slot name="footer" />
+    </footer>
+</div>
+
+<style>
+    .card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+
+        padding: 0.5em;
+        border-radius: 0.5em;
+        background: var(--container);
+    }
+    header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+    }
+    h3 {
+        margin: 0;
+    }
+</style>

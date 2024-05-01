@@ -1,13 +1,18 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Stack from "@components/Stack.astro";
+import Card from "@components/Card/Forum.astro";
 import { db, Forum } from "astro:db";
 
-const forums = await db.select().from(Forum);
+const forums = await db.select({
+    title: Forum.name,
+    id: Forum.id,
+    description: Forum.description,
+}).from(Forum);
 ---
 
-<Layout>
+<Layout title="Foren">
     <Stack>
-        {forums.map((f) => <a href={`${Astro.url}/${f.id}`}>{f.name}</a>)}
+        {forums.map((forum) => <Card {...forum} />)}
     </Stack>
 </Layout>
