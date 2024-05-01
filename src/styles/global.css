@@ -33,3 +33,8 @@ h2,
 h3 {
   margin: unset;
 }
+
+a {
+  text-decoration: unset;
+  font-weight: bold;
+}

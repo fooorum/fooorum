@@ -12,15 +12,8 @@ const { href } = Astro.props;
             <slot />
         </a>
     ) : (
-        <span><slot /></span>
+        <span>
+            <slot />
+        </span>
     )
 }
-
-<style>
-
-a, span {
-  text-decoration: unset;
-  color: var(--accent);
-}
-
-</style>
