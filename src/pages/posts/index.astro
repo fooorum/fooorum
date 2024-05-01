@@ -1,0 +1,13 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Stack from "@components/Stack.astro";
+import { db, Post } from "astro:db";
+
+const posts = await db.select().from(Post);
+---
+
+<Layout>
+    <Stack>
+        {posts.map((p) => <a href={`${Astro.url}/${p.id}`}>{p.title}</a>)}
+    </Stack>
+</Layout>

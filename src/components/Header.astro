@@ -1,0 +1,35 @@
+---
+import Navlink from "@components/Navlink.astro";
+---
+
+<header>
+    <nav>
+        <Navlink href="/"><h1>Fooorum</h1></Navlink>
+        <Navlink href="/posts">Beiträge</Navlink>
+        <Navlink href="/forums">Foren</Navlink>
+        <Navlink href="/users">Nutzer</Navlink>
+    </nav>
+</header>
+
+<style>
+    header {
+        position: sticky;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.5em;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2em;
+        background: var(--container);
+    }
+    h1 {
+        margin: 0em;
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+    }
+</style>

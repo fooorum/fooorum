@@ -1,0 +1,21 @@
+---
+interface Properties  {
+    direction: "column" | "row";
+}
+
+const {direction = "column"} = Astro.props;
+
+---
+
+<div class="stack" style={{
+    flexDirection: direction
+}}>
+<slot />
+</div>
+
+<style>
+.stack {
+    display: flex;
+    gap: 1em;
+}
+</stlye>

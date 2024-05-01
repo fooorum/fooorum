@@ -1,0 +1,22 @@
+---
+import "@styles/global.css";
+
+interface Props {
+    title: string;
+    description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!-- Metadata -->
+<meta charset="utf-8" />
+<meta name="locale" content="de_DE" />
+<meta name="viewport" content="width=device-width" />
+<meta name="generator" content={Astro.generator} />
+<link rel="manifest" href="/manifest.json" />
+
+<!-- Main Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />

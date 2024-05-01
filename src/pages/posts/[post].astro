@@ -1,0 +1,19 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { db, Post } from "astro:db";
+
+export async function getStaticPaths() {
+    const posts = await db.select().from(Post);
+    return posts.map((post) => ({
+        params: { post: post.id },
+        props: post,
+    }));
+}
+type Props = typeof Post;
+
+const post = Astro.props;
+---
+
+<Layout title={post.title}>
+    {post.title}
+</Layout>
