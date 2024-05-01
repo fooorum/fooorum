@@ -5,11 +5,10 @@ interface Props {
     title: string | null;
     description: string;
     id: number;
-    userName: string;
-    userId: number;
-    forumName: string;
-    forumId: number;
-    hideForum?: boolean;
+    userName?: string;
+    userId?: number;
+    forumName?: string;
+    forumId?: number;
 }
 
 const { title, description, id, userName, userId, forumName, forumId } =
@@ -18,8 +17,8 @@ const { title, description, id, userName, userId, forumName, forumId } =
 
 <Card title={title ?? undefined} url={`/posts/${id}`}>
     <span slot="author">
-        <Link href={`/users/${userId}`}>{userName}</Link>
-         in <Link href={`/forums/${forumId}`}>{forumName}</Link>
+        {userName && <Link href={`/users/${userId}`}>{userName}</Link>}
+         {forumName && <>in <Link href={`/forums/${forumId}`}>{forumName}</Link></>}
     </span>
     {description}
 </Card>

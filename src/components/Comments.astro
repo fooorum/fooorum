@@ -1,0 +1,41 @@
+---
+import Stack from "@components/Stack.astro";
+import Card from "@components/Card/Post.astro";
+import { db, eq, Post } from "astro:db";
+import { User } from "astro:db";
+interface Props {
+    parent: number;
+}
+const { parent } = Astro.props;
+
+const comments = await db
+    .select({
+        title: Post.title,
+        description: Post.description,
+        id: Post.id,
+        userName: User.name,
+        userId: User.id,
+    })
+    .from(Post)
+    .where(eq(Post.parent, parent))
+    .innerJoin(User, eq(User.id, Post.user));
+---
+
+<Stack>
+    {
+        comments.map((comment) => (
+            <>
+                <Card {...comment} />
+                <div class="children">
+                    <Astro.self parent={comment.id} />
+                </div>
+            </>
+        ))
+    }
+</Stack>
+
+<style>
+    .children {
+        margin-left: 1em;
+    }
+</style>

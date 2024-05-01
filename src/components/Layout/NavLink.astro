@@ -7,7 +7,7 @@ const { href } = Astro.props;
 const isActive = Astro.url.href.startsWith(new URL(href, Astro.url).href);
 ---
 
-<a class={isActive && "active"} href={new URL(href, Astro.url)}>
+<a class={isActive ? "active" : ""} href={new URL(href, Astro.url)}>
     <slot />
 </a>
 

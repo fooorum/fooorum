@@ -18,10 +18,14 @@ const posts = await db
         title: Post.title,
         description: Post.description,
         id: Post.id,
-        userName: User.name,
-        userId: User.id,
+        ...(user !== undefined ? {} : {
+            userName: User.name,
+            userId: User.id
+        }),
+        ...(forum !== undefined ? {} : {
         forumName: Forum.name,
         forumId: Forum.id,
+        })
     })
     .from(Post)
     .where(and(...filters))
