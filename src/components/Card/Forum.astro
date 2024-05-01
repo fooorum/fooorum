@@ -1,6 +1,5 @@
 ---
 import Card from "./Base.astro";
-import Link from "@components/Link.astro";
 
 interface Props {
     title: string;
@@ -8,8 +7,7 @@ interface Props {
     description: string;
 }
 
-const { title, id, description } =
-    Astro.props;
+const { title, id, description } = Astro.props;
 ---
 
 <Card title={title} url={`/forums/${id}`}>

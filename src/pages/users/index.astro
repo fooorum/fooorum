@@ -11,10 +11,8 @@ const users = await db.select({
 }).from(User);
 ---
 
-<Layout title="Foren">
+<Layout title="Nutzer">
     <Stack>
-        {
-            users.map((user) => <Card {...user} />)
-        }
+        {users.map((user) => <Card {...user} />)}
     </Stack>
 </Layout>

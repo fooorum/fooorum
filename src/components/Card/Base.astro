@@ -11,16 +11,19 @@ const { title, url } = Astro.props;
 
 <div class="card">
     <header>
-        <slot name ="author" />
+        <slot name="author" />
         {
-            title && 
-                    <Link href={url}><h3>{title}</h3></Link>
-            <slot name="header"/>
+            title && (
+                <Link href={url}>
+                    <h3>{title}</h3>
+                </Link>
+            )
         }
+        <slot name="header" />
     </header>
     <slot />
     <footer>
-    <slot name="footer" />
+        <slot name="footer" />
     </footer>
 </div>
 
