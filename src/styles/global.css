@@ -11,12 +11,16 @@ body {
 
   background: var(--background);
   color: var(--text);
-  min-height: 100%;
   margin: 0em;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
   gap: 1em;
+}
+
+main {
+  height: 100vh;
 }
 
 .width-wrapper {

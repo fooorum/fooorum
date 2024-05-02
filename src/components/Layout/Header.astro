@@ -23,7 +23,12 @@ import NavLink from "./NavLink.astro";
         align-items: center;
         position: sticky;
 
+        top: -2.25em;
         background: var(--container);
+        transition: top 0.25s;
+    }
+    header:hover {
+        top: 0em;
     }
     .width-container {
         display: flex;
