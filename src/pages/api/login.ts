@@ -1,7 +1,7 @@
 import { lucia } from "@lib/auth";
 import { userNameValidator, passwordValidator } from "@lib/validate";
 import { hashOptions } from "@lib/hash";
-import { hash, verify } from "@node-rs/argon2";
+import { hash, verify } from "argon2";
 import type { APIContext } from "astro";
 import { db, User, eq } from "astro:db";
 

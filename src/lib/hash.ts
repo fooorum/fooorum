@@ -1,4 +1,4 @@
-import { type Options as HashOptions } from "@node-rs/argon2";
+import { type Options as HashOptions } from "argon2";
 
 export const hashOptions: HashOptions = {
   memoryCost: 19456,
