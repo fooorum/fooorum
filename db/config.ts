@@ -21,6 +21,18 @@ const User = defineTable({
   },
 });
 
+const Session = defineTable({
+  columns: {
+    id: column.text({
+      primaryKey: true,
+    }),
+    expiresAt: column.date(),
+    userId: column.number({
+      references: () => User.columns.id,
+    }),
+  },
+});
+
 const Member = defineTable({
   columns: {
     userId: column.number({ references: () => User.columns.id }),
@@ -58,6 +70,7 @@ export default defineDb({
   tables: {
     Forum,
     User,
+    Session,
     Member,
     Post,
     Upvote,

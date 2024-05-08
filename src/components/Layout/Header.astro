@@ -1,5 +1,6 @@
 ---
 import NavLink from "./NavLink.astro";
+const user = Astro.locals.user;
 ---
 
 <header class="width-wrapper">
@@ -9,6 +10,13 @@ import NavLink from "./NavLink.astro";
             <NavLink href="/posts">Beiträge</NavLink>
             <NavLink href="/forums">Foren</NavLink>
             <NavLink href="/users">Nutzer</NavLink>
+            {
+                user ? (
+                    <NavLink href="/logout">Log Out</NavLink>
+                ) : (
+                    <NavLink href="/login">Log in</NavLink>
+                )
+            }
         </nav>
         <slot />
     </div>
