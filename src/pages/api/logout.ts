@@ -2,13 +2,14 @@ import { lucia } from "@lib/auth";
 import type { APIContext } from "astro";
 
 export async function POST(context: APIContext): Promise<Response> {
-  if (!context.locals.session) {
+  const session = context.locals.session;
+  if (!session) {
     return new Response("You need to be signed in to log out", {
       status: 401,
     });
   }
 
-  await lucia.invalidateSession(context.locals.session.id);
+  await lucia.invalidateSession(session.id);
 
   const sessionCookie = lucia.createBlankSessionCookie();
   context.cookies.set(
