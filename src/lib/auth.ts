@@ -18,6 +18,8 @@ export const lucia = new Lucia(adapter, {
   },
 });
 
+await lucia.deleteExpiredSessions();
+
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
