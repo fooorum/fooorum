@@ -1,6 +1,9 @@
 ---
 import Card from "./Base.astro";
+import Upvote from "./Footer/Upvote.astro";
+import Downvote from "./Footer/Downvote.astro";
 import Link from "@components/Link.astro";
+
 interface Props {
     title: string | null;
     description: string;
@@ -9,16 +12,35 @@ interface Props {
     userId?: number;
     forumName?: string;
     forumId?: number;
+    upvotes: number;
+    downvotes: number;
 }
 
-const { title, description, id, userName, userId, forumName, forumId } =
-    Astro.props;
+const {
+    title,
+    description,
+    id,
+    userName,
+    userId,
+    forumName,
+    forumId,
+    upvotes,
+    downvotes,
+} = Astro.props;
 ---
 
 <Card title={title ?? undefined} url={`/posts/${id}`}>
     <span slot="author">
         {userName && <Link href={`/users/${userId}`}>{userName}</Link>}
-         {forumName && <>in <Link href={`/forums/${forumId}`}>{forumName}</Link></>}
+        {
+            forumName && (
+                <>
+                    in <Link href={`/forums/${forumId}`}>{forumName}</Link>
+                </>
+            )
+        }
     </span>
     {description}
+    <Upvote amount={upvotes} post={id} user={0} slot="footer" />
+    <Downvote amount={downvotes} post={id} user={0} slot="footer" />
 </Card>

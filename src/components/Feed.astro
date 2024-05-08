@@ -1,7 +1,19 @@
 ---
 import Stack from "@components/Stack.astro";
 import Card from "@components/Card/Post.astro";
-import { db, and, eq, isNull, desc, Post, User, Forum } from "astro:db";
+import {
+    db,
+    and,
+    eq,
+    isNull,
+    desc,
+    Post,
+    User,
+    Forum,
+    Upvote,
+    Downvote,
+    countDistinct,
+} from "astro:db";
 
 interface Props {
     forum?: number;
@@ -18,20 +30,29 @@ const posts = await db
         title: Post.title,
         description: Post.description,
         id: Post.id,
-        ...(user !== undefined ? {} : {
-            userName: User.name,
-            userId: User.id
-        }),
-        ...(forum !== undefined ? {} : {
-        forumName: Forum.name,
-        forumId: Forum.id,
-        })
+        upvotes: countDistinct(Upvote.user),
+        downvotes: countDistinct(Downvote.user),
+        ...(user !== undefined
+            ? {}
+            : {
+                  userName: User.name,
+                  userId: User.id,
+              }),
+        ...(forum !== undefined
+            ? {}
+            : {
+                  forumName: Forum.name,
+                  forumId: Forum.id,
+              }),
     })
     .from(Post)
     .where(and(...filters))
     .orderBy(desc(Post.created))
     .innerJoin(User, eq(Post.user, User.id))
-    .innerJoin(Forum, eq(Post.forum, Forum.id));
+    .innerJoin(Forum, eq(Post.forum, Forum.id))
+    .leftJoin(Upvote, eq(Upvote.post, Post.id))
+    .leftJoin(Downvote, eq(Downvote.post, Post.id))
+    .groupBy(Post.id);
 ---
 
 <Stack>

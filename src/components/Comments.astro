@@ -1,8 +1,8 @@
 ---
 import Stack from "@components/Stack.astro";
 import Card from "@components/Card/Post.astro";
-import { db, eq, Post } from "astro:db";
-import { User } from "astro:db";
+import { db, eq, Post, User, Upvote, Downvote } from "astro:db";
+import { countDistinct } from "astro:db";
 interface Props {
     parent: number;
 }
@@ -13,12 +13,17 @@ const comments = await db
         title: Post.title,
         description: Post.description,
         id: Post.id,
+        upvotes: countDistinct(Upvote.user),
+        downvotes: countDistinct(Downvote.user),
         userName: User.name,
         userId: User.id,
     })
     .from(Post)
     .where(eq(Post.parent, parent))
-    .innerJoin(User, eq(User.id, Post.user));
+    .innerJoin(User, eq(User.id, Post.user))
+    .leftJoin(Upvote, eq(Upvote.post, Post.id))
+    .leftJoin(Downvote, eq(Downvote.post, Post.id))
+    .groupBy(Post.id);
 ---
 
 <Stack>
