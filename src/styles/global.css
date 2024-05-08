@@ -1,7 +1,7 @@
 :root {
   --background: white;
   --container: lightgrey;
-  --text: black;
+  --text: rgb(255, 255, 255);
   --accent: slateblue;
   --max-width: 800px;
 }
@@ -9,7 +9,7 @@
 body {
   font: caption;
 
-  background: var(--background);
+  background: linear-gradient(to bottom, #687081, #a2c9d6);
   color: var(--text);
   margin: 0em;
   height: 100vh;
