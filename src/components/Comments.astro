@@ -13,16 +13,16 @@ const comments = await db
         title: Post.title,
         description: Post.description,
         id: Post.id,
-        upvotes: countDistinct(Upvote.user),
-        downvotes: countDistinct(Downvote.user),
+        upvotes: countDistinct(Upvote.userId),
+        downvotes: countDistinct(Downvote.userId),
         userName: User.name,
         userId: User.id,
     })
     .from(Post)
-    .where(eq(Post.parent, parent))
-    .innerJoin(User, eq(User.id, Post.user))
-    .leftJoin(Upvote, eq(Upvote.post, Post.id))
-    .leftJoin(Downvote, eq(Downvote.post, Post.id))
+    .where(eq(Post.parentId, parent))
+    .innerJoin(User, eq(Post.userId, User.id))
+    .leftJoin(Upvote, eq(Upvote.postId, Post.id))
+    .leftJoin(Downvote, eq(Downvote.postId, Post.id))
     .groupBy(Post.id);
 ---
 

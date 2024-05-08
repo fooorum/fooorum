@@ -16,8 +16,8 @@ const posts = await db
     })
     .from(Post)
     .where(eq(Post.id, postId))
-    .innerJoin(User, eq(Post.user, User.id))
-    .innerJoin(Forum, eq(Post.forum, Forum.id));
+    .innerJoin(User, eq(Post.userId, User.id))
+    .innerJoin(Forum, eq(Post.forumId, Forum.id));
 
 const { title, description, id, userId, userName, forumId, forumName } =
     posts.at(0);

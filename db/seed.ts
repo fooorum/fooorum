@@ -12,49 +12,55 @@ export default async function () {
       password: "passwort",
       description: "Ich mag memes.",
     },
-    { id: 1, name: "Xavier", password: "passwort" },
+    {
+      id: 1,
+      name: "Xavier",
+      password: "passwort",
+    },
   ]);
   await db.insert(Member).values([
-    { user: 0, forum: 0 },
-    { user: 1, forum: 1 },
+    { userId: 0, forumId: 0 },
+    { userId: 1, forumId: 1 },
   ]);
   await db.insert(Post).values([
     {
       id: 0,
       title: "Ich bin lustig.",
       description: "Denn das ist das Memes-Forum, versteht ihr?",
-      user: 0,
-      forum: 0,
+      userId: 0,
+      forumId: 0,
     },
     {
-      id: 1,
       description: "Nein, du bist nicht lustig.",
-      user: 1,
-      forum: 0,
-      parent: 0,
+      userId: 1,
+      forumId: 0,
+      parentId: 0,
     },
     {
-      id: 2,
       description: "Doch, bin ich.",
-      user: 0,
-      forum: 0,
-      parent: 1,
+      userId: 0,
+      forumId: 0,
+      parentId: 1,
     },
     {
-      id: 3,
       description: "Nein!",
-      user: 1,
-      forum: 0,
-      parent: 2,
+      userId: 1,
+      forumId: 0,
+      parentId: 2,
     },
     {
-      id: 4,
       description: "Doch!! >:(",
-      user: 0,
-      forum: 0,
-      parent: 3,
+      userId: 0,
+      forumId: 0,
+      parentId: 3,
     },
   ]);
-  await db.insert(Upvote).values([{ user: 0, post: 0 }]);
-  await db.insert(Downvote).values([{ user: 1, post: 0 }]);
+  await db.insert(Upvote).values([
+    { userId: 0, postId: 0 },
+    { userId: 1, postId: 1 },
+  ]);
+  await db.insert(Downvote).values([
+    { userId: 1, postId: 0 },
+    { userId: 1, postId: 2 },
+  ]);
 }

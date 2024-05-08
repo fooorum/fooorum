@@ -21,17 +21,17 @@ interface Props {
 }
 const { forum, user } = Astro.props;
 
-const filters = [isNull(Post.parent)];
-if (forum !== undefined) filters.push(eq(Post.forum, forum));
-if (user !== undefined) filters.push(eq(Post.user, user));
+const filters = [isNull(Post.parentId)];
+if (forum !== undefined) filters.push(eq(Post.forumId, forum));
+if (user !== undefined) filters.push(eq(Post.userId, user));
 
 const posts = await db
     .select({
         title: Post.title,
         description: Post.description,
         id: Post.id,
-        upvotes: countDistinct(Upvote.user),
-        downvotes: countDistinct(Downvote.user),
+        upvotes: countDistinct(Upvote.userId),
+        downvotes: countDistinct(Downvote.userId),
         ...(user !== undefined
             ? {}
             : {
@@ -47,11 +47,11 @@ const posts = await db
     })
     .from(Post)
     .where(and(...filters))
-    .orderBy(desc(Post.created))
-    .innerJoin(User, eq(Post.user, User.id))
-    .innerJoin(Forum, eq(Post.forum, Forum.id))
-    .leftJoin(Upvote, eq(Upvote.post, Post.id))
-    .leftJoin(Downvote, eq(Downvote.post, Post.id))
+    .orderBy(desc(Post.createdAt))
+    .innerJoin(User, eq(Post.userId, User.id))
+    .innerJoin(Forum, eq(Post.forumId, Forum.id))
+    .leftJoin(Upvote, eq(Upvote.postId, Post.id))
+    .leftJoin(Downvote, eq(Downvote.postId, Post.id))
     .groupBy(Post.id);
 ---
 
