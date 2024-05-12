@@ -1,8 +1,6 @@
-import { type Options as HashOptions } from "argon2";
-
-export const hashOptions: HashOptions = {
+export const hashOptions = {
   memoryCost: 19456,
   timeCost: 2,
-  outputLen: 32,
+  hashLength: 32,
   parallelism: 1,
 };

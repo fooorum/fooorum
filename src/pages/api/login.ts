@@ -30,8 +30,8 @@ export async function POST(context: APIContext): Promise<Response> {
     }
   }
 
-  const validPassword = await verify(user.password, password, hashOptions);
-  if (!validPassword) {
+  const passwordIsValid = await verify(user.password, password);
+  if (!passwordIsValid) {
     return new Response("Incorrect username or password", {
       status: 400,
     });
