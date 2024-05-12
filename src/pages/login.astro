@@ -2,6 +2,10 @@
 import Layout from "@layouts/Layout.astro";
 import Stack from "@components/Stack.astro";
 import { userNameValidator, passwordValidator } from "@lib/validate";
+
+if (Astro.locals.session) {
+    Astro.redirect("/logout");
+}
 ---
 
 <Layout title="Log in or Sign up">
