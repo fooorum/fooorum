@@ -8,17 +8,17 @@ if (Astro.locals.session) {
 }
 ---
 
-<Layout title="Log in or Sign up">
+<Layout title="Anmelden oder Registrieren">
     <form method="post" action="/api/login" autocomplete="on">
         <Stack>
-            <label for="username">Username</label>
+            <label for="username">Nutzername</label>
             <input
                 id="username"
                 name="username"
                 required
                 {...userNameValidator.toJSON()}
             />
-            <label for="password">Password</label>
+            <label for="password">Passwort</label>
             <input
                 id="password"
                 name="password"
@@ -26,7 +26,7 @@ if (Astro.locals.session) {
                 required
                 {...passwordValidator.toJSON()}
             />
-            <button>Log in or sign up</button>
+            <button>Anmelden oder registrieren</button>
         </Stack>
     </form>
 </Layout>
