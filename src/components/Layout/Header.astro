@@ -1,6 +1,6 @@
 ---
 import NavLink from "./NavLink.astro";
-const session = Astro.locals.session;
+const { session } = Astro.locals;
 ---
 
 <header class="width-wrapper">
@@ -12,9 +12,9 @@ const session = Astro.locals.session;
             <NavLink href="/users">Nutzer</NavLink>
             {
                 session ? (
-                    <NavLink href="/logout">Log Out</NavLink>
+                    <NavLink href="/logout">Anmelden</NavLink>
                 ) : (
-                    <NavLink href="/login">Log in</NavLink>
+                    <NavLink href="/login">Abmelden</NavLink>
                 )
             }
         </nav>

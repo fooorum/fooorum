@@ -3,7 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import Stack from "@components/Stack.astro";
 import { userNameValidator, passwordValidator } from "@lib/validate";
 
-if (Astro.locals.session) {
+const { session } = Astro.locals;
+if (session) {
     return Astro.redirect("/logout");
 }
 ---
