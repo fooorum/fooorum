@@ -5,8 +5,12 @@ import { hash, verify } from "argon2";
 import type { APIContext } from "astro";
 import { db, User, eq } from "astro:db";
 
-export async function POST(context: APIContext): Promise<Response> {
-  const formData = await context.request.formData();
+export async function POST({
+  request,
+  cookies,
+  redirect,
+}: APIContext): Promise<Response> {
+  const formData = await request.formData();
   const userName = formData.get("username");
   const password = formData.get("password");
   if (!userNameValidator.validate(userName))
@@ -39,13 +43,13 @@ export async function POST(context: APIContext): Promise<Response> {
 
   const session = await lucia.createSession(user.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
-  context.cookies.set(
+  cookies.set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
   );
 
-  return context.redirect("/");
+  return redirect("/");
 }
 
 async function getUser(userName: string) {

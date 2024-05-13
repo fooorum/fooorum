@@ -1,0 +1,16 @@
+---
+interface Prop {
+    postId: number;
+    score: number;
+    amount: number;
+}
+const {postId, score, amount} = Astro.props;
+const prefixes = {1: "👍🏿", [-1]: "👎🏿"};
+const prefix = prefixes[score];
+---
+
+<form method="post" action={`/api/vote/${postId}/${score}`}>
+    <button type="submit">
+        {prefix} {amount}
+    </button>
+</form>

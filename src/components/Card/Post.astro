@@ -1,7 +1,6 @@
 ---
 import Card from "./Base.astro";
-import Upvote from "./Footer/Upvote.astro";
-import Downvote from "./Footer/Downvote.astro";
+import Vote from "./Vote.astro";
 import Link from "@components/Link.astro";
 
 interface Props {
@@ -41,6 +40,6 @@ const {
         }
     </span>
     {description}
-    <Upvote amount={upvotes} slot="footer" />
-    <Downvote amount={downvotes} slot="footer" />
+    <Vote postId={id} score={1} amount={upvotes} slot="footer" />
+    <Vote postId={id} score={-1} amount={downvotes} slot="footer" />
 </Card>
