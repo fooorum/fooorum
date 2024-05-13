@@ -4,12 +4,10 @@ import Layout from "@layouts/Layout.astro";
 import { db, eq, User } from "astro:db";
 
 const { userId } = Astro.params;
-const users = await db
+const [user] = await db
     .select()
     .from(User)
     .where(eq(User.id, parseInt(userId)));
-
-const user = users.at(0);
 ---
 
 <Layout title={user.name}>

@@ -56,15 +56,22 @@ const Post = defineTable({
   },
 });
 
-const Vote = defineTable({
+const BaseVote = defineTable({
   columns: {
     userId: column.number({ references: () => User.columns.id }),
     postId: column.number({ references: () => Post.columns.id }),
   },
 });
 
-const Upvote = defineTable(Vote);
-const Downvote = defineTable(Vote);
+const Vote = defineTable({
+  columns: {
+    ...BaseVote.columns,
+    score: column.number(),
+  },
+});
+
+const Upvote = defineTable({ columns: BaseVote.columns, deprecated: true });
+const Downvote = defineTable({ columns: BaseVote.columns, deprecated: true });
 
 export default defineDb({
   tables: {
@@ -73,6 +80,7 @@ export default defineDb({
     Session,
     Member,
     Post,
+    Vote,
     Upvote,
     Downvote,
   },

@@ -1,12 +1,8 @@
 ---
-import { db, count, eq, Upvote } from "astro:db";
-
 interface Prop {
     amount: number;
-    post: number;
-    user: number;
 }
-const {amount, prefix, post, user} = Astro.props;
+const {amount} = Astro.props;
 ---
 
 <form>

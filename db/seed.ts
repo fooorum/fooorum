@@ -1,4 +1,4 @@
-import { db, Forum, User, Member, Post, Upvote, Downvote } from "astro:db";
+import { db, Forum, User, Member, Post, Vote, Downvote } from "astro:db";
 
 export default async function () {
   await db.insert(Forum).values([
@@ -56,12 +56,10 @@ export default async function () {
       parentId: 3,
     },
   ]);
-  await db.insert(Upvote).values([
-    { userId: 0, postId: 0 },
-    { userId: 1, postId: 1 },
-  ]);
-  await db.insert(Downvote).values([
-    { userId: 1, postId: 0 },
-    { userId: 1, postId: 2 },
+  await db.insert(Vote).values([
+    { userId: 0, postId: 0, score: 1 },
+    { userId: 1, postId: 1, score: 1 },
+    { userId: 1, postId: 0, score: -1 },
+    { userId: 1, postId: 2, score: -1 },
   ]);
 }

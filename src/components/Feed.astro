@@ -3,6 +3,7 @@ import Stack from "@components/Stack.astro";
 import Card from "@components/Card/Post.astro";
 import {
     db,
+    alias,
     and,
     eq,
     isNull,
@@ -10,8 +11,7 @@ import {
     Post,
     User,
     Forum,
-    Upvote,
-    Downvote,
+    Vote,
     countDistinct,
 } from "astro:db";
 
@@ -24,6 +24,9 @@ const { forum, user } = Astro.props;
 const filters = [isNull(Post.parentId)];
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
+
+const Upvote = alias(Vote, "upvote");
+const Downvote = alias(Vote, "downvote");
 
 const posts = await db
     .select({
@@ -50,8 +53,11 @@ const posts = await db
     .orderBy(desc(Post.createdAt))
     .innerJoin(User, eq(Post.userId, User.id))
     .innerJoin(Forum, eq(Post.forumId, Forum.id))
-    .leftJoin(Upvote, eq(Upvote.postId, Post.id))
-    .leftJoin(Downvote, eq(Downvote.postId, Post.id))
+    .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
+    .leftJoin(
+        Downvote,
+        and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)),
+    )
     .groupBy(Post.id);
 ---
 

@@ -1,12 +1,15 @@
 ---
 import Stack from "@components/Stack.astro";
 import Card from "@components/Card/Post.astro";
-import { db, eq, Post, User, Upvote, Downvote } from "astro:db";
+import { db, alias, eq, and, Post, User, Vote } from "astro:db";
 import { countDistinct } from "astro:db";
 interface Props {
     parent: number;
 }
 const { parent } = Astro.props;
+
+const Upvote = alias(Vote, "upvote");
+const Downvote = alias(Vote, "downvote");
 
 const comments = await db
     .select({
@@ -21,8 +24,11 @@ const comments = await db
     .from(Post)
     .where(eq(Post.parentId, parent))
     .innerJoin(User, eq(Post.userId, User.id))
-    .leftJoin(Upvote, eq(Upvote.postId, Post.id))
-    .leftJoin(Downvote, eq(Downvote.postId, Post.id))
+    .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
+    .leftJoin(
+        Downvote,
+        and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)),
+    )
     .groupBy(Post.id);
 ---
 
