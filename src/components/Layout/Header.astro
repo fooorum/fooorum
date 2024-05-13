@@ -12,9 +12,9 @@ const { session } = Astro.locals;
             <NavLink href="/users">Nutzer</NavLink>
             {
                 session ? (
-                    <NavLink href="/logout">Anmelden</NavLink>
+                    <NavLink href="/logout">Abmelden</NavLink>
                 ) : (
-                    <NavLink href="/login">Abmelden</NavLink>
+                    <NavLink href="/login">Anmelden</NavLink>
                 )
             }
         </nav>
