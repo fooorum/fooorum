@@ -7,8 +7,8 @@ import vercel from "@astrojs/vercel/serverless";
 export default defineConfig({
   integrations: [db()],
   redirects: {
-    "/": "/posts"
+    "/": "/posts",
   },
   output: "server",
-  adapter: vercel()
+  adapter: vercel(),
 });
