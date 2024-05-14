@@ -39,6 +39,7 @@ const Member = defineTable({
     forumId: column.number({ references: () => Forum.columns.id }),
     createdAt: column.date({ default: NOW }),
   },
+  indexes: [{ on: ["userId", "forumId"], unique: true, name: "memberId" }],
 });
 
 const Post = defineTable({
@@ -61,6 +62,7 @@ const BaseVote = defineTable({
     userId: column.number({ references: () => User.columns.id }),
     postId: column.number({ references: () => Post.columns.id }),
   },
+  indexes: [{ on: ["userId", "postId"], unique: true, name: "voteId" }],
 });
 
 const Vote = defineTable({

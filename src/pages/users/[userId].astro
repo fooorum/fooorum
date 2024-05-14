@@ -7,7 +7,7 @@ const { userId } = Astro.params;
 const [user] = await db
     .select()
     .from(User)
-    .where(eq(User.id, parseInt(userId)));
+    .where(eq(User.id, parseInt(userId!)));
 ---
 
 <Layout title={user.name}>

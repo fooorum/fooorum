@@ -1,12 +1,17 @@
 ---
-interface Prop {
+const prefixes = {
+    1: "👍🏿",
+    [-1]: "👎🏿",
+}
+
+interface Props {
     postId: number;
-    score: number;
     amount: number;
+    score: keyof typeof prefixes;
 }
 const {postId, score, amount} = Astro.props;
-const prefixes = {1: "👍🏿", [-1]: "👎🏿"};
-const prefix = prefixes[score];
+
+const prefix = prefixes[score]
 ---
 
 <form method="post" action={`/api/vote/${postId}/${score}`}>

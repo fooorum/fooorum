@@ -39,7 +39,7 @@ const userNameOptions = {
   pattern: /^[a-z0-9-]+$/,
 };
 export const userNameValidator = new StringValidator<typeof userNameOptions>(
-  userNameOptions,
+  userNameOptions
 );
 
 const passwordOptions = {
@@ -47,5 +47,5 @@ const passwordOptions = {
   maxlength: 255,
 };
 export const passwordValidator = new StringValidator<typeof passwordOptions>(
-  passwordOptions,
+  passwordOptions
 );

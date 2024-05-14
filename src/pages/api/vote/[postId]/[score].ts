@@ -8,20 +8,21 @@ export async function POST({
   url,
 }: APIContext): Promise<Response> {
   const { user } = locals;
-  if (!user) return redirect(new URL("/login", url));
-  const { postId, score } = params;
+  if (!user) return redirect(new URL("/login", url).href);
+  const postId = parseInt(params.postId!);
+  const score = parseInt(params.score!);
 
-  await db
-    .delete(Vote)
-    .where(and(eq(Vote.postId, postId), eq(Vote.userId, user.id)));
+  await db.batch([
+    db
+      .delete(Vote)
+      .where(and(eq(Vote.userId, user.id), eq(Vote.postId, postId))),
 
-  if (score) {
-    await db.insert(Vote).values({
-      postId,
+    db.insert(Vote).values({
       userId: user.id,
+      postId,
       score,
-    });
-  }
+    }),
+  ]);
 
   return new Response(null, { status: 204 });
 }

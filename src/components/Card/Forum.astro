@@ -4,7 +4,7 @@ import Card from "./Base.astro";
 interface Props {
     title: string;
     id: number;
-    description: string;
+    description: string | null;
 }
 
 const { title, id, description } = Astro.props;

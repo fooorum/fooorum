@@ -13,11 +13,11 @@ export async function POST({
   const formData = await request.formData();
   const userName = formData.get("username");
   const password = formData.get("password");
-  if (!userNameValidator.validate(userName))
+  if (typeof userName !== "string" || !userNameValidator.validate(userName))
     return new Response("Invalid username", {
       status: 400,
     });
-  if (!passwordValidator.validate(password))
+  if (typeof password !== "string" || !passwordValidator.validate(password))
     return new Response("Invalid password", {
       status: 400,
     });
@@ -46,7 +46,7 @@ export async function POST({
   cookies.set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
 
   return redirect("/");
