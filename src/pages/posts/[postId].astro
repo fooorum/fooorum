@@ -1,10 +1,11 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Comments from "@components/Comments.astro";
+import Comments from "@components/CommentTree.astro";
 import { db, eq, Post, User, Forum } from "astro:db";
 
-const { postId } = Astro.params;
-const posts = await db
+const postId = parseInt(Astro.params.postId!);
+
+const [post] = await db
     .select({
         title: Post.title,
         description: Post.description,
@@ -19,11 +20,10 @@ const posts = await db
     .innerJoin(User, eq(Post.userId, User.id))
     .innerJoin(Forum, eq(Post.forumId, Forum.id));
 
-const { title, description, id, userId, userName, forumId, forumName } =
-    posts.at(0);
+const { title, description, id, userId, userName, forumId, forumName } = post;
 ---
 
-<Layout title={title}>
+<Layout title={title ?? "Post"}>
     <div slot="header">
         <a href={`/users/${userId}`}>{userName}</a>
          in <a href={`/forums/${forumId}`}>{forumName}</a>

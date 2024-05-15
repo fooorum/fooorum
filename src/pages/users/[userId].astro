@@ -3,11 +3,12 @@ import Feed from "@components/Feed.astro";
 import Layout from "@layouts/Layout.astro";
 import { db, eq, User } from "astro:db";
 
-const { userId } = Astro.params;
+const userId = parseInt(Astro.params.userId!);
+
 const [user] = await db
     .select()
     .from(User)
-    .where(eq(User.id, parseInt(userId!)));
+    .where(eq(User.id, userId));
 ---
 
 <Layout title={user.name}>

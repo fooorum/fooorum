@@ -3,11 +3,12 @@ import Layout from "@layouts/Layout.astro";
 import Feed from "@components/Feed.astro";
 import { db, eq, Forum } from "astro:db";
 
-const { forumId } = Astro.params;
+const forumId = parseInt(Astro.params.forumId!);
+
 const [forum] = await db
     .select()
     .from(Forum)
-    .where(eq(Forum.id, parseInt(forumId!)));
+    .where(eq(Forum.id, forumId));
 ---
 
 <Layout title={forum.name}>

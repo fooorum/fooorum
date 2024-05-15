@@ -12,7 +12,7 @@ const icon = icons.get(score)
 
 <form method="post" action={`/api/vote/${postId}/${score}`}>
     <button type="submit">
-        {icon && <Icon name=`mdi:thumb-${icon}` />}
+        {icon && <Icon name={`mdi:thumb-${icon}`} />}
         {amount}
     </button>
 </form>
