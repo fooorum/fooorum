@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.5.10
     version: 0.5.10(typescript@5.4.5)
   '@astrojs/db':
-    specifier: ^0.11.1
-    version: 0.11.1
+    specifier: ^0.10.7
+    version: 0.10.7
   '@astrojs/vercel':
     specifier: ^7.6.0
     version: 7.6.0(astro@4.8.3)
@@ -25,7 +25,7 @@ dependencies:
     version: 3.2.0
   lucia-adapter-astrodb:
     specifier: ^0.0.8
-    version: 0.0.8(@astrojs/db@0.11.1)(lucia@3.2.0)
+    version: 0.0.8(@astrojs/db@0.10.7)(lucia@3.2.0)
 
 packages:
 
@@ -58,8 +58,8 @@ packages:
     resolution: {integrity: sha512-yrpD1WRGqsJwANaDIdtHo+YVjvIOFAjC83lu5qENIgrafwZcJgSXDuwVMXOgok4tFzpeKLsFQ6c3FoUdloLWBQ==}
     dev: false
 
-  /@astrojs/db@0.11.1:
-    resolution: {integrity: sha512-3hFcSib3u7kBZyYlSzaJVCWBJBz8CKmh1RWndYFiAIi37aT69PGneSSyZ/8w3yy3ARiUOt4oJLvl9sRwwH7Tzg==}
+  /@astrojs/db@0.10.7:
+    resolution: {integrity: sha512-P2jP1M0KLSe9qNlKX7Y+KMVQnVKAFj6l64JB6xomLXS3y4PsY0gxGOll+aRMFb9GShpzGYarbR5Qo/B6k+ulIA==}
     dependencies:
       '@libsql/client': 0.6.0
       async-listen: 3.0.1
@@ -3279,13 +3279,13 @@ packages:
       yallist: 3.1.1
     dev: false
 
-  /lucia-adapter-astrodb@0.0.8(@astrojs/db@0.11.1)(lucia@3.2.0):
+  /lucia-adapter-astrodb@0.0.8(@astrojs/db@0.10.7)(lucia@3.2.0):
     resolution: {integrity: sha512-MfKRu/ndyGXQ+A1f+12a5XTFs3LHFDLHCzqwCkuPQxAbX0ZldRj1O42bBYIc7NFqmB+Wu9agFvFRQXS8jkJyDw==}
     peerDependencies:
       '@astrojs/db': 0.8 - 0.10
       lucia: 3.x
     dependencies:
-      '@astrojs/db': 0.11.1
+      '@astrojs/db': 0.10.7
       lucia: 3.2.0
     dev: false
 
