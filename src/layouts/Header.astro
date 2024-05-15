@@ -5,36 +5,35 @@ const { session } = Astro.locals;
 ---
 
 <header class="width-wrapper">
-  <div class="width-container">
-    <nav>
-      <NavLink href="/"><h1>Fooorum</h1></NavLink>
-      <NavLink href="/posts">
-        <Icon name="mdi:comment-text" /> Beiträge
-      </NavLink>
-      <NavLink href="/forums">
-        <Icon name="mdi:forum" /> Foren
-      </NavLink>
-      <NavLink href="users">
-        <Icon name="mdi:user-group" /> Nutzer
-      </NavLink>
-      {
-        session ? (
-          <NavLink href="/logout">
-            <Icon name="mdi:logout" /> Abmelden
-          </NavLink>
-        ) : (
-          <NavLink href="/login">
-            <Icon name="mdi:login" /> Anmelden
-          </NavLink>
-        )
-      }
-    </nav>
-    <slot />
-  </div>
+  <nav>
+    <NavLink href="/"><h1>Fooorum</h1></NavLink>
+    <NavLink href="/posts">
+      <Icon name="mdi:comment-text" /> Beiträge
+    </NavLink>
+    <NavLink href="/forums">
+      <Icon name="mdi:forum" /> Foren
+    </NavLink>
+    <NavLink href="users">
+      <Icon name="mdi:user-group" /> Nutzer
+    </NavLink>
+    {
+      session ? (
+        <NavLink href="/logout">
+          <Icon name="mdi:logout" /> Abmelden
+        </NavLink>
+      ) : (
+        <NavLink href="/login">
+          <Icon name="mdi:login" /> Anmelden
+        </NavLink>
+      )
+    }
+  </nav>
+  <slot />
 </header>
 
 <style lang="scss">
   header {
+    padding: 0.5em;
     box-sizing: border-box;
     width: 100%;
 
@@ -42,19 +41,10 @@ const { session } = Astro.locals;
     align-items: center;
     position: sticky;
 
-    top: -2.25em;
-    background: linear-gradient(to bottom, #387081, #284081);
+    top: -0em;
+    background: var(--background);
     transition: top 0.25s;
-  }
-  header:hover {
-    top: 0em;
-  }
-  .width-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1em;
-    padding: 0.5em;
+    border-bottom: 1px solid var(--text);
   }
   nav {
     display: flex;

@@ -1,0 +1,44 @@
+:root {
+  --background: #121212;
+  --surface: #210b42;
+  --text: #ffffff;
+  --accent: #ce93d8;
+  --max-width: 800px;
+}
+
+body {
+  font: caption;
+  background: var(--background);
+  color: var(--text);
+  margin: 0em;
+  height: 100vh;
+  margin: auto;
+  width: 100%;
+  max-width: var(--max-width);
+}
+
+main {
+  height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin: unset;
+}
+
+a {
+  text-decoration: unset;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+button {
+  background: unset;
+  border: unset;
+  color: unset;
+
+  &:hover {
+    color: var(--accent);
+  }
+}

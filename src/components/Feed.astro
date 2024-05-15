@@ -62,5 +62,12 @@ const posts = await db
 ---
 
 <Stack>
-  {posts.map((post) => <Card {...post} />)}
+  {posts.map((post) => [<Card {...post} />, <hr />])}
 </Stack>
+
+<style lang="scss">
+  hr {
+    width: 100%;
+    color: var(--accent);
+  }
+</style>

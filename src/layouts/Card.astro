@@ -1,0 +1,44 @@
+---
+type Props = {
+  url: string;
+  title?: string;
+  id?: string;
+};
+
+const { title, url, id } = Astro.props;
+---
+
+<a href={url}>
+  <article class="card">
+    <header>
+      <slot name="author" />
+      {title && <h2 id={id}>{title}</h2>}
+      <slot name="header" />
+    </header>
+    <slot />
+    <footer>
+      <slot name="footer" />
+    </footer>
+  </article>
+</a>
+
+<style lang="scss">
+  a {
+    color: unset;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 0.5em;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  footer {
+    display: flex;
+    gap: 0.5em;
+  }
+</style>
