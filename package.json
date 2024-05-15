@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro check && astro build --remote",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@astrojs/check": "^0.5.10",
@@ -25,5 +26,14 @@
     "lucia": "^3.2.0",
     "lucia-adapter-astrodb": "^0.0.8",
     "sass": "^1.77.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.13.0"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-astro"
+    ]
   }
 }

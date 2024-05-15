@@ -4,7 +4,7 @@ import Card from "@components/Post.astro";
 import { db, alias, eq, and, Post, User, Vote } from "astro:db";
 import { countDistinct } from "astro:db";
 interface Props {
-    parent: number;
+  parent: number;
 }
 const { parent } = Astro.props;
 
@@ -12,41 +12,38 @@ const Upvote = alias(Vote, "upvote");
 const Downvote = alias(Vote, "downvote");
 
 const comments = await db
-    .select({
-        title: Post.title,
-        description: Post.description,
-        id: Post.id,
-        upvotes: countDistinct(Upvote.userId),
-        downvotes: countDistinct(Downvote.userId),
-        userName: User.name,
-        userId: User.id,
-    })
-    .from(Post)
-    .where(eq(Post.parentId, parent))
-    .innerJoin(User, eq(Post.userId, User.id))
-    .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
-    .leftJoin(
-        Downvote,
-        and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)),
-    )
-    .groupBy(Post.id);
+  .select({
+    title: Post.title,
+    description: Post.description,
+    id: Post.id,
+    upvotes: countDistinct(Upvote.userId),
+    downvotes: countDistinct(Downvote.userId),
+    userName: User.name,
+    userId: User.id,
+  })
+  .from(Post)
+  .where(eq(Post.parentId, parent))
+  .innerJoin(User, eq(Post.userId, User.id))
+  .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
+  .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
+  .groupBy(Post.id);
 ---
 
 <Stack>
-    {
-        comments.map((comment) => (
-            <>
-                <Card {...comment} />
-                <div class="children">
-                    <Astro.self parent={comment.id} />
-                </div>
-            </>
-        ))
-    }
+  {
+    comments.map((comment) => (
+      <>
+        <Card {...comment} />
+        <div class="children">
+          <Astro.self parent={comment.id} />
+        </div>
+      </>
+    ))
+  }
 </Stack>
 
 <style lang="scss">
-    .children {
-        margin-left: 1em;
-    }
+  .children {
+    margin-left: 1em;
+  }
 </style>

@@ -4,15 +4,17 @@ import Stack from "@components/Stack.astro";
 import Card from "@components/User.astro";
 import { db, User } from "astro:db";
 
-const users = await db.select({
+const users = await db
+  .select({
     title: User.name,
     id: User.id,
     description: User.description,
-}).from(User);
+  })
+  .from(User);
 ---
 
 <Layout title="Nutzer">
-    <Stack>
-        {users.map((user) => <Card {...user} />)}
-    </Stack>
+  <Stack>
+    {users.map((user) => <Card {...user} />)}
+  </Stack>
 </Layout>

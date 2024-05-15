@@ -1,19 +1,19 @@
 ---
 interface Props {
-    href?: string | null;
+  href?: string | null;
 }
 
 const { href } = Astro.props;
 ---
 
 {
-    href ? (
-        <a href={href}>
-            <slot />
-        </a>
-    ) : (
-        <span>
-            <slot />
-        </span>
-    )
+  href ? (
+    <a href={href}>
+      <slot />
+    </a>
+  ) : (
+    <span>
+      <slot />
+    </span>
+  )
 }

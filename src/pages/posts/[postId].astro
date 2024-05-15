@@ -6,31 +6,31 @@ import { db, eq, Post, User, Forum } from "astro:db";
 const postId = parseInt(Astro.params.postId!);
 
 const [post] = await db
-    .select({
-        title: Post.title,
-        description: Post.description,
-        id: Post.id,
-        userId: User.id,
-        userName: User.name,
-        forumId: Forum.id,
-        forumName: Forum.name,
-    })
-    .from(Post)
-    .where(eq(Post.id, postId))
-    .innerJoin(User, eq(Post.userId, User.id))
-    .innerJoin(Forum, eq(Post.forumId, Forum.id));
+  .select({
+    title: Post.title,
+    description: Post.description,
+    id: Post.id,
+    userId: User.id,
+    userName: User.name,
+    forumId: Forum.id,
+    forumName: Forum.name,
+  })
+  .from(Post)
+  .where(eq(Post.id, postId))
+  .innerJoin(User, eq(Post.userId, User.id))
+  .innerJoin(Forum, eq(Post.forumId, Forum.id));
 
 const { title, description, id, userId, userName, forumId, forumName } = post;
 ---
 
 <Layout title={title ?? "Post"}>
-    <div slot="header">
-        <a href={`/users/${userId}`}>{userName}</a>
-         in <a href={`/forums/${forumId}`}>{forumName}</a>
-    </div>
-    <div slot="header">
-        <h2>{title}</h2>
-    </div>
-    <div slot="header">{description}</div>
-    <Comments parent={id} />
+  <div slot="header">
+    <a href={`/users/${userId}`}>{userName}</a>
+    in <a href={`/forums/${forumId}`}>{forumName}</a>
+  </div>
+  <div slot="header">
+    <h2>{title}</h2>
+  </div>
+  <div slot="header">{description}</div>
+  <Comments parent={id} />
 </Layout>

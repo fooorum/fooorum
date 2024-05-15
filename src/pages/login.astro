@@ -5,46 +5,46 @@ import { userNameValidator, passwordValidator } from "@lib/validate";
 
 const { session } = Astro.locals;
 if (session) {
-    return Astro.redirect("/logout");
+  return Astro.redirect("/logout");
 }
 ---
 
 <Layout title="Anmelden oder Registrieren">
-    <form method="post" action="/api/login" autocomplete="on">
-        <Stack>
-            <label for="username">Nutzername</label>
-            <input
-                id="username"
-                name="username"
-                required
-                {...userNameValidator.toJSON()}
-            />
-            <label for="password">Passwort</label>
-            <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                {...passwordValidator.toJSON()}
-            />
-            <button>Anmelden oder registrieren</button>
-        </Stack>
-    </form>
+  <form method="post" action="/api/login" autocomplete="on">
+    <Stack>
+      <label for="username">Nutzername</label>
+      <input
+        id="username"
+        name="username"
+        required
+        {...userNameValidator.toJSON()}
+      />
+      <label for="password">Passwort</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        required
+        {...passwordValidator.toJSON()}
+      />
+      <button>Anmelden oder registrieren</button>
+    </Stack>
+  </form>
 </Layout>
 
 <style>
-    input:invalid {
-        border-color: red;
-    }
-    button {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5em;
-        background: linear-gradient(to bottom, #008822, #00ee44);
+  input:invalid {
+    border-color: red;
+  }
+  button {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    background: linear-gradient(to bottom, #008822, #00ee44);
 
-        padding: 1.5em;
-        border-radius: 2.5em;
-        border-color: black;
-        border-width: 0.3em;
-    }
+    padding: 1.5em;
+    border-radius: 2.5em;
+    border-color: black;
+    border-width: 0.3em;
+  }
 </style>

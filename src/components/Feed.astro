@@ -2,22 +2,22 @@
 import Stack from "@components/Stack.astro";
 import Card from "@components/Post.astro";
 import {
-    db,
-    alias,
-    and,
-    eq,
-    isNull,
-    desc,
-    Post,
-    User,
-    Forum,
-    Vote,
-    countDistinct,
+  db,
+  alias,
+  and,
+  eq,
+  isNull,
+  desc,
+  Post,
+  User,
+  Forum,
+  Vote,
+  countDistinct,
 } from "astro:db";
 
 interface Props {
-    forum?: number;
-    user?: number;
+  forum?: number;
+  user?: number;
 }
 const { forum, user } = Astro.props;
 
@@ -30,40 +30,37 @@ const Downvote = alias(Vote, "downvote");
 const Comment = alias(Post, "comment");
 
 const posts = await db
-    .select({
-        title: Post.title,
-        description: Post.description,
-        id: Post.id,
-        upvotes: countDistinct(Upvote.userId),
-        downvotes: countDistinct(Downvote.userId),
-        comments: countDistinct(Comment.id),
-        ...(user !== undefined
-            ? {}
-            : {
-                  userName: User.name,
-                  userId: User.id,
-              }),
-        ...(forum !== undefined
-            ? {}
-            : {
-                  forumName: Forum.name,
-                  forumId: Forum.id,
-              }),
-    })
-    .from(Post)
-    .where(and(...filters))
-    .orderBy(desc(Post.createdAt))
-    .innerJoin(User, eq(Post.userId, User.id))
-    .innerJoin(Forum, eq(Post.forumId, Forum.id))
-    .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
-    .leftJoin(
-        Downvote,
-        and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)),
-    )
-    .leftJoin(Comment, eq(Comment.parentId, Post.id))
-    .groupBy(Post.id);
+  .select({
+    title: Post.title,
+    description: Post.description,
+    id: Post.id,
+    upvotes: countDistinct(Upvote.userId),
+    downvotes: countDistinct(Downvote.userId),
+    comments: countDistinct(Comment.id),
+    ...(user !== undefined
+      ? {}
+      : {
+          userName: User.name,
+          userId: User.id,
+        }),
+    ...(forum !== undefined
+      ? {}
+      : {
+          forumName: Forum.name,
+          forumId: Forum.id,
+        }),
+  })
+  .from(Post)
+  .where(and(...filters))
+  .orderBy(desc(Post.createdAt))
+  .innerJoin(User, eq(Post.userId, User.id))
+  .innerJoin(Forum, eq(Post.forumId, Forum.id))
+  .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
+  .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
+  .leftJoin(Comment, eq(Comment.parentId, Post.id))
+  .groupBy(Post.id);
 ---
 
 <Stack>
-    {posts.map((post) => <Card {...post} />)}
+  {posts.map((post) => <Card {...post} />)}
 </Stack>

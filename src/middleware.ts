@@ -31,7 +31,7 @@ export const onRequest = defineMiddleware(
       cookies.set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes
+        sessionCookie.attributes,
       );
     }
     if (!session) {
@@ -39,11 +39,11 @@ export const onRequest = defineMiddleware(
       cookies.set(
         sessionCookie.name,
         sessionCookie.value,
-        sessionCookie.attributes
+        sessionCookie.attributes,
       );
     }
     locals.session = session;
     locals.user = user;
     return next();
-  }
+  },
 );

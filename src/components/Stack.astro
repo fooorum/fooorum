@@ -1,23 +1,23 @@
 ---
 interface Props {
-    direction?: "column" | "row";
+  direction?: "column" | "row";
 }
 
 const { direction = "column" } = Astro.props;
 ---
 
 <div
-    class="stack"
-    style={{
-        flexDirection: direction,
-    }}
+  class="stack"
+  style={{
+    flexDirection: direction,
+  }}
 >
-    <slot />
+  <slot />
 </div>
 
 <style lang="scss">
-    .stack {
-        display: flex;
-        gap: 0.5em;
-    }
+  .stack {
+    display: flex;
+    gap: 0.5em;
+  }
 </style>

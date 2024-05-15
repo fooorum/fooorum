@@ -1,15 +1,15 @@
 ---
-import {Icon} from "astro-icon/components"
+import { Icon } from "astro-icon/components";
 interface Props {
-    postId: number;
-    amount: number;
+  postId: number;
+  amount: number;
 }
-const {postId, amount} = Astro.props
+const { postId, amount } = Astro.props;
 ---
 
 <form action={`/posts/${postId}`}>
-    <button type="submit">
-        <Icon name="mdi:comment-text" />
-        {amount}
-    </button>
+  <button type="submit">
+    <Icon name="mdi:comment-text" />
+    {amount}
+  </button>
 </form>

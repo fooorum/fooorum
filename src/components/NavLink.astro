@@ -1,6 +1,6 @@
 ---
 interface Props {
-    href: string;
+  href: string;
 }
 
 const { href } = Astro.props;
@@ -8,14 +8,14 @@ const isActive = Astro.url.href.startsWith(new URL(href, Astro.url).href);
 ---
 
 <a class={isActive ? "active" : ""} href={new URL(href, Astro.url)}>
-    <slot />
+  <slot />
 </a>
 
 <style lang="scss">
-    a {
-        color: unset;
-    }
-    a.active {
-        text-decoration: underline;
-    }
+  a {
+    color: unset;
+  }
+  a.active {
+    text-decoration: underline;
+  }
 </style>

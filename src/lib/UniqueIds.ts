@@ -16,6 +16,6 @@ export default function UniqueIds(): Record<string, number> {
           return currentId;
         }
       },
-    }
+    },
   );
 }

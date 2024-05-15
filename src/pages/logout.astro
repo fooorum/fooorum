@@ -4,28 +4,28 @@ import Stack from "@components/Stack.astro";
 
 const { session } = Astro.locals;
 if (!session) {
-    return Astro.redirect("/login");
+  return Astro.redirect("/login");
 }
 ---
 
 <Layout title="Abmelden">
-    <form method="post" action="/api/logout">
-        <Stack>
-            <button>Abmelden</button>
-        </Stack>
-    </form>
+  <form method="post" action="/api/logout">
+    <Stack>
+      <button>Abmelden</button>
+    </Stack>
+  </form>
 </Layout>
 
 <style>
-    button {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5em;
-        background: linear-gradient(to bottom, #e2252b, #5e2129);
+  button {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    background: linear-gradient(to bottom, #e2252b, #5e2129);
 
-        padding: 1.5em;
-        border-radius: 2.5em;
-        border-color: black;
-        border-width: 0.3em;
-    }
+    padding: 1.5em;
+    border-radius: 2.5em;
+    border-color: black;
+    border-width: 0.3em;
+  }
 </style>
