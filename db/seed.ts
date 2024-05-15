@@ -1,4 +1,4 @@
-import { db, Forum, User, Member, Post, Vote, Downvote } from "astro:db";
+import { db, Forum, User, Member, Post, Vote } from "astro:db";
 
 export default async function () {
   await db.insert(Forum).values([

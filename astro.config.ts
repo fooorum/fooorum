@@ -1,15 +1,31 @@
 import { defineConfig } from "astro/config";
-import db from "@astrojs/db";
 import vercel from "@astrojs/vercel/serverless";
-
+import db from "@astrojs/db";
 import icon from "astro-icon";
+import favicons from "astro-favicons";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [db(), icon()],
+  integrations: [
+    db(),
+    icon(),
+    favicons({
+      appName: "Fooorum",
+      appShortName: "Fooorum",
+      appDescription: "Ein Internet-Forum.",
+      path: "/",
+      masterPicture: "./src/assets/favicon.svg",
+    }),
+  ],
+  vite: {
+    css: { transformer: "lightningcss" },
+  },
+  image: {
+    remotePatterns: [{ protocol: "https" }],
+  },
   redirects: {
-    "/": "/posts"
+    "/": "/posts",
   },
   output: "server",
-  adapter: vercel()
+  adapter: vercel(),
 });

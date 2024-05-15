@@ -1,6 +1,6 @@
 ---
-interface Properties {
-    direction: "column" | "row";
+interface Props {
+    direction?: "column" | "row";
 }
 
 const { direction = "column" } = Astro.props;
