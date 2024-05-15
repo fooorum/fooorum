@@ -17,9 +17,7 @@
     "astro": "^4.8.3",
     "astro-icon": "^1.1.0",
     "lucia": "^3.2.0",
-    "lucia-adapter-astrodb": "^0.0.8"
-  },
-  "devDependencies": {
+    "lucia-adapter-astrodb": "^0.0.8",
     "@iconify-json/mdi": "^1.1.66"
   }
 }
