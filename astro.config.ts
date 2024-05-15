@@ -19,6 +19,7 @@ export default defineConfig({
   ],
   vite: {
     css: { transformer: "lightningcss" },
+    build: { cssMinify: "lightningcss" },
   },
   image: {
     remotePatterns: [{ protocol: "https" }],
