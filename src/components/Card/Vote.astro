@@ -1,21 +1,18 @@
 ---
-const prefixes = {
-    1: "👍🏿",
-    [-1]: "👎🏿",
-}
-
+import {Icon} from "astro-icon/components"
 interface Props {
     postId: number;
+    score: number;
     amount: number;
-    score: keyof typeof prefixes;
 }
-const {postId, score, amount} = Astro.props;
-
-const prefix = prefixes[score]
+const { postId, score, amount } = Astro.props;
+const icons = new Map([[-1, "down"], [1, "up"]])
+const icon = icons.get(score)
 ---
 
 <form method="post" action={`/api/vote/${postId}/${score}`}>
     <button type="submit">
-        {prefix} {amount}
+        {icon && <Icon name=`mdi:thumb-${icon}` />}
+        {amount}
     </button>
 </form>

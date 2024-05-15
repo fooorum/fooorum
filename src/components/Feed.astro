@@ -27,6 +27,7 @@ if (user !== undefined) filters.push(eq(Post.userId, user));
 
 const Upvote = alias(Vote, "upvote");
 const Downvote = alias(Vote, "downvote");
+const Comment = alias(Post, "comment");
 
 const posts = await db
     .select({
@@ -35,6 +36,7 @@ const posts = await db
         id: Post.id,
         upvotes: countDistinct(Upvote.userId),
         downvotes: countDistinct(Downvote.userId),
+        comments: countDistinct(Comment.id),
         ...(user !== undefined
             ? {}
             : {
@@ -58,6 +60,7 @@ const posts = await db
         Downvote,
         and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)),
     )
+    .leftJoin(Comment, eq(Comment.parentId, Post.id))
     .groupBy(Post.id);
 ---
 
