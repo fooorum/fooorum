@@ -1,0 +1,15 @@
+---
+interface Props {
+  id?: number;
+}
+const { id } = Astro.props;
+---
+
+<hr transition:name={id ? `separator-${id}` : undefined} />
+
+<style lang="scss">
+  hr {
+    color: var(--accent);
+    width: 100%;
+  }
+</style>

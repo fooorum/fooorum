@@ -1,6 +1,7 @@
 ---
 import Stack from "@components/feeds/Stack.astro";
 import Card from "@components/cards/Post.astro";
+import Separator from "./Separator.astro";
 import {
   db,
   alias,
@@ -51,18 +52,17 @@ const posts = await db
   .innerJoin(Forum, eq(Post.forumId, Forum.id))
   .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
   .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
-  .leftJoin(Voted, and(eq(Voted.postId, Post.id), eq(Voted.userId, Astro.locals.user?.id ?? -1)))
+  .leftJoin(
+    Voted,
+    and(
+      eq(Voted.postId, Post.id),
+      eq(Voted.userId, Astro.locals.user?.id ?? -1),
+    ),
+  )
   .leftJoin(Comment, eq(Comment.parentId, Post.id))
   .groupBy(Post.id);
 ---
 
 <Stack>
-  {posts.map((post) => [<Card {...post} />, <hr />])}
+  {posts.map((post) => [<Card {...post} />, <Separator id={post.postId} />])}
 </Stack>
-
-<style lang="scss">
-  hr {
-    width: 100%;
-    color: var(--accent);
-  }
-</style>

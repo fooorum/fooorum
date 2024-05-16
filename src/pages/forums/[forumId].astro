@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Feed from "@components/feeds/Feed.astro";
 import Card from "@components/cards/Forum.astro";
 import { db, eq, Forum } from "astro:db";
+import Separator from "@components/feeds/Separator.astro";
 
 const forumId = parseInt(Astro.params.forumId!);
 
@@ -15,7 +16,7 @@ const [forum] = await db.select().from(Forum).where(eq(Forum.id, forumId));
     forumName={forum.name}
     forumDescription={forum.description}
   />
-  <hr />
+  <Separator />
   <Feed forum={forum.id} />
 
   <style>

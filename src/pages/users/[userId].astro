@@ -3,6 +3,7 @@ import Feed from "@components/feeds/Feed.astro";
 import Layout from "@layouts/Layout.astro";
 import Card from "@components/cards/User.astro";
 import { db, eq, User } from "astro:db";
+import Separator from "@components/feeds/Separator.astro";
 
 const userId = parseInt(Astro.params.userId!);
 
@@ -15,9 +16,10 @@ const [user] = await db.select().from(User).where(eq(User.id, userId));
     userName={user.name}
     userDescription={user.description}
   />
-  <hr />
+  <Separator />
   <Feed user={user.id} />
 </Layout>
+
 <style>
   .header {
     display: flex;

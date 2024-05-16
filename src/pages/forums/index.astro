@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Stack from "@components/feeds/Stack.astro";
 import Card from "@components/cards/Forum.astro";
 import { db, Forum } from "astro:db";
+import Separator from "@components/feeds/Separator.astro";
 
 const forums = await db
   .select({
@@ -15,13 +16,6 @@ const forums = await db
 
 <Layout title="Foren">
   <Stack>
-    {forums.map((forum) => [<Card {...forum} />, <hr />])}
+    {forums.map((forum) => [<Card {...forum} />, <Separator />])}
   </Stack>
 </Layout>
-
-<style lang="scss">
-  hr {
-    width: 100%;
-    color: var(--accent);
-  }
-</style>
