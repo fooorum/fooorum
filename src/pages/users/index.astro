@@ -1,20 +1,27 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Stack from "@components/Stack.astro";
-import Card from "@components/User.astro";
+import Stack from "@components/feeds/Stack.astro";
+import Card from "@components/cards/User.astro";
 import { db, User } from "astro:db";
 
 const users = await db
   .select({
-    title: User.name,
-    id: User.id,
-    description: User.description,
+    userName: User.name,
+    userId: User.id,
+    userDescription: User.description,
   })
   .from(User);
 ---
 
 <Layout title="Nutzer">
   <Stack>
-    {users.map((user) => <Card {...user} />)}
+    {users.map((user) => [<Card {...user} />, <hr />])}
   </Stack>
 </Layout>
+
+<style lang="scss">
+  hr {
+    width: 100%;
+    color: var(--accent);
+  }
+</style>

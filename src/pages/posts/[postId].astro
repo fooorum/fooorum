@@ -1,36 +1,57 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Comments from "@components/CommentTree.astro";
-import { db, eq, Post, User, Forum } from "astro:db";
+import Comments from "@components/feeds/CommentTree.astro";
+import Card from "@components/cards/Post.astro";
+import {
+  db,
+  alias,
+  eq,
+  and,
+  countDistinct,
+  Post,
+  User,
+  Forum,
+  Vote,
+} from "astro:db";
 
 const postId = parseInt(Astro.params.postId!);
 
+const Upvote = alias(Vote, "upvote");
+const Downvote = alias(Vote, "downvote");
+const Voted = alias(Vote, "Voted");
+const Comment = alias(Post, "comment");
+
 const [post] = await db
   .select({
-    title: Post.title,
-    description: Post.description,
-    id: Post.id,
-    userId: User.id,
+    postTitle: Post.title,
+    postDescription: Post.description,
+    postId: Post.id,
     userName: User.name,
-    forumId: Forum.id,
+    userId: User.id,
     forumName: Forum.name,
+    forumId: Forum.id,
+    upvotes: countDistinct(Upvote.userId),
+    downvotes: countDistinct(Downvote.userId),
+    votedScore: Voted.score,
+    comments: countDistinct(Comment.id),
   })
   .from(Post)
   .where(eq(Post.id, postId))
   .innerJoin(User, eq(Post.userId, User.id))
-  .innerJoin(Forum, eq(Post.forumId, Forum.id));
-
-const { title, description, id, userId, userName, forumId, forumName } = post;
+  .innerJoin(Forum, eq(Post.forumId, Forum.id))
+  .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
+  .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
+  .leftJoin(
+    Voted,
+    and(
+      eq(Voted.postId, Post.id),
+      eq(Voted.userId, Astro.locals.user?.id ?? -1),
+    ),
+  )
+  .leftJoin(Comment, eq(Comment.parentId, Post.id))
+  .groupBy(Post.id);
 ---
 
-<Layout title={title ?? "Post"}>
-  <div slot="header">
-    <a href={`/users/${userId}`}>{userName}</a>
-    in <a href={`/forums/${forumId}`}>{forumName}</a>
-  </div>
-  <div slot="header">
-    <h2>{title}</h2>
-  </div>
-  <div slot="header">{description}</div>
-  <Comments parent={id} />
+<Layout title={post.postTitle ?? "Post"}>
+  <Card {...post} /><Comments parent={post.postId} />
 </Layout>

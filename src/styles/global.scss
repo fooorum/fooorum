@@ -1,0 +1,57 @@
+:root {
+  @include dark();
+  --max-width: 600px;
+  --background: #121212;
+  --surface: var(--background);
+  --text: #ffffff;
+  --accent: #ce93d8;
+  
+  &[theme=light] {
+    --background: #ffffff;
+    --text: #000000;
+    --accent: #6200ee;
+  }
+
+  &[theme=classic] {
+    --background: linear-gradient(to bottom, #687081, #a2c9d6);
+    --surface: linear-gradient(to bottom, #449e48, #1e4620);
+    --text: #000000;
+    --accent: blue;
+  }
+}
+
+body {
+  font: caption;
+  background: var(--background);
+  color: var(--text);
+  margin: 0em;
+  margin: auto;
+  width: 100%;
+  max-width: var(--max-width);
+}
+
+main {
+  height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin: unset;
+}
+
+a {
+  text-decoration: unset;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+button {
+  background: unset;
+  border: unset;
+  color: unset;
+
+  &:hover, &.active {
+    color: var(--accent);
+  }
+}

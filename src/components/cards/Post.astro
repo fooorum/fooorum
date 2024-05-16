@@ -1,0 +1,51 @@
+---
+import Card from "./Card.astro";
+import Cover from "@components/links/Cover.astro";
+import Post from "@components/links/Post.astro";
+import Author from "@components/links/Author.astro";
+import Forum from "@components/links/Forum.astro";
+import Votes from "@components/actions/Votes.astro";
+import Comment from "@components/actions/Comment.astro";
+
+interface Props {
+  postTitle: string | null;
+  postDescription: string;
+  postId: number;
+  userName?: string;
+  userId?: number;
+  forumName?: string;
+  forumId?: number;
+  upvotes?: number;
+  downvotes?: number;
+  votedScore?: number;
+  comments: number;
+}
+
+const {
+  postTitle,
+  postDescription,
+  postId,
+  userName,
+  userId,
+  forumName,
+  forumId,
+  upvotes,
+  downvotes,
+  votedScore,
+  comments,
+} = Astro.props;
+const votes = [upvotes, downvotes].every(v => v != undefined)
+---
+
+<Card>
+  <address slot="header">
+    {userName && <Author id={userId}>{userName}</Author>}
+    {forumName && <>in <Forum id={forumId}>{forumName}</Forum></>}
+  </address>
+  {postTitle && <Post id={postId} slot="header">{postTitle}<Cover /></PostTitle>}
+  {postDescription}
+  <form slot="footer">
+    {votes && <Votes {...{postId, upvotes, downvotes, votedScore}}/>}
+    {comments != undefined && <Comment postId={postId} amount={comments} />}
+  </form>
+</Card>
