@@ -1,0 +1,20 @@
+---
+import Card from "./Card.astro";
+import Author from "@components/links/Author.astro";
+import Cover from "@components/links/Cover.astro";
+
+interface Props {
+  userName: string;
+  userId: number;
+  userDescription: string | null;
+}
+
+const { userName, userId, userDescription } = Astro.props;
+---
+
+<Card>
+  <address slot="header">
+    <Author id={userId}>{userName}<Cover /></Author>
+  </address>
+  {userDescription}
+</Card>

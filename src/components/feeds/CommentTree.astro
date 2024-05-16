@@ -1,23 +1,26 @@
 ---
-import Stack from "@components/Stack.astro";
-import Card from "@components/Post.astro";
+import Stack from "@components/feeds/Stack.astro";
+import Card from "@components/cards/Post.astro";
 import { db, alias, eq, and, Post, User, Vote } from "astro:db";
 import { countDistinct } from "astro:db";
 interface Props {
   parent: number;
 }
 const { parent } = Astro.props;
+const {user} = Astro.locals;
 
 const Upvote = alias(Vote, "upvote");
 const Downvote = alias(Vote, "downvote");
+const Voted = alias(Vote, "voted");
 
 const comments = await db
   .select({
-    title: Post.title,
-    description: Post.description,
-    id: Post.id,
+    postTitle: Post.title,
+    postDescription: Post.description,
+    postId: Post.id,
     upvotes: countDistinct(Upvote.userId),
     downvotes: countDistinct(Downvote.userId),
+    votedScore: Voted.score,
     userName: User.name,
     userId: User.id,
   })
@@ -26,24 +29,28 @@ const comments = await db
   .innerJoin(User, eq(Post.userId, User.id))
   .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
   .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
+  .leftJoin(Voted, and(eq(Voted.postId, Post.id), eq(Voted.userId, user?.id ?? -1)))
   .groupBy(Post.id);
 ---
 
 <Stack>
   {
-    comments.map((comment) => (
-      <>
-        <Card {...comment} />
-        <div class="children">
-          <Astro.self parent={comment.id} />
-        </div>
-      </>
-    ))
+    comments.map((comment) => [
+      <hr />
+      <Card {...comment} />
+      <div class="children">
+        <Astro.self parent={comment.postId} />
+      </div>
+    ])
   }
 </Stack>
 
 <style lang="scss">
   .children {
-    margin-left: 1em;
+    border-left: solid 2px var(--accent);
+    padding-left: 0.5em;
+  }
+  hr {
+    width: 100%;
   }
 </style>

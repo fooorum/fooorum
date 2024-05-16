@@ -1,0 +1,24 @@
+---
+
+---
+
+<article class="card">
+  {Astro.slots.has("header") && <header>
+    <slot name="header" />
+  </header>}
+  <slot />
+  {Astro.slots.has("footer") && <footer>
+    <slot name="footer" />
+  </footer>}
+</article>
+
+<style lang="scss">
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 0.5em;
+    background: var(--surface);
+  }
+</style>

@@ -16,6 +16,6 @@ const isActive = Astro.url.href.startsWith(new URL(href, Astro.url).href);
     color: unset;
   }
   a.active {
-    text-decoration: underline;
+    color: var(--accent)
   }
 </style>

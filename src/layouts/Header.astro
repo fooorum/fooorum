@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import NavLink from "@components/NavLink.astro";
+import NavLink from "@layouts/NavLink.astro";
 const { session } = Astro.locals;
 ---
 
@@ -8,22 +8,22 @@ const { session } = Astro.locals;
   <nav>
     <NavLink href="/"><h1>Fooorum</h1></NavLink>
     <NavLink href="/posts">
-      <Icon name="mdi:comment-text" /> Beiträge
+      <Icon name="mdi:comment-text" title="Beiträge" />
     </NavLink>
     <NavLink href="/forums">
-      <Icon name="mdi:forum" /> Foren
+      <Icon name="mdi:forum" title="Foren" />
     </NavLink>
-    <NavLink href="users">
-      <Icon name="mdi:user-group" /> Nutzer
+    <NavLink href="/users">
+      <Icon name="mdi:user-group" title="Nutzer" />
     </NavLink>
     {
       session ? (
         <NavLink href="/logout">
-          <Icon name="mdi:logout" /> Abmelden
+          <Icon name="mdi:logout" title="Abmelden" />
         </NavLink>
       ) : (
         <NavLink href="/login">
-          <Icon name="mdi:login" /> Anmelden
+          <Icon name="mdi:login" title="Anmelden" />
         </NavLink>
       )
     }
@@ -40,9 +40,10 @@ const { session } = Astro.locals;
     display: flex;
     align-items: center;
     position: sticky;
+    z-index: 10;
 
-    top: -0em;
-    background: var(--background);
+    top: 0em;
+    background: var(--surface);
     transition: top 0.25s;
     border-bottom: 1px solid var(--text);
   }

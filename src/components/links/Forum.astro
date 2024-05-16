@@ -1,0 +1,17 @@
+---
+interface Props {
+  id: number;
+}
+const { id } = Astro.props;
+---
+
+<a href={`/forums/${id}`}>
+    <slot />
+</a>
+
+<style>
+  a {
+    position: relative;
+    z-index: 1;
+  }
+</style>

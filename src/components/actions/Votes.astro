@@ -1,0 +1,39 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  postId: number;
+  upvotes: number;
+  downvotes: number;
+  votedScore?: number;
+}
+const { postId, upvotes, downvotes, votedScore = 0 } = Astro.props;
+const upvoted = votedScore === 1;
+const downvoted = votedScore === -1;
+---
+
+<button
+  class:list={[{ active: upvoted }]}
+  type="submit"
+  formaction={`/api/vote/${postId}/${upvoted ? 0 : 1}`}
+  formmethod="post"
+>
+  <Icon name={"mdi:thumb-up"} />
+  {upvotes}
+</button>
+<button
+  class:list={[{ active: downvoted }]}
+  type="submit"
+  formaction={`/api/vote/${postId}/${downvoted ? 0 : -1}`}
+  formmethod="post"
+>
+  <Icon name={"mdi:thumb-down"} />
+  {downvotes}
+</button>
+
+<style lang="scss">
+  button {
+    position: relative;
+    z-index: 1;
+  }
+</style>

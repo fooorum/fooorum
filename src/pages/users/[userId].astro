@@ -1,6 +1,7 @@
 ---
-import Feed from "@components/Feed.astro";
+import Feed from "@components/feeds/Feed.astro";
 import Layout from "@layouts/Layout.astro";
+import Card from "@components/cards/User.astro";
 import { db, eq, User } from "astro:db";
 
 const userId = parseInt(Astro.params.userId!);
@@ -9,13 +10,14 @@ const [user] = await db.select().from(User).where(eq(User.id, userId));
 ---
 
 <Layout title={user.name}>
-  <div slot="header" class="header">
-    <h2>{user.name}</h2>
-    {user.description}
-  </div>
+  <Card
+    userId={user.id}
+    userName={user.name}
+    userDescription={user.description}
+  />
+  <hr />
   <Feed user={user.id} />
 </Layout>
-
 <style>
   .header {
     display: flex;

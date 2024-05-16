@@ -1,0 +1,10 @@
+---
+type Props = {
+  id: number;
+};
+const { id } = Astro.props;
+---
+
+<h2 class="title" id={`post-${id}`}>
+  <a href={`/posts/${id}`}><slot /></a>
+</h2>

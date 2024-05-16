@@ -1,6 +1,6 @@
 ---
-import Stack from "@components/Stack.astro";
-import Card from "@components/Post.astro";
+import Stack from "@components/feeds/Stack.astro";
+import Card from "@components/cards/Post.astro";
 import {
   db,
   alias,
@@ -27,28 +27,22 @@ if (user !== undefined) filters.push(eq(Post.userId, user));
 
 const Upvote = alias(Vote, "upvote");
 const Downvote = alias(Vote, "downvote");
+const Voted = alias(Vote, "Voted");
 const Comment = alias(Post, "comment");
 
 const posts = await db
   .select({
-    title: Post.title,
-    description: Post.description,
-    id: Post.id,
+    postTitle: Post.title,
+    postDescription: Post.description,
+    postId: Post.id,
+    userName: User.name,
+    userId: User.id,
+    forumName: Forum.name,
+    forumId: Forum.id,
     upvotes: countDistinct(Upvote.userId),
     downvotes: countDistinct(Downvote.userId),
+    votedScore: Voted.score,
     comments: countDistinct(Comment.id),
-    ...(user !== undefined
-      ? {}
-      : {
-          userName: User.name,
-          userId: User.id,
-        }),
-    ...(forum !== undefined
-      ? {}
-      : {
-          forumName: Forum.name,
-          forumId: Forum.id,
-        }),
   })
   .from(Post)
   .where(and(...filters))
@@ -57,6 +51,7 @@ const posts = await db
   .innerJoin(Forum, eq(Post.forumId, Forum.id))
   .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
   .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
+  .leftJoin(Voted, and(eq(Voted.postId, Post.id), eq(Voted.userId, Astro.locals.user?.id ?? -1)))
   .leftJoin(Comment, eq(Comment.parentId, Post.id))
   .groupBy(Post.id);
 ---
