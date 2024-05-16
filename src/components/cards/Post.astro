@@ -57,7 +57,7 @@ const votes = [upvotes, downvotes].every((v) => v != undefined);
     )
   }
   {postDescription}
-  <form slot="footer">
+  <form slot="footer" data-astro-reload>
     {votes && <Votes {...{ postId, upvotes, downvotes, votedScore }} />}
     {comments != undefined && <Comment postId={postId} amount={comments} />}
   </form>
