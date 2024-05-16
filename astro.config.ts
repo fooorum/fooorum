@@ -8,7 +8,11 @@ import favicons from "astro-favicons";
 export default defineConfig({
   integrations: [
     db(),
-    icon(),
+    icon({
+      include: {
+        mdi: ["forum", "user", "comment-text", "thumb-up", "thumb-down", "comment-text-multiple", "login", "logout"]
+      }
+    }),
     favicons({
       appName: "Fooorum",
       appShortName: "Fooorum",
