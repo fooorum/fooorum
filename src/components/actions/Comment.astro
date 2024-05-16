@@ -8,8 +8,8 @@ const { postId, amount } = Astro.props;
 ---
 
 <button formaction={`/posts/${postId}`}>
-  <Icon name="mdi:comment-text" />
-  {amount}
+  <Icon name="mdi:comment-text-multiple" />
+  {amount}{amount ? "+" : ""}
 </button>
 
 <style lang="scss">
