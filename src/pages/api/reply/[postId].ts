@@ -14,7 +14,7 @@ export async function POST({
   const formData = await request.formData();
   const description = formData.get("description");
 
-  if (typeof description !== "string") {
+  if (typeof description !== "string" || !description) {
     return new Response("Incorrect description", {
       status: 400,
     });
