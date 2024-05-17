@@ -1,0 +1,18 @@
+---
+import { Icon } from "astro-icon/components";
+interface Props {
+  forumId: number;
+}
+const { forumId } = Astro.props;
+---
+
+<button formaction={`/post/${forumId}`}>
+  <Icon name="mdi:comment-text" />
+</button>
+
+<style lang="scss">
+  button {
+    position: relative;
+    z-index: 1;
+  }
+</style>

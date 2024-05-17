@@ -1,0 +1,53 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Card from "@components/cards/Forum.astro";
+import { db, eq, Forum } from "astro:db";
+import Separator from "@components/feeds/Separator.astro";
+import Send from "@components/actions/Send.astro";
+
+const forumId = parseInt(Astro.params.forumId!);
+
+const [forum] = await db.select().from(Forum).where(eq(Forum.id, forumId));
+---
+
+<Layout title={forum.name}>
+  <Card
+    forumId={forum.id}
+    forumName={forum.name}
+    forumDescription={forum.description}
+  />
+  <Separator />
+  <form method="post" action={`/api/post/${forumId}`}>
+    <input
+      autofocus={true}
+      name="title"
+      required="true"
+      placeholder="Schreibe einen Titel..."
+    />
+    <textarea
+      rows={5}
+      name="description"
+      required="true"
+      placeholder="Schreibe einen Kommentar..."></textarea>
+    <Send />
+  </form>
+</Layout>
+
+<style lang="scss">
+  .header {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  input,
+  textarea {
+    width: 100%;
+    background: var(--surface);
+    color: var(--text);
+  }
+</style>

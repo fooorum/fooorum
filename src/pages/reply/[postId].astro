@@ -19,7 +19,6 @@ import {
   Vote,
 } from "astro:db";
 
-const forumId = parseInt(Astro.params.forumId!);
 const postId = parseInt(Astro.params.postId!);
 
 const Upvote = alias(Vote, "upvote");
@@ -70,6 +69,11 @@ const [post] = await db
 </Layout>
 
 <style lang="scss">
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
   textarea {
     width: 100%;
     background: var(--surface);
