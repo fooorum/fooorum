@@ -1,11 +1,12 @@
 ---
 import Card from "./Card.astro";
 import Cover from "@components/links/Cover.astro";
-import Post from "@components/links/Post.astro";
+import Title from "@components/links/Post.astro";
 import User from "@components/links/User.astro";
 import Forum from "@components/links/Forum.astro";
 import Votes from "@components/actions/Votes.astro";
-import Comment from "@components/actions/Comment.astro";
+import Comments from "@components/actions/Comments.astro";
+import Reply from "@components/actions/Reply.astro";
 
 interface Props {
   postTitle: string | null;
@@ -50,15 +51,21 @@ const votes = [upvotes, downvotes].every((v) => v != undefined);
   </address>
   {
     postTitle && (
-      <Post id={postId} slot="header">
+      <Title id={postId} slot="header">
         {postTitle}
         <Cover />
-      </Post>
+      </Title>
     )
   }
   {postDescription}
   <form slot="footer" data-astro-reload>
     {votes && <Votes {...{ postId, upvotes, downvotes, votedScore }} />}
-    {comments != undefined && <Comment postId={postId} amount={comments} />}
+    {
+      comments != undefined ? (
+        <Comments postId={postId} amount={comments} />
+      ) : (
+        <Reply postId={postId} />
+      )
+    }
   </form>
 </Card>

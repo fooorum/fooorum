@@ -10,7 +10,7 @@ export default defineConfig({
     db(),
     icon({
       include: {
-        mdi: ["forum", "user", "comment-text", "thumb-up", "thumb-down", "comment-text-multiple", "login", "logout"]
+        mdi: ["forum", "user", "comment-text", "thumb-up", "thumb-down", "comment-text-multiple", "reply", "send", "login", "logout"]
       }
     }),
     favicons({

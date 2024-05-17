@@ -5,10 +5,9 @@ export async function POST({
   locals,
   params,
   redirect,
-  url,
 }: APIContext): Promise<Response> {
   const { user } = locals;
-  if (!user) return redirect(new URL("/login", url).href);
+  if (!user) return redirect("/login");
   const postId = parseInt(params.postId!);
   const score = parseInt(params.score!);
 
