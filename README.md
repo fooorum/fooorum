@@ -1,47 +1,29 @@
 # Astro Starter Kit: Minimal
 
-```sh
-npm create astro@latest -- --template minimal
-```
+[![Website öffnen](https://custom-icon-badges.demolab.com/badge/Website_öffnen-121212?style=for-the-badge&logo=globe&logoColor=ce93d8)](https://fooorum.vercel.app)
+[![Mit CodeSandbox öffnen](https://custom-icon-badges.demolab.com/badge/Mit_CodeSandbox_öffnen-121212?style=for-the-badge&logo=codesandbox&logoColor=ce93d8)](https://codesandbox.io/p/github/fooorum/fooorum)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+Ein simples Internetforum.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Features
+- Browse [Beiträge](https://fooorum.vercel.app/posts), [Foren](https://fooorum.vercel.app/forums) und [Nutzer](https://fooorum.vercel.app/users).
+- Sende, bewerte und kommentiere Beiträge.
+- [Erstelle Nutzer](https://fooorum.vercel.app/login) mit sicherem Passwort.
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Dateienstruktur
 
 ```text
 /
-├── public/
+├── db/
+│   └── config.ts   # Datenbank deklarieren
+│   └── seed.ts     # Datenbank initiieren
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   └── assets/     # Statische Medien
+│   └── components/ # Wiederverwendbare Komponenten
+│   └── layouts/    # Gliedernde Komponenten
+│   └── lib/        # Backendlogik
+│   └── pages/      # Unterseiten
+│   └── styles/     # Globales Design
+├── astro.config.ts # Server-Konfiguration 
+└── package.json    # Dependencies
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
