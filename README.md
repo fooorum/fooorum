@@ -11,7 +11,7 @@ Ein simples Internetforum.
 - Browse [Beiträge](https://fooorum.vercel.app/posts), [Foren](https://fooorum.vercel.app/forums) und [Nutzer](https://fooorum.vercel.app/users).
 - Sende, bewerte und kommentiere Beiträge.
 - [Erstelle Nutzer](https://fooorum.vercel.app/login) mit sicherem Passwort.
-- [Progressive Verbesserung](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement) mit [Astro](https://astro.build)
+- [Progressive Verbesserung](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement) mit [Astro](https://astro.build) und semantischem HTML.
 
 ## Dateienstruktur
 
