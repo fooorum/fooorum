@@ -12,6 +12,7 @@ const [forum] = await db.select().from(Forum).where(eq(Forum.id, forumId));
 
 <Layout title={forum.name}>
   <Card
+    active
     forumId={forum.id}
     forumName={forum.name}
     forumDescription={forum.description}

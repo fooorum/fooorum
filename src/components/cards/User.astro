@@ -7,12 +7,13 @@ interface Props {
   userName: string;
   userId: number;
   userDescription: string | null;
+  active?: boolean;
 }
 
-const { userName, userId, userDescription } = Astro.props;
+const { userName, userId, userDescription, active = false } = Astro.props;
 ---
 
-<Card>
+<Card active={active}>
   <address slot="header">
     <User id={userId}>{userName}<Cover /></User>
   </address>

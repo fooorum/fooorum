@@ -8,12 +8,13 @@ interface Props {
   forumName: string;
   forumId: number;
   forumDescription: string | null;
+  active?: boolean;
 }
 
-const { forumName, forumId, forumDescription } = Astro.props;
+const { forumName, forumId, forumDescription, active } = Astro.props;
 ---
 
-<Card>
+<Card active={active}>
   <address slot="header">
     <Forum id={forumId}>{forumName}<Cover /></Forum>
   </address>

@@ -12,6 +12,7 @@ const [user] = await db.select().from(User).where(eq(User.id, userId));
 
 <Layout title={user.name}>
   <Card
+    active
     userId={user.id}
     userName={user.name}
     userDescription={user.description}

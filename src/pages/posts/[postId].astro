@@ -50,6 +50,6 @@ const [post] = await db
 ---
 
 <Layout title={post.postTitle ?? "Post"}>
-  <Card {...post} />
+  <Card active {...post} />
   <Comments parent={post.postId} />
 </Layout>

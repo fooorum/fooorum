@@ -1,15 +1,29 @@
 ---
+interface Props {
+  active?: boolean;
+}
 
+const { active = false } = Astro.props;
 ---
 
-<article class="card">
-  {Astro.slots.has("header") && <header>
-    <slot name="header" />
-  </header>}
-  <slot />
-  {Astro.slots.has("footer") && <footer>
-    <slot name="footer" />
-  </footer>}
+<article class:list={["card", { active }]}>
+  {
+    Astro.slots.has("header") && (
+      <header>
+        <slot name="header" />
+      </header>
+    )
+  }
+  <div class="content">
+    <slot />
+  </div>
+  {
+    Astro.slots.has("footer") && (
+      <footer>
+        <slot name="footer" />
+      </footer>
+    )
+  }
 </article>
 
 <style lang="scss">
@@ -20,5 +34,19 @@
     gap: 0.5em;
     padding: 0.5em;
     background: var(--surface);
+
+    .content {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .card.active {
+    .content {
+      -webkit-line-clamp: none;
+    }
   }
 </style>

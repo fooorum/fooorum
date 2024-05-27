@@ -12,14 +12,15 @@ interface Props {
   postTitle: string | null;
   postDescription: string;
   postId: number;
-  userName?: string;
-  userId?: number;
-  forumName?: string;
-  forumId?: number;
-  upvotes?: number;
-  downvotes?: number;
+  userName: string;
+  userId: number;
+  forumName: string;
+  forumId: number;
+  upvotes: number;
+  downvotes: number;
   votedScore?: number;
-  comments: number;
+  comments?: number;
+  active?: boolean;
 }
 
 const {
@@ -34,11 +35,12 @@ const {
   downvotes,
   votedScore,
   comments,
+  active = false,
 } = Astro.props;
 const votes = [upvotes, downvotes].every((v) => v != undefined);
 ---
 
-<Card>
+<Card active={active}>
   <address slot="header">
     {userName && <User id={userId}>{userName}</User>}
     {
@@ -53,7 +55,7 @@ const votes = [upvotes, downvotes].every((v) => v != undefined);
     postTitle && (
       <Title id={postId} slot="header">
         {postTitle}
-        <Cover />
+        {!active && <Cover />}
       </Title>
     )
   }
