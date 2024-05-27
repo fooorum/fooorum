@@ -1,6 +1,6 @@
 ---
 import Card from "./Card.astro";
-import User from "@components/links/User.astro";
+import Link from "@components/links/User.astro";
 import Cover from "@components/links/Cover.astro";
 
 interface Props {
@@ -15,7 +15,7 @@ const { userName, userId, userDescription, active = false } = Astro.props;
 
 <Card active={active}>
   <address slot="header">
-    <User id={userId}>{userName}{!active && <Cover />}</User>
+    <Link id={userId}>{userName}{!active && <Cover />}</Link>
   </address>
   {userDescription}
 </Card>

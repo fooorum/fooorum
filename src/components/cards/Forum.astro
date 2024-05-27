@@ -1,6 +1,6 @@
 ---
 import Card from "./Card.astro";
-import Forum from "@components/links/Forum.astro";
+import Link from "@components/links/Forum.astro";
 import Cover from "@components/links/Cover.astro";
 import Post from "@components/actions/Post.astro";
 
@@ -16,7 +16,7 @@ const { forumName, forumId, forumDescription, active = false } = Astro.props;
 
 <Card active={active}>
   <address slot="header">
-    <Forum id={forumId}>{forumName}{!active && <Cover />}</Forum>
+    <Link id={forumId}>{forumName}{!active && <Cover />}</Link>
   </address>
   {forumDescription}
 
