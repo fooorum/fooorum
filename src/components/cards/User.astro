@@ -15,7 +15,13 @@ const { userName, userId, userDescription, active = false } = Astro.props;
 
 <Card active={active}>
   <address slot="header">
-    <User id={userId}>{userName}<Cover /></User>
+    <User id={userId}>{userName}{!active && <Cover />}</User>
   </address>
   {userDescription}
 </Card>
+
+<style lang="scss">
+  address {
+    position: static;
+  }
+</style>

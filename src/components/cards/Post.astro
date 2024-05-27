@@ -1,6 +1,7 @@
 ---
 import Card from "./Card.astro";
 import Cover from "@components/links/Cover.astro";
+import Float from "@components/links/Float.astro";
 import Title from "@components/links/Post.astro";
 import User from "@components/links/User.astro";
 import Forum from "@components/links/Forum.astro";
@@ -42,11 +43,20 @@ const votes = [upvotes, downvotes].every((v) => v != undefined);
 
 <Card active={active}>
   <address slot="header">
-    {userName && <User id={userId}>{userName}</User>}
+    {
+      userName && (
+        <Float>
+          <User id={userId}>{userName}</User>
+        </Float>
+      )
+    }
     {
       forumName && (
         <>
-          in <Forum id={forumId}>{forumName}</Forum>
+          in{" "}
+          <Float>
+            <Forum id={forumId}>{forumName}</Forum>
+          </Float>
         </>
       )
     }

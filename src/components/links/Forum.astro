@@ -6,14 +6,7 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<a href={`/forums/${id}`}>
+<a class="forum-link" href={`/forums/${id}`}>
   <Icon name="mdi:forum" />
   <slot />
 </a>
-
-<style>
-  a {
-    position: relative;
-    z-index: 1;
-  }
-</style>
