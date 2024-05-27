@@ -35,22 +35,20 @@ const comments = await db
   .groupBy(Post.id);
 ---
 
-<Stack>
-  {
-    comments.map((comment) => [
-      <>
-        <Separator />
-        <Card {...comment} />
-        <div class="children">
-          <Astro.self parent={comment.postId} />
-        </div>
-      </>,
-    ])
-  }
-</Stack>
+<div class="comments">
+  <Stack>
+    {
+      comments.map((comment) => [
+        <Separator />,
+        <Card {...comment} />,
+        <Astro.self parent={comment.postId} />,
+      ])
+    }
+  </Stack>
+</div>
 
 <style lang="scss">
-  .children {
+  .comments {
     border-left: solid 2px var(--accent);
     padding-left: 0.5em;
   }
