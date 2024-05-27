@@ -2,16 +2,22 @@
 
 [![Website öffnen](https://custom-icon-badges.demolab.com/badge/Website_öffnen-121212?style=for-the-badge&logo=globe&logoColor=ce93d8)](https://fooorum.vercel.app)
 [![Mit CodeSandbox öffnen](https://custom-icon-badges.demolab.com/badge/Mit_CodeSandbox_öffnen-121212?style=for-the-badge&logo=codesandbox&logoColor=EAFF96)](https://codesandbox.io/p/github/fooorum/fooorum)
-[![Gebaut mit Astro](https://custom-icon-badges.demolab.com/badge/Gebaut_mit_Astro-121212?style=for-the-badge&logo=astro&logoColor=#BC52EE)](https://astro.build)
+[![Mit Astro erstellt](https://custom-icon-badges.demolab.com/badge/Gebaut_mit_Astro-121212?style=for-the-badge&logo=astro&logoColor=#BC52EE)](https://astro.build)
 
 Ein simples Internetforum.
 
 ## Features
 
 - Browse [Beiträge](https://fooorum.vercel.app/posts), [Foren](https://fooorum.vercel.app/forums) und [Nutzer](https://fooorum.vercel.app/users).
-- Sende, bewerte und kommentiere Beiträge.
-- [Erstelle Nutzer](https://fooorum.vercel.app/login) mit sicherem Passwort.
-- [Progressive Verbesserung](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement) mit [Astro](https://astro.build) und semantischem HTML.
+- [Erstelle und verwende Nutzer](https://fooorum.vercel.app/login)
+- Sende, bewerte und kommentiere Beiträge als Nutzer.
+
+## Tech Stack
+
+- [Astro](https://astro.build) als vielfältiges Webframework
+- [Drizzle ORM](https://orm.drizzle.team) als SQL-Wrapper
+- [Lucia](https://lucia-auth.com) zur sicheren Nutzerauthentifizierung
+- Material Design [Palette](https://m3.material.io/styles/color/static/baseline) und [Icons](https://m3.material.io/styles/icons/overview)
 
 ## Dateienstruktur
 
