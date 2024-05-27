@@ -16,6 +16,10 @@ const forums = await db
 
 <Layout title="Foren">
   <Stack>
-    {forums.map((forum) => [<Card {...forum} />, <Separator />])}
+    {
+      forums
+        .flatMap((forum) => [<Card {...forum} />, <Separator />])
+        .slice(0, -1)
+    }
   </Stack>
 </Layout>

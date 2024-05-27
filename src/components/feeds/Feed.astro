@@ -64,5 +64,9 @@ const posts = await db
 ---
 
 <Stack>
-  {posts.map((post) => [<Card {...post} />, <Separator id={post.postId} />])}
+  {
+    posts
+      .flatMap((post) => [<Card {...post} />, <Separator id={post.postId} />])
+      .slice(0, -1)
+  }
 </Stack>

@@ -16,6 +16,6 @@ const users = await db
 
 <Layout title="Nutzer">
   <Stack>
-    {users.map((user) => [<Card {...user} />, <Separator />])}
+    {users.flatMap((user) => [<Card {...user} />, <Separator />]).slice(0, -1)}
   </Stack>
 </Layout>
