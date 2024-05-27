@@ -39,14 +39,14 @@ const { active = false } = Astro.props;
       overflow: hidden;
       overflow-wrap: break-word;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
     }
   }
 
   .card.active {
     .content {
-      -webkit-line-clamp: none;
+      -webkit-line-clamp: none !important;
     }
   }
 </style>
