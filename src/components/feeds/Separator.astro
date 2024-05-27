@@ -5,7 +5,7 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<hr transition:name={id ? `separator-${id}` : undefined} />
+<hr transition:name={id === undefined ? undefined : `separator-${id}`} />
 
 <style lang="scss">
   hr {

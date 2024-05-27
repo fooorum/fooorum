@@ -4,7 +4,6 @@ import Card from "@components/cards/Post.astro";
 import Separator from "./Separator.astro";
 import {
   db,
-  alias,
   and,
   eq,
   isNull,
@@ -12,9 +11,9 @@ import {
   Post,
   User,
   Forum,
-  Vote,
   countDistinct,
 } from "astro:db";
+import { Upvote, Downvote, Voted, Comment } from "@lib/db";
 
 interface Props {
   forum?: number;
@@ -25,11 +24,6 @@ const { forum, user } = Astro.props;
 const filters = [isNull(Post.parentId)];
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
-
-const Upvote = alias(Vote, "upvote");
-const Downvote = alias(Vote, "downvote");
-const Voted = alias(Vote, "Voted");
-const Comment = alias(Post, "comment");
 
 const posts = await db
   .select({

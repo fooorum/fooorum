@@ -15,11 +15,11 @@ interface Props {
   postId: number;
   userName: string;
   userId: number;
-  forumName: string;
-  forumId: number;
+  forumName?: string;
+  forumId?: number;
   upvotes: number;
   downvotes: number;
-  votedScore?: number;
+  votedScore?: number | null;
   comments?: number;
   active?: boolean;
 }
@@ -55,7 +55,7 @@ const votes = [upvotes, downvotes].every((v) => v != undefined);
         <>
           in{" "}
           <Float>
-            <Forum id={forumId}>{forumName}</Forum>
+            <Forum id={forumId ?? 0}>{forumName}</Forum>
           </Float>
         </>
       )

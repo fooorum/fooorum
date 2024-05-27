@@ -5,7 +5,7 @@ interface Props {
   postId: number;
   upvotes: number;
   downvotes: number;
-  votedScore?: number;
+  votedScore?: number | null;
 }
 const { postId, upvotes, downvotes, votedScore = 0 } = Astro.props;
 const upvoted = votedScore === 1;
