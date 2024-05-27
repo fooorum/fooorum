@@ -1,5 +1,5 @@
 import { db, Forum, User, Member, Post, Vote } from "astro:db";
-import UniqueIds from "@src/lib/UniqueIds";
+import UniqueIds from "@lib/UniqueIds";
 
 export default async function () {
   const forums = UniqueIds();

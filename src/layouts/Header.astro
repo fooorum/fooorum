@@ -4,7 +4,7 @@ import NavLink from "@layouts/NavLink.astro";
 const { session } = Astro.locals;
 ---
 
-<header class="width-wrapper">
+<header>
   <nav>
     <NavLink href="/"><h1>Fooorum</h1></NavLink>
     <NavLink href="/posts">
@@ -28,7 +28,6 @@ const { session } = Astro.locals;
       )
     }
   </nav>
-  <slot />
 </header>
 
 <style lang="scss">
