@@ -25,7 +25,7 @@ export async function POST({
     parentId: postId,
     userId: user.id,
     forumId: sql`(select forumId from ${Post} where id = ${postId})`,
-  })
+  });
 
   return redirect(`/posts/${postId}`);
 }

@@ -15,7 +15,6 @@ export async function POST({
   const title = formData.get("title");
   const description = formData.get("description");
 
-
   if (typeof title !== "string" || !title) {
     return new Response("Incorrect title", {
       status: 400,
@@ -33,7 +32,7 @@ export async function POST({
     description,
     userId: user.id,
     forumId,
-  })
+  });
 
   return redirect(`/forums/${forumId}`);
 }
