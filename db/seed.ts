@@ -126,6 +126,13 @@ export default async function () {
       userId: users.test,
       forumId: forums.meta,
     },
+    ...Array.from({ length: 5 }, (v, i) => ({
+      id: posts[`test${i}`],
+      title: `Test ${i}`,
+      description: "Das hier ist ein Test.",
+      userId: users.test,
+      forumId: forums.meta,
+    })),
   ]);
 
   await db.insert(Vote).values([

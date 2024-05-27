@@ -5,14 +5,14 @@
   --surface: var(--background);
   --text: #ffffff;
   --accent: #ce93d8;
-  
-  &[theme=light] {
+
+  &[theme="light"] {
     --background: #ffffff;
     --text: #000000;
     --accent: #6200ee;
   }
 
-  &[theme=classic] {
+  &[theme="classic"] {
     --background: linear-gradient(to bottom, #687081, #a2c9d6);
     --surface: linear-gradient(to bottom, #449e48, #1e4620);
     --text: #000000;
@@ -31,7 +31,7 @@ body {
 }
 
 main {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 h1,
@@ -51,7 +51,8 @@ button {
   border: unset;
   color: unset;
 
-  &:hover, &.active {
+  &:hover,
+  &.active {
     color: var(--accent);
   }
 }
