@@ -72,6 +72,8 @@ if (breaches) {
     "suggestions",
   ) as HTMLSpanElement;
 
+  let timeout: NodeJS.Timeout;
+
   passwordInput?.addEventListener("input", () => {
     const rating = zxcvbn(passwordInput.value);
     const feedback = rating.feedback;
@@ -85,9 +87,11 @@ if (breaches) {
     if (rating.score < 4) {
       passwordInput.setCustomValidity(feedback.warning);
     }
+    clearTimeout(timeout);
+    timeout = setTimeout(checkBreaches, 2000);
   });
 
-  passwordInput?.addEventListener("change", async () => {
+  async function checkBreaches() {
     const breaches = await getBreaches(passwordInput.value);
     if (breaches > 0) {
       const warning = `Passwort befindet sich in ${breaches} Datenbank${breaches === 1 ? "" : "en"}`;
@@ -95,7 +99,7 @@ if (breaches) {
       passwordProgress.value = 1;
       passwordInput.setCustomValidity(warning);
     }
-  });
+  }
 
   function showWarnings(...warnings: string[]) {
     for (const warning of warnings) {
