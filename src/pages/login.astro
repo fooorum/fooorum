@@ -85,7 +85,9 @@ if (breaches) {
     if (feedback.warning) showWarnings(feedback.warning);
 
     if (rating.score < 4) {
-      passwordInput.setCustomValidity(feedback.warning);
+      passwordInput.setCustomValidity(
+        feedback.warning === "" ? "Passwort ist zu schwach" : feedback.warning,
+      );
     }
     clearTimeout(timeout);
     timeout = setTimeout(checkBreaches, 2000);
