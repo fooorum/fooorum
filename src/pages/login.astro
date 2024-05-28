@@ -47,8 +47,9 @@ if (weak) {
       />
       <progress id="password-progress" max="4" value="1"></progress>
       <span id="warnings">
-        {warnings.map((warning) => <span class="warning">{warning}</span>)}
+        {warnings.map((warning) => <span>{warning}</span>)}
       </span>
+      <span id="suggestions"></span>
       <button><Icon name="mdi:login" /> Anmelden oder registrieren</button>
     </Stack>
   </form>
@@ -61,19 +62,18 @@ if (weak) {
   const passwordProgress = document.getElementById(
     "password-progress",
   ) as HTMLProgressElement;
-  const warnings = document.getElementById("warnings") as HTMLSpanElement;
+  const suggestions = document.getElementById("suggestions") as HTMLSpanElement;
 
   passwordInput?.addEventListener("input", () => {
     const password = passwordInput.value;
     const passwordStrength = zxcvbn(password);
     passwordProgress.value = passwordStrength.score;
-    warnings.innerHTML = "";
+    suggestions.innerHTML = "";
 
-    for (const suggestion in passwordStrength.feedback.suggestions) {
-      const warning = document.createElement("span");
-      warning.className = "warning";
-      warning.innerText = suggestion;
-      warnings.append(warning);
+    for (const suggestion of passwordStrength.feedback.suggestions) {
+      const element = document.createElement("span");
+      element.innerText = suggestion;
+      suggestions.append(suggestion);
     }
 
     if (passwordStrength.score < 3) {
@@ -83,11 +83,12 @@ if (weak) {
 </script>
 
 <style lang="scss">
-  #warnings {
+  #warnings,
+  #suggestsions {
     display: flex;
     gap: 0.5em;
 
-    .warning {
+    * {
       color: var(--accent);
     }
   }

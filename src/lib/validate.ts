@@ -18,8 +18,8 @@ export class StringValidator<Options extends StringValidator.Options> {
 
   toJSON() {
     return {
-      minlength: this.minlength,
-      maxlength: this.maxlength,
+      minlength: this.minlength as string | undefined,
+      maxlength: this.maxlength as string | undefined,
       pattern: this.pattern?.source,
     };
   }
