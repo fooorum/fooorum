@@ -10,7 +10,7 @@ if (user) {
 }
 
 const invalid = Astro.url.searchParams.has("invalid");
-const leaked = Astro.url.searchParams.has("leaked");
+const breaches = parseInt(Astro.url.searchParams.get("breaches") ?? "0");
 const weak = Astro.url.searchParams.has("weak");
 const username = Astro.url.searchParams.get("username");
 
@@ -18,11 +18,13 @@ const warnings: string[] = [];
 if (invalid) {
   warnings.push("Passwort ist falsch");
 }
-if (leaked) {
-  warnings.push("Passwort befindet sich in öffentlichen Datenbanken");
-}
 if (weak) {
   warnings.push("Passwort ist zu schwach");
+}
+if (breaches) {
+  warnings.push(
+    `Passwort befindet sich in ${breaches} Datenbank${breaches === 1 ? "" : "en"}`,
+  );
 }
 ---
 
@@ -57,39 +59,61 @@ if (weak) {
 
 <script>
   import zxcvbn from "zxcvbn";
+  import { getBreaches } from "@lib/haveIBeenPwned";
 
   const passwordInput = document.getElementById("password") as HTMLInputElement;
   const passwordProgress = document.getElementById(
     "password-progress",
   ) as HTMLProgressElement;
-  const warnings = document.getElementById("warnings") as HTMLSpanElement;
-  const suggestions = document.getElementById("suggestions") as HTMLSpanElement;
+  const warningsWrapper = document.getElementById(
+    "warnings",
+  ) as HTMLSpanElement;
+  const suggestionsWrapper = document.getElementById(
+    "suggestions",
+  ) as HTMLSpanElement;
 
   passwordInput?.addEventListener("input", () => {
-    const password = passwordInput.value;
-    const passwordRating = zxcvbn(password);
-    passwordProgress.value = passwordRating.score + 1;
-    suggestions.innerHTML = "";
+    const rating = zxcvbn(passwordInput.value);
+    const feedback = rating.feedback;
+    passwordProgress.value = rating.score + 1;
 
-    for (const suggestion of passwordRating.feedback.suggestions) {
+    suggestionsWrapper.innerHTML = "";
+    showSuggestions(...feedback.suggestions);
+    warningsWrapper.innerHTML = "";
+    if (feedback.warning) showWarnings(feedback.warning);
+
+    if (rating.score < 4) {
+      passwordInput.setCustomValidity(feedback.warning);
+    }
+  });
+
+  passwordInput?.addEventListener("change", async () => {
+    const breaches = await getBreaches(passwordInput.value);
+    if (breaches > 1) {
+      const warning = `Passwort befindet sich in ${breaches} Datenbank${breaches === 1 ? "" : "en"}`;
+      showWarnings(warning);
+      passwordProgress.value = 1;
+      passwordInput.setCustomValidity(warning);
+    }
+  });
+
+  function showWarnings(...warnings: string[]) {
+    for (const warning of warnings) {
+      const element = document.createElement("span");
+      element.innerText = warning;
+      element.className = "warning";
+      warningsWrapper.append(element);
+    }
+  }
+
+  function showSuggestions(...suggestions: string[]) {
+    for (const suggestion of suggestions) {
       const element = document.createElement("span");
       element.innerText = suggestion;
       element.className = "suggestion";
-      suggestions.append(element);
+      suggestionsWrapper.append(element);
     }
-
-    warnings.innerHTML = "";
-    if (passwordRating.feedback.warning) {
-      const element = document.createElement("span");
-      element.innerText = passwordRating.feedback.warning;
-      element.className = "warning";
-      warnings.append(element);
-    }
-
-    if (passwordRating.score < 4) {
-      passwordInput.setCustomValidity(passwordRating.feedback.warning);
-    }
-  });
+  }
 </script>
 
 <style lang="scss">

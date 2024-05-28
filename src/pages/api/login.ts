@@ -5,6 +5,7 @@ import type { APIContext } from "astro";
 import { db, User, eq } from "astro:db";
 import { hash, verify } from "argon2";
 import zxcvbn from "zxcvbn";
+import { getBreaches } from "@lib/haveIBeenPwned";
 
 export async function POST({
   request,
@@ -28,9 +29,18 @@ export async function POST({
 
   let user = await getUser(userName);
   if (!user) {
+    const warnings: string[] = [];
     const passwordRating = zxcvbn(password);
     if (passwordRating.score < 4) {
-      return redirect(`/login?weak&username=${userName}`);
+      warnings.push("weak");
+    }
+    const breaches = await getBreaches(password);
+    if (breaches > 0) {
+      warnings.push(`breaches=${breaches}`);
+    }
+
+    if (warnings.length) {
+      return redirect(`/login?username=${userName}&${warnings.join("&")}`);
     }
 
     await createUser(userName, password);
