@@ -15,15 +15,20 @@ const weak = Astro.url.searchParams.has("weak");
 const username = Astro.url.searchParams.get("username");
 
 const warnings: string[] = [];
-if (invalid) warnings.push("Passwort ist falsch");
-if (leaked) warnings.push("Passwort befindet sich in öffentlichen Datenbanken");
-if (weak) warnings.push("Passwort ist zu schwach");
+if (invalid) {
+  warnings.push("Passwort ist falsch");
+}
+if (leaked) {
+  warnings.push("Passwort befindet sich in öffentlichen Datenbanken");
+}
+if (weak) {
+  warnings.push("Passwort ist zu schwach");
+}
 ---
 
 <Layout title="Anmelden oder Registrieren">
   <form method="post" action="/api/login" autocomplete="on" data-astro-reload>
     <Stack>
-      {warnings.map((warning) => <span class="warning">{warning}</span>)}
       <label for="username">Nutzername</label>
       <input
         id="username"
@@ -41,6 +46,9 @@ if (weak) warnings.push("Passwort ist zu schwach");
         {...passwordValidator.toJSON()}
       />
       <progress id="password-progress" max="4" value="1"></progress>
+      <span id="warnings">
+        {warnings.map((warning) => <span class="warning">{warning}</span>)}
+      </span>
       <button><Icon name="mdi:login" /> Anmelden oder registrieren</button>
     </Stack>
   </form>
@@ -53,21 +61,35 @@ if (weak) warnings.push("Passwort ist zu schwach");
   const passwordProgress = document.getElementById(
     "password-progress",
   ) as HTMLProgressElement;
+  const warnings = document.getElementById("warnings") as HTMLSpanElement;
 
-  passwordInput?.addEventListener("change", () => {
+  passwordInput?.addEventListener("input", () => {
     const password = passwordInput.value;
     const passwordStrength = zxcvbn(password);
     passwordProgress.value = passwordStrength.score;
+    warnings.innerHTML = "";
+
+    for (const suggestion in passwordStrength.feedback.suggestions) {
+      const warning = document.createElement("span");
+      warning.className = "warning";
+      warning.innerText = suggestion;
+      warnings.append(warning);
+    }
 
     if (passwordStrength.score < 3) {
-      passwordInput.setCustomValidity("Password is too weak!");
+      passwordInput.setCustomValidity(passwordStrength.feedback.warning);
     }
   });
 </script>
 
 <style lang="scss">
-  .warning {
-    color: var(--accent);
+  #warnings {
+    display: flex;
+    gap: 0.5em;
+
+    .warning {
+      color: var(--accent);
+    }
   }
 
   #password-progress {
