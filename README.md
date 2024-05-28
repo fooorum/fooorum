@@ -32,6 +32,7 @@ Ein simples Internetforum.
 │   └── layouts/    # Gliedernde Komponenten
 │   └── lib/        # Backendlogik
 │   └── pages/      # Unterseiten
+│   │   └── api/    # API für autorisierte Nutzerintaktionen
 │   └── styles/     # Globales Design
 ├── astro.config.ts # Server-Konfiguration
 └── package.json    # Dependencies
