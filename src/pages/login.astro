@@ -8,16 +8,25 @@ const { session } = Astro.locals;
 if (session) {
   return Astro.redirect("/logout");
 }
+
+const invalid = Astro.url.searchParams.has("invalid");
+const username = Astro.url.searchParams.get("username");
 ---
 
 <Layout title="Anmelden oder Registrieren">
   <form method="post" action="/api/login" autocomplete="on" data-astro-reload>
     <Stack>
+      {
+        invalid && (
+          <span class="warning">Nutzername oder Passwort ist falsch!</span>
+        )
+      }
       <label for="username">Nutzername</label>
       <input
         id="username"
         name="username"
         required
+        value={username}
         {...userNameValidator.toJSON()}
       />
       <label for="password">Passwort</label>
@@ -32,3 +41,9 @@ if (session) {
     </Stack>
   </form>
 </Layout>
+
+<style>
+  .warning {
+    color: var(--accent);
+  }
+</style>

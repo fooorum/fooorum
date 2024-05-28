@@ -13,14 +13,17 @@ export async function POST({
   const formData = await request.formData();
   const userName = formData.get("username");
   const password = formData.get("password");
-  if (typeof userName !== "string" || !userNameValidator.validate(userName))
+
+  if (typeof userName !== "string" || !userNameValidator.validate(userName)) {
     return new Response("Invalid username", {
       status: 400,
     });
-  if (typeof password !== "string" || !passwordValidator.validate(password))
+  }
+  if (typeof password !== "string" || !passwordValidator.validate(password)) {
     return new Response("Invalid password", {
       status: 400,
     });
+  }
 
   let user = await getUser(userName);
   if (!user) {
@@ -36,9 +39,7 @@ export async function POST({
 
   const passwordIsValid = await verify(user.password, password);
   if (!passwordIsValid) {
-    return new Response("Incorrect username or password", {
-      status: 400,
-    });
+    return redirect(`/login?invalid&username=${userName}`);
   }
 
   const session = await lucia.createSession(user.id, {});
