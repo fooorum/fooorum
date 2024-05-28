@@ -47,7 +47,7 @@ if (weak) {
       />
       <progress id="password-progress" max="4" value="1"></progress>
       <span id="warnings">
-        {warnings.map((warning) => <span>{warning}</span>)}
+        {warnings.map((warning) => <span class="warning">{warning}</span>)}
       </span>
       <span id="suggestions"></span>
       <button><Icon name="mdi:login" /> Anmelden oder registrieren</button>
@@ -74,6 +74,7 @@ if (weak) {
     for (const suggestion of passwordStrength.feedback.suggestions) {
       const element = document.createElement("span");
       element.innerText = suggestion;
+      element.className = "suggestion";
       suggestions.append(suggestion);
     }
 
@@ -81,6 +82,7 @@ if (weak) {
     if (passwordStrength.feedback.warning) {
       const element = document.createElement("span");
       element.innerText = passwordStrength.feedback.warning;
+      element.className = "warning";
       warnings.append(element);
     }
 
@@ -97,10 +99,10 @@ if (weak) {
     gap: 0.5em;
   }
 
-  #warnings * {
+  .warning {
     color: var(--error);
   }
-  #suggestions * {
+  .suggestion {
     color: var(--accent);
   }
 
