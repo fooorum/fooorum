@@ -56,3 +56,13 @@ button {
     color: var(--accent);
   }
 }
+
+input {
+  background: unset;
+  border: solid var(--text) 1px;
+  color: unset;
+
+  &:invalid {
+    text-decoration: red wavy underline;
+  }
+}

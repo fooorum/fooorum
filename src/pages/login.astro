@@ -2,6 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import Stack from "@components/feeds/Stack.astro";
 import { userNameValidator, passwordValidator } from "@lib/validate";
+import { Icon } from "astro-icon/components";
 
 const { session } = Astro.locals;
 if (session) {
@@ -27,24 +28,7 @@ if (session) {
         required
         {...passwordValidator.toJSON()}
       />
-      <button>Anmelden oder registrieren</button>
+      <button><Icon name="mdi:login" /> Anmelden oder registrieren</button>
     </Stack>
   </form>
 </Layout>
-
-<style>
-  input:invalid {
-    border-color: red;
-  }
-  button {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    background: linear-gradient(to bottom, #008822, #00ee44);
-
-    padding: 1.5em;
-    border-radius: 2.5em;
-    border-color: black;
-    border-width: 0.3em;
-  }
-</style>

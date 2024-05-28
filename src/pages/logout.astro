@@ -1,6 +1,7 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Stack from "@components/feeds/Stack.astro";
+import { Icon } from "astro-icon/components";
 
 const { session } = Astro.locals;
 if (!session) {
@@ -11,24 +12,7 @@ if (!session) {
 <Layout title="Abmelden">
   <form method="post" action="/api/logout" data-astro-reload>
     <Stack>
-      <button>Abmelden</button>
+      <button><Icon name="mdi:logout" /> Abmelden</button>
     </Stack>
   </form>
 </Layout>
-
-<style>
-  button {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    background: linear-gradient(to bottom, #e2252b, #5e2129);
-
-    padding: 5.5em;
-    border-radius: 10.5em;
-    border-color: black;
-    border-width: 0.3em;
-
-    position: relative;
-    top: 100px;
-  }
-</style>
