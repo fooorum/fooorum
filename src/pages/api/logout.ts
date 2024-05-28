@@ -5,6 +5,7 @@ export async function POST({
   locals,
   cookies,
   url,
+  redirect,
 }: APIContext): Promise<Response> {
   const session = locals.session;
   if (!session) {
@@ -22,5 +23,5 @@ export async function POST({
     sessionCookie.attributes,
   );
 
-  return Response.redirect(new URL("/login", url));
+  return redirect("/login");
 }
