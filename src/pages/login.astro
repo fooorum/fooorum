@@ -67,11 +67,11 @@ if (weak) {
 
   passwordInput?.addEventListener("input", () => {
     const password = passwordInput.value;
-    const passwordStrength = zxcvbn(password);
-    passwordProgress.value = passwordStrength.score + 1;
+    const passwordRating = zxcvbn(password);
+    passwordProgress.value = passwordRating.score + 1;
     suggestions.innerHTML = "";
 
-    for (const suggestion of passwordStrength.feedback.suggestions) {
+    for (const suggestion of passwordRating.feedback.suggestions) {
       const element = document.createElement("span");
       element.innerText = suggestion;
       element.className = "suggestion";
@@ -79,15 +79,15 @@ if (weak) {
     }
 
     warnings.innerHTML = "";
-    if (passwordStrength.feedback.warning) {
+    if (passwordRating.feedback.warning) {
       const element = document.createElement("span");
-      element.innerText = passwordStrength.feedback.warning;
+      element.innerText = passwordRating.feedback.warning;
       element.className = "warning";
       warnings.append(element);
     }
 
-    if (passwordStrength.score < 4) {
-      passwordInput.setCustomValidity(passwordStrength.feedback.warning);
+    if (passwordRating.score < 4) {
+      passwordInput.setCustomValidity(passwordRating.feedback.warning);
     }
   });
 </script>
