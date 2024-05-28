@@ -1,20 +1,19 @@
 ---
-import { Icon } from "astro-icon/components";
-import NavLink from "@layouts/NavLink.astro";
+import Link from "@components/nav/Link.astro";
 const { session } = Astro.locals;
 ---
 
 <header>
   <nav>
-    <NavLink href="/"><h1 slot="title">Fooorum</h1></NavLink>
-    <NavLink href="/posts" icon="mdi:comment-text" title="Beiträge" />
-    <NavLink href="/forums" icon="mdi:forum" title="Foren" />
-    <NavLink href="/users" icon="mdi:user" title="Nutzer" />
+    <Link href="/"><h1 slot="title">Fooorum</h1></Link>
+    <Link href="/posts" icon="mdi:comment-text" title="Beiträge" />
+    <Link href="/forums" icon="mdi:forum" title="Foren" />
+    <Link href="/users" icon="mdi:user" title="Nutzer" />
     {
       session ? (
-        <NavLink href="/logout" icon="mdi:logout" title="Abmelden" />
+        <Link href="/logout" icon="mdi:logout" title="Abmelden" />
       ) : (
-        <NavLink href="/login" icon="mdi:login" title="Anmelden" />
+        <Link href="/login" icon="mdi:login" title="Anmelden" />
       )
     }
   </nav>
