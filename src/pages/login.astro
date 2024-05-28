@@ -62,18 +62,26 @@ if (weak) {
   const passwordProgress = document.getElementById(
     "password-progress",
   ) as HTMLProgressElement;
+  const warnings = document.getElementById("suggestions") as HTMLSpanElement;
   const suggestions = document.getElementById("suggestions") as HTMLSpanElement;
 
   passwordInput?.addEventListener("input", () => {
     const password = passwordInput.value;
     const passwordStrength = zxcvbn(password);
-    passwordProgress.value = passwordStrength.score;
+    passwordProgress.value = passwordStrength.score + 1;
     suggestions.innerHTML = "";
 
     for (const suggestion of passwordStrength.feedback.suggestions) {
       const element = document.createElement("span");
       element.innerText = suggestion;
       suggestions.append(suggestion);
+    }
+
+    warnings.innerHTML = "";
+    if (passwordStrength.feedback.warning) {
+      const element = document.createElement("span");
+      element.innerText = passwordStrength.feedback.warning;
+      warnings.append(element);
     }
 
     if (passwordStrength.score < 3) {
@@ -84,13 +92,16 @@ if (weak) {
 
 <style lang="scss">
   #warnings,
-  #suggestsions {
+  #suggestions {
     display: flex;
     gap: 0.5em;
+  }
 
-    * {
-      color: var(--accent);
-    }
+  #warnings * {
+    color: var(--error);
+  }
+  #suggestions * {
+    color: var(--warning);
   }
 
   #password-progress {
