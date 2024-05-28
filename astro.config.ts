@@ -21,6 +21,7 @@ export default defineConfig({
           "login",
           "logout",
           "light-mode",
+          "dark-mode",
         ],
       },
     }),

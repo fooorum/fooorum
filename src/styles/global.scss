@@ -1,23 +1,20 @@
 :root {
-  @include dark();
   --max-width: 600px;
-  --background: #121212;
-  --surface: var(--background);
-  --text: #ffffff;
-  --accent: #ce93d8;
-  --error: #ef5350;
 
-  &[theme="light"] {
-    --background: #ffffff;
-    --text: #000000;
-    --accent: #6200ee;
+  &[data-theme="dark"] {
+    --background: #121212;
+    --surface: var(--background);
+    --text: #ffffff;
+    --accent: #ce93d8;
+    --error: #ef5350;
   }
 
-  &[theme="classic"] {
-    --background: linear-gradient(to bottom, #687081, #a2c9d6);
-    --surface: linear-gradient(to bottom, #449e48, #1e4620);
+  &[data-theme="light"] {
+    --background: #ffffff;
+    --surface: var(--background);
     --text: #000000;
-    --accent: blue;
+    --accent: #6200ee;
+    --error: #ef5350;
   }
 }
 

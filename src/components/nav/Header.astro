@@ -1,5 +1,6 @@
 ---
 import Link from "@components/nav/Link.astro";
+import Theme from "@components/actions/Themes.astro";
 const { session } = Astro.locals;
 ---
 
@@ -17,6 +18,9 @@ const { session } = Astro.locals;
       )
     }
   </nav>
+  <form data-astro-reload>
+    <Theme />
+  </form>
 </header>
 
 <style lang="scss">
@@ -27,6 +31,7 @@ const { session } = Astro.locals;
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
     position: sticky;
     z-index: 10;
 

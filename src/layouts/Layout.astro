@@ -10,10 +10,11 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const theme = Astro.cookies.get("theme")?.value ?? "dark";
 ---
 
 <!doctype html>
-<html>
+<html data-theme={theme}>
   <Head title={title} description={description} />
 
   <body>

@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+
+const themes = Object.fromEntries(
+  [
+    {
+      name: "light",
+      icon: "material-symbols:light-mode",
+    },
+    {
+      name: "dark",
+      icon: "material-symbols:dark-mode",
+    },
+  ].map((theme) => [theme.name, theme]),
+);
+
+const themeName = Astro.cookies.get("theme")?.value ?? "dark";
+const theme = themes[themeName]!;
+const toggledThemeName = themeName == "dark" ? "light" : "dark";
+---
+
+<input type="hidden" name="theme" value={toggledThemeName} />
+<button formaction="/api/settings/theme" formmethod="post">
+  <Icon name={theme.icon} title={theme.name} />
+</button>
