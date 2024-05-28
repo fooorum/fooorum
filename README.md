@@ -1,4 +1,4 @@
-# Astro Starter Kit: Minimal
+# Fooorum 💬
 
 [![Website öffnen](https://custom-icon-badges.demolab.com/badge/Website_öffnen-121212?style=for-the-badge&logo=globe&logoColor=ce93d8)](https://fooorum.vercel.app)
 [![Mit CodeSandbox öffnen](https://custom-icon-badges.demolab.com/badge/Mit_CodeSandbox_öffnen-121212?style=for-the-badge&logo=codesandbox&logoColor=EAFF96)](https://codesandbox.io/p/github/fooorum/fooorum)
@@ -19,7 +19,7 @@ Ein simples Internetforum.
 - [Lucia](https://lucia-auth.com) zur sicheren Nutzerauthentifizierung
 - Material Design [Palette](https://m3.material.io/styles/color/static/baseline) und [Icons](https://m3.material.io/styles/icons/overview)
 
-## Dateienstruktur
+## Struktur
 
 ```text
 /
