@@ -45,7 +45,7 @@ if (weak) {
         required
         {...passwordValidator.toJSON()}
       />
-      <progress id="password-progress" max="4" value="1"></progress>
+      <progress id="password-progress" max="5" value="1"></progress>
       <span id="warnings">
         {warnings.map((warning) => <span class="warning">{warning}</span>)}
       </span>
@@ -86,7 +86,7 @@ if (weak) {
       warnings.append(element);
     }
 
-    if (passwordStrength.score < 3) {
+    if (passwordStrength.score < 4) {
       passwordInput.setCustomValidity(passwordStrength.feedback.warning);
     }
   });
@@ -98,13 +98,6 @@ if (weak) {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
-  }
-
-  .warning {
-    color: var(--error);
-  }
-  .suggestion {
-    color: var(--accent);
   }
 
   #password-progress {
@@ -120,19 +113,34 @@ if (weak) {
   #password-progress[value="2"] {
     &::-moz-progress-bar,
     &::-webkit-progress-value {
-      background-color: orange;
+      background-color: orangered;
     }
   }
   #password-progress[value="3"] {
     &::-moz-progress-bar,
     &::-webkit-progress-value {
-      background-color: yellow;
+      background-color: orange;
     }
   }
   #password-progress[value="4"] {
     &::-moz-progress-bar,
     &::-webkit-progress-value {
+      background-color: yellow;
+    }
+  }
+  #password-progress[value="5"] {
+    &::-moz-progress-bar,
+    &::-webkit-progress-value {
       background-color: green;
     }
+  }
+</style>
+
+<style is:global lang="scss">
+  .warning {
+    color: var(--error);
+  }
+  .suggestion {
+    color: var(--accent);
   }
 </style>

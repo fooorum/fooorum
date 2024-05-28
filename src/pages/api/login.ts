@@ -29,7 +29,7 @@ export async function POST({
   let user = await getUser(userName);
   if (!user) {
     const passwordStrength = zxcvbn(password);
-    if (passwordStrength.score < 3) {
+    if (passwordStrength.score < 4) {
       return redirect(`/login?weak&username=${userName}`);
     }
 
