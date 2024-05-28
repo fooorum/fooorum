@@ -6,25 +6,15 @@ const { session } = Astro.locals;
 
 <header>
   <nav>
-    <NavLink href="/"><h1>Fooorum</h1></NavLink>
-    <NavLink href="/posts">
-      <Icon name="mdi:comment-text" title="Beiträge" />
-    </NavLink>
-    <NavLink href="/forums">
-      <Icon name="mdi:forum" title="Foren" />
-    </NavLink>
-    <NavLink href="/users">
-      <Icon name="mdi:user" title="Nutzer" />
-    </NavLink>
+    <NavLink href="/"><h1 slot="title">Fooorum</h1></NavLink>
+    <NavLink href="/posts" icon="mdi:comment-text" title="Beiträge" />
+    <NavLink href="/forums" icon="mdi:forum" title="Foren" />
+    <NavLink href="/users" icon="mdi:user" title="Nutzer" />
     {
       session ? (
-        <NavLink href="/logout">
-          <Icon name="mdi:logout" title="Abmelden" />
-        </NavLink>
+        <NavLink href="/logout" icon="mdi:logout" title="Abmelden" />
       ) : (
-        <NavLink href="/login">
-          <Icon name="mdi:login" title="Anmelden" />
-        </NavLink>
+        <NavLink href="/login" icon="mdi:login" title="Abmelden" />
       )
     }
   </nav>
