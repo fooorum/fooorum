@@ -18,7 +18,7 @@ const downvoted = votedScore === -1;
   formaction={`/api/vote/${postId}/${upvoted ? 0 : 1}`}
   formmethod="post"
 >
-  <Icon name={"mdi:thumb-up"} />
+  <Icon name={"material-symbols:thumb-up"} />
   {upvotes}
 </button>
 <button
@@ -27,7 +27,7 @@ const downvoted = votedScore === -1;
   formaction={`/api/vote/${postId}/${downvoted ? 0 : -1}`}
   formmethod="post"
 >
-  <Icon name={"mdi:thumb-down"} />
+  <Icon name={"material-symbols:thumb-down"} />
   {downvotes}
 </button>
 

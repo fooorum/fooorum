@@ -10,17 +10,17 @@ export default defineConfig({
     db(),
     icon({
       include: {
-        mdi: [
+        "material-symbols": [
           "forum",
-          "user",
-          "comment-text",
+          "person",
+          "comment",
           "thumb-up",
           "thumb-down",
-          "comment-text-multiple",
           "reply",
           "send",
           "login",
           "logout",
+          "light-mode",
         ],
       },
     }),

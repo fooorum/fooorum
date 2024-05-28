@@ -15,7 +15,7 @@
     "@astrojs/db": "^0.10.7",
     "@astrojs/vercel": "^7.6.0",
     "@fontsource/twinkle-star": "^5.0.20",
-    "@iconify-json/mdi": "^1.1.66",
+    "@iconify-json/material-symbols": "^1.1.80",
     "@vite-pwa/assets-generator": "^0.2.4",
     "@vite-pwa/astro": "^0.4.0",
     "argon2": "^0.40.1",
