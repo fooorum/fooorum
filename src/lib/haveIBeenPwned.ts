@@ -9,9 +9,7 @@ export async function getBreaches(password: string) {
   );
   const body = await response.text();
   const hashes = body.split("\r\n");
-  console.log(hashes);
   const match = hashes.find((h) => suffix === h.split(":")[0]);
-  console.log(match);
   if (!match) return 0;
   return parseInt(match?.split(":")[1]);
 }

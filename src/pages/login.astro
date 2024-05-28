@@ -89,7 +89,7 @@ if (breaches) {
 
   passwordInput?.addEventListener("change", async () => {
     const breaches = await getBreaches(passwordInput.value);
-    if (breaches > 1) {
+    if (breaches > 0) {
       const warning = `Passwort befindet sich in ${breaches} Datenbank${breaches === 1 ? "" : "en"}`;
       showWarnings(warning);
       passwordProgress.value = 1;
