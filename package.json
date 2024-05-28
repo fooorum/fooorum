@@ -25,9 +25,11 @@
     "lightningcss": "^1.24.1",
     "lucia": "^3.2.0",
     "lucia-adapter-astrodb": "^0.0.8",
-    "sass": "^1.77.1"
+    "sass": "^1.77.1",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@types/zxcvbn": "^4.4.4",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0"
   },

@@ -57,11 +57,14 @@ button {
   }
 }
 
-input {
+input,
+progress {
   background: unset;
   border: solid var(--text) 1px;
   color: unset;
+}
 
+input {
   &:invalid {
     text-decoration: red wavy underline;
   }

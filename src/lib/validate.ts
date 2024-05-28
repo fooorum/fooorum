@@ -36,14 +36,13 @@ export namespace StringValidator {
 const userNameOptions = {
   minlength: 3,
   maxlength: 30,
-  pattern: /^[a-z0-9-]+$/,
+  pattern: /^[a-z0-9\-]+$/,
 };
 export const userNameValidator = new StringValidator<typeof userNameOptions>(
   userNameOptions,
 );
 
 const passwordOptions = {
-  minlength: 6,
   maxlength: 255,
 };
 export const passwordValidator = new StringValidator<typeof passwordOptions>(

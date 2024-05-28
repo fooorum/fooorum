@@ -1,9 +1,10 @@
 import { lucia } from "@lib/auth";
 import { userNameValidator, passwordValidator } from "@lib/validate";
 import { hashOptions } from "@lib/hash";
-import { hash, verify } from "argon2";
 import type { APIContext } from "astro";
 import { db, User, eq } from "astro:db";
+import { hash, verify } from "argon2";
+import zxcvbn from "zxcvbn";
 
 export async function POST({
   request,
@@ -27,6 +28,11 @@ export async function POST({
 
   let user = await getUser(userName);
   if (!user) {
+    const passwordStrength = zxcvbn(password);
+    if (passwordStrength.score < 3) {
+      return redirect(`/login?weak&username=${userName}`);
+    }
+
     await createUser(userName, password);
     user = await getUser(userName);
 

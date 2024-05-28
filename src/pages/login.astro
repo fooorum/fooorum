@@ -10,17 +10,20 @@ if (user) {
 }
 
 const invalid = Astro.url.searchParams.has("invalid");
+const leaked = Astro.url.searchParams.has("leaked");
+const weak = Astro.url.searchParams.has("weak");
 const username = Astro.url.searchParams.get("username");
+
+const warnings: string[] = [];
+if (invalid) warnings.push("Passwort ist falsch");
+if (leaked) warnings.push("Passwort befindet sich in öffentlichen Datenbanken");
+if (weak) warnings.push("Passwort ist zu schwach");
 ---
 
 <Layout title="Anmelden oder Registrieren">
   <form method="post" action="/api/login" autocomplete="on" data-astro-reload>
     <Stack>
-      {
-        invalid && (
-          <span class="warning">Nutzername oder Passwort ist falsch!</span>
-        )
-      }
+      {warnings.map((warning) => <span class="warning">{warning}</span>)}
       <label for="username">Nutzername</label>
       <input
         id="username"
@@ -37,13 +40,62 @@ const username = Astro.url.searchParams.get("username");
         required
         {...passwordValidator.toJSON()}
       />
+      <progress id="password-progress" max="4" value="1"></progress>
       <button><Icon name="mdi:login" /> Anmelden oder registrieren</button>
     </Stack>
   </form>
 </Layout>
 
-<style>
+<script>
+  import zxcvbn from "zxcvbn";
+
+  const passwordInput = document.getElementById("password") as HTMLInputElement;
+  const passwordProgress = document.getElementById(
+    "password-progress",
+  ) as HTMLProgressElement;
+
+  passwordInput?.addEventListener("change", () => {
+    const password = passwordInput.value;
+    const passwordStrength = zxcvbn(password);
+    passwordProgress.value = passwordStrength.score;
+
+    if (passwordStrength.score < 3) {
+      passwordInput.setCustomValidity("Password is too weak!");
+    }
+  });
+</script>
+
+<style lang="scss">
   .warning {
     color: var(--accent);
+  }
+
+  #password-progress {
+    height: 0.5em;
+  }
+
+  #password-progress[value="1"] {
+    &::-moz-progress-bar,
+    &::-webkit-progress-value {
+      background-color: red;
+    }
+  }
+  #password-progress[value="2"] {
+    &::-moz-progress-bar,
+    &::-webkit-progress-value {
+      background-color: orange;
+    }
+  }
+  #password-progress[value="3"] {
+    &::-moz-progress-bar,
+    &::-webkit-progress-value {
+      background-color: yellow;
+    }
+  }
+  #password-progress[value="4"] {
+    &::-moz-progress-bar,
+    &::-webkit-progress-value {
+      background-color: green;
+    }
   }
 </style>
