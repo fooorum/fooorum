@@ -56,9 +56,10 @@ button {
 }
 
 input,
+select,
 progress {
   background: unset;
-  border: solid var(--text) 1px;
+  border: unset;
   color: unset;
 }
 

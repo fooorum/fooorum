@@ -6,28 +6,51 @@ import {
   db,
   and,
   eq,
+  sum,
   isNull,
   asc,
   desc,
   Post,
   User,
   Forum,
+  Vote,
   countDistinct,
 } from "astro:db";
 import { Upvote, Downvote, Voted, Comment } from "@lib/db";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   forum?: number;
   user?: number;
 }
+
 const { forum, user } = Astro.props;
 const { searchParams } = Astro.url;
-const sortParam = searchParams.get("sort");
-const sort =
-  { created: Post.createdAt, title: Post.title, id: Post.id }[sortParam!] ??
-  Post.createdAt;
-const orderParam = searchParams.get("order");
-const order = { asc, desc }[orderParam!] ?? desc;
+const sortParam = searchParams.get("sort") ?? "created";
+const sorts = {
+  created: Post.createdAt,
+  title: Post.title,
+  id: Post.id,
+  comments: countDistinct(Comment.id),
+  votes: sum(Vote.score),
+};
+const sortNames: Record<string, string> = {
+  created: "Erstellt",
+  title: "Titel",
+  id: "Index",
+  comments: "Kommentare",
+  votes: "Bewertungen",
+};
+// @ts-expect-error
+const sort = sorts[sortParam];
+const orderParam = searchParams.get("order") ?? "desc";
+const orders = { asc, desc };
+const orderNames: Record<string, string> = {
+  asc: "Aufsteigend",
+  desc: "Absteigend",
+};
+// @ts-expect-error
+const order = orders[orderParam];
 
 const filters = [isNull(Post.parentId)];
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
@@ -54,6 +77,7 @@ const posts = await db
   .innerJoin(Forum, eq(Post.forumId, Forum.id))
   .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
   .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
+  .leftJoin(Vote, and(Vote.postId, Post.id))
   .leftJoin(
     Voted,
     and(
@@ -65,6 +89,29 @@ const posts = await db
   .groupBy(Post.id);
 ---
 
+<form>
+  <select name="sort">
+    {
+      Object.keys(sorts).map((s) => (
+        <option selected={s === sortParam} value={s}>
+          {sortNames[s]}
+        </option>
+      ))
+    }
+  </select>
+  <select name="order">
+    {
+      Object.keys(orders).map((o) => (
+        <option selected={o === orderParam} value={o}>
+          {orderNames[o]}
+        </option>
+      ))
+    }
+  </select>
+  <button type="submit">
+    <Icon name="material-symbols:send" title="Sortiere" /> Sortiere
+  </button>
+</form>
 <Stack>
   {
     posts
