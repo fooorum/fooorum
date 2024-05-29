@@ -90,7 +90,11 @@ if (breaches) {
       passwordInput.setCustomValidity(
         feedback.warning === "" ? "Passwort ist zu schwach" : feedback.warning,
       );
+    } else {
+      passwordInput.setCustomValidity("");
     }
+    passwordInput.reportValidity();
+
     clearTimeout(timeout);
     timeout = setTimeout(checkBreaches, 2000);
   });
@@ -102,7 +106,10 @@ if (breaches) {
       showWarnings(warning);
       passwordProgress.value = 1;
       passwordInput.setCustomValidity(warning);
+    } else {
+      passwordInput.setCustomValidity("");
     }
+    passwordInput.reportValidity();
   }
 
   function showWarnings(...warnings: string[]) {
