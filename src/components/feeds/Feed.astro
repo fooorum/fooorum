@@ -7,6 +7,7 @@ import {
   and,
   eq,
   isNull,
+  asc,
   desc,
   Post,
   User,
@@ -20,6 +21,13 @@ interface Props {
   user?: number;
 }
 const { forum, user } = Astro.props;
+const { searchParams } = Astro.url;
+const sortParam = searchParams.get("sort");
+const sort =
+  { created: Post.createdAt, title: Post.title, id: Post.id }[sortParam!] ??
+  Post.createdAt;
+const orderParam = searchParams.get("order");
+const order = { asc, desc }[orderParam!] ?? desc;
 
 const filters = [isNull(Post.parentId)];
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
@@ -41,7 +49,7 @@ const posts = await db
   })
   .from(Post)
   .where(and(...filters))
-  .orderBy(desc(Post.createdAt))
+  .orderBy(order(sort))
   .innerJoin(User, eq(Post.userId, User.id))
   .innerJoin(Forum, eq(Post.forumId, Forum.id))
   .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
