@@ -52,9 +52,9 @@ if (breaches) {
         {warnings.map((warning) => <span class="warning">{warning}</span>)}
       </span>
       <span id="suggestions"></span>
-      <button
-        ><Icon name="material-symbols:login" /> Anmelden oder registrieren</button
-      >
+      <button>
+        <Icon id="login-button" name="material-symbols:login" /> Anmelden oder registrieren
+      </button>
     </Stack>
   </form>
 </Layout>
@@ -73,6 +73,9 @@ if (breaches) {
   const suggestionsWrapper = document.getElementById(
     "suggestions",
   ) as HTMLSpanElement;
+  const loginButton = document.getElementById(
+    "login-button",
+  ) as HTMLButtonElement;
 
   let timeout: NodeJS.Timeout;
 
@@ -80,20 +83,13 @@ if (breaches) {
     const rating = zxcvbn(passwordInput.value);
     const feedback = rating.feedback;
     passwordProgress.value = rating.score + 1;
-
-    suggestionsWrapper.innerHTML = "";
     showSuggestions(...feedback.suggestions);
-    warningsWrapper.innerHTML = "";
-    if (feedback.warning) showWarnings(feedback.warning);
 
-    if (rating.score < 4) {
-      passwordInput.setCustomValidity(
-        feedback.warning === "" ? "Passwort ist zu schwach" : feedback.warning,
-      );
-    } else {
-      passwordInput.setCustomValidity("");
-    }
-    passwordInput.reportValidity();
+    const warning =
+      feedback.warning !== "" ? feedback.warning : "Passwort ist zu schwach";
+
+    clearWarning(true);
+    if (rating.score < 4) showWarning(warning);
 
     clearTimeout(timeout);
     timeout = setTimeout(checkBreaches, 2000);
@@ -103,25 +99,30 @@ if (breaches) {
     const breaches = await getBreaches(passwordInput.value);
     if (breaches > 0) {
       const warning = `Passwort befindet sich in ${breaches} Datenbank${breaches === 1 ? "" : "en"}`;
-      showWarnings(warning);
+      showWarning(warning);
       passwordProgress.value = 1;
       passwordInput.setCustomValidity(warning);
-    } else {
-      passwordInput.setCustomValidity("");
-    }
+    } else clearWarning();
+  }
+
+  function showWarning(warning: string) {
+    const element = document.createElement("span");
+    element.innerText = warning;
+    element.className = "warning";
+    loginButton.disabled = true;
+    passwordInput.setCustomValidity(warning);
     passwordInput.reportValidity();
   }
 
-  function showWarnings(...warnings: string[]) {
-    for (const warning of warnings) {
-      const element = document.createElement("span");
-      element.innerText = warning;
-      element.className = "warning";
-      warningsWrapper.append(element);
-    }
+  function clearWarning(clearPrevious = false) {
+    if (clearPrevious) warningsWrapper.innerHTML = "";
+    loginButton.disabled = false;
+    passwordInput.setCustomValidity("");
+    passwordInput.reportValidity();
   }
 
   function showSuggestions(...suggestions: string[]) {
+    suggestionsWrapper.innerHTML = "";
     for (const suggestion of suggestions) {
       const element = document.createElement("span");
       element.innerText = suggestion;
