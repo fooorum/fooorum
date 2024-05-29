@@ -100,7 +100,10 @@ if (breaches) {
     if (breaches > 0) {
       const warning = `Passwort befindet sich in ${breaches} Datenbank${breaches === 1 ? "" : "en"}`;
       showWarning(warning);
-      passwordProgress.value = 1;
+      passwordProgress.value = Math.min(
+        passwordProgress.value - Math.log10(breaches),
+        1,
+      );
       passwordInput.setCustomValidity(warning);
     } else clearWarning();
   }
