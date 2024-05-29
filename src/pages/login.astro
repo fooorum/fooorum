@@ -112,6 +112,7 @@ if (breaches) {
     const element = document.createElement("span");
     element.innerText = warning;
     element.className = "warning";
+    warningsWrapper.append(element);
     loginButton.disabled = true;
     passwordInput.setCustomValidity(warning);
     passwordInput.reportValidity();
