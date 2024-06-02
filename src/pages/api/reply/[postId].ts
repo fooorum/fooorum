@@ -20,12 +20,12 @@ export async function POST({
     });
   }
 
-  await db.insert(Post).values({
+  const [{postId: commentId}] = await db.insert(Post).values({
     description,
     parentId: postId,
     userId: user.id,
     forumId: sql`(select forumId from ${Post} where id = ${postId})`,
-  });
+  }).returning({postId: Post.id});
 
-  return redirect(`/posts/${postId}`);
+  return redirect(`/posts/${commentId}`);
 }

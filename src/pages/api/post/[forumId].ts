@@ -27,12 +27,12 @@ export async function POST({
     });
   }
 
-  await db.insert(Post).values({
+  const [{postId}] = await db.insert(Post).values({
     title,
     description,
     userId: user.id,
     forumId,
-  });
+  }).returning({postId: Post.id});
 
-  return redirect(`/forums/${forumId}`);
+  return redirect(`/posts/${postId}`);
 }
