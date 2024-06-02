@@ -9,15 +9,14 @@ Ein simples Internetforum.
 ## Features
 
 - Browse [Beiträge](https://fooorum.vercel.app/posts), [Foren](https://fooorum.vercel.app/forums) und [Nutzer](https://fooorum.vercel.app/users).
-- [Erstelle und verwende Nutzer](https://fooorum.vercel.app/login) sicher.
-- Sende, bewerte und kommentiere autorisiert Beiträge.
+- [Erstelle und verwende Nutzer](https://fooorum.vercel.app/login)
+- Sende, bewerte und kommentiere Beiträge als Nutzer.
 
 ## Tech Stack
 
 - [Astro](https://astro.build) als vielfältiges Webframework
 - [Drizzle ORM](https://orm.drizzle.team) als SQL-Wrapper
 - [Lucia](https://lucia-auth.com) zur sicheren Nutzerauthentifizierung
-- [zxcvbn](https://github.com/dropbox/zxcvbn) zur Einstufung der Sicherheit von Passwörtern
 - Material Design [Palette](https://m3.material.io/styles/color/static/baseline) und [Icons](https://m3.material.io/styles/icons/overview)
 
 ## Struktur
@@ -33,7 +32,6 @@ Ein simples Internetforum.
 │   └── layouts/    # Gliedernde Komponenten
 │   └── lib/        # Backendlogik
 │   └── pages/      # Unterseiten
-│   │   └── api/    # API für autorisierte Nutzerintaktionen
 │   └── styles/     # Globales Design
 ├── astro.config.ts # Server-Konfiguration
 └── package.json    # Dependencies
