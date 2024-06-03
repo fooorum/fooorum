@@ -6,8 +6,10 @@ import Separator from "@components/feeds/Separator.astro";
 import Send from "@components/actions/Send.astro";
 import { urlValidator } from "@lib/validate";
 
-const forumId = parseInt(Astro.params.forumId!);
+const { user } = Astro.locals;
+if (!user) return Astro.redirect("/login");
 
+const forumId = parseInt(Astro.params.forumId!);
 const [forum] = await db.select().from(Forum).where(eq(Forum.id, forumId));
 ---
 

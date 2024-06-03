@@ -17,6 +17,7 @@ export default defineConfig({
           "thumb-up",
           "thumb-down",
           "reply",
+          "delete",
           "send",
           "login",
           "logout",

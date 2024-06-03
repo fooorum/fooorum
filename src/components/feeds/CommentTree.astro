@@ -2,7 +2,17 @@
 import Stack from "@components/feeds/Stack.astro";
 import Card from "@components/cards/Post.astro";
 import Separator from "./Separator.astro";
-import { db, countDistinct, eq, and, Post, User, Vote } from "astro:db";
+import {
+  db,
+  countDistinct,
+  eq,
+  and,
+  Post,
+  User,
+  Vote,
+  ne,
+  TRUE,
+} from "astro:db";
 import { Upvote, Downvote, Voted } from "@lib/db";
 
 interface Props {
@@ -24,7 +34,7 @@ const comments = await db
     userId: User.id,
   })
   .from(Post)
-  .where(eq(Post.parentId, parent))
+  .where(and(eq(Post.parentId, parent), ne(Post.deleted, TRUE)))
   .innerJoin(User, eq(Post.userId, User.id))
   .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
   .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))

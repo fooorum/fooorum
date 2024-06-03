@@ -1,19 +1,35 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Comments from "@components/feeds/CommentTree.astro";
 import Card from "@components/cards/Post.astro";
-import { db, eq, and, countDistinct, Post, User, Forum } from "astro:db";
-import { Upvote, Downvote, Voted } from "@lib/db";
+import Separator from "@components/feeds/Separator.astro";
+import { Icon } from "astro-icon/components";
+
+const { user } = Astro.locals;
+if (!user) return Astro.redirect("/login");
+
+import {
+  db,
+  alias,
+  eq,
+  and,
+  countDistinct,
+  Post,
+  User,
+  Forum,
+  Vote,
+} from "astro:db";
 
 const postId = parseInt(Astro.params.postId!);
+
+const Upvote = alias(Vote, "upvote");
+const Downvote = alias(Vote, "downvote");
+const Voted = alias(Vote, "Voted");
 
 const [post] = await db
   .select({
     postTitle: Post.title,
     postDescription: Post.description,
     postId: Post.id,
-    deleted: Post.deleted,
-    attachementUrl: Post.attachementUrl,
     userName: User.name,
     userId: User.id,
     forumName: Forum.name,
@@ -36,11 +52,23 @@ const [post] = await db
     ),
   )
   .groupBy(Post.id);
-
-if (post.deleted) return new Response(null, { status: 410 });
+if (user.id !== post.userId) return new Response(null, { status: 403 });
 ---
 
 <Layout title={post.postTitle ?? "Post"}>
-  <Card active {...post} />
-  <Comments parent={post.postId} />
+  <Card {...post} />
+  <Separator />
+  <form method="post" action={`/api/delete/${postId}`}>
+    <button type="submit">
+      <Icon name="material-symbols:delete" /> Löschen
+    </button>
+  </form>
 </Layout>
+
+<style lang="scss">
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+</style>

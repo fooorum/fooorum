@@ -55,6 +55,7 @@ const Post = defineTable({
       optional: true,
     }),
     createdAt: column.date({ default: NOW }),
+    deleted: column.boolean({ default: false }),
   },
 });
 

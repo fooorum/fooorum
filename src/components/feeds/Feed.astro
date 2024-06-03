@@ -15,6 +15,8 @@ import {
   Forum,
   Vote,
   countDistinct,
+  TRUE,
+  ne,
 } from "astro:db";
 import { Upvote, Downvote, Voted, Comment } from "@lib/db";
 import { Icon } from "astro-icon/components";
@@ -52,7 +54,7 @@ const orderNames: Record<string, string> = {
 // @ts-expect-error
 const order = orders[orderParam];
 
-const filters = [isNull(Post.parentId)];
+const filters = [isNull(Post.parentId), ne(Post.deleted, TRUE)];
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
 
