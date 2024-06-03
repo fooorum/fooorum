@@ -52,7 +52,8 @@ const [post] = await db
     ),
   )
   .groupBy(Post.id);
-if (user.id !== post.userId) return new Response(null, { status: 403 });
+if (user.id !== post.userId && !user.isAdmin)
+  return new Response(null, { status: 403 });
 ---
 
 <Layout title={post.postTitle ?? "Post"}>

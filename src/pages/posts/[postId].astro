@@ -12,7 +12,7 @@ const [post] = await db
     postTitle: Post.title,
     postDescription: Post.description,
     postId: Post.id,
-    deleted: Post.deleted,
+    isDeleted: Post.isDeleted,
     attachementUrl: Post.attachementUrl,
     userName: User.name,
     userId: User.id,
@@ -37,7 +37,7 @@ const [post] = await db
   )
   .groupBy(Post.id);
 
-if (post.deleted) return new Response(null, { status: 410 });
+if (post.isDeleted) return new Response(null, { status: 410 });
 ---
 
 <Layout title={post.postTitle ?? "Post"}>

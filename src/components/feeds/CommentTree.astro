@@ -34,7 +34,7 @@ const comments = await db
     userId: User.id,
   })
   .from(Post)
-  .where(and(eq(Post.parentId, parent), ne(Post.deleted, TRUE)))
+  .where(and(eq(Post.parentId, parent), ne(Post.isDeleted, TRUE)))
   .innerJoin(User, eq(Post.userId, User.id))
   .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
   .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))

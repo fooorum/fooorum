@@ -1,4 +1,4 @@
-import { defineDb, defineTable, column, NOW } from "astro:db";
+import { defineDb, defineTable, column, NOW, FALSE } from "astro:db";
 
 type Id = ReturnType<typeof column.number<{ primaryKey: true }>>;
 
@@ -18,6 +18,7 @@ const User = defineTable({
     description: column.text({ optional: true }),
     password: column.text(),
     createdAt: column.date({ default: NOW }),
+    isAdmin: column.boolean({ default: FALSE }),
   },
 });
 
@@ -38,6 +39,7 @@ const Member = defineTable({
     userId: column.number({ references: () => User.columns.id }),
     forumId: column.number({ references: () => Forum.columns.id }),
     createdAt: column.date({ default: NOW }),
+    isAdmin: column.boolean({ default: FALSE }),
   },
   indexes: [{ on: ["userId", "forumId"], unique: true, name: "memberId" }],
 });
@@ -55,7 +57,8 @@ const Post = defineTable({
       optional: true,
     }),
     createdAt: column.date({ default: NOW }),
-    deleted: column.boolean({ default: false }),
+    deleted: column.boolean({ default: FALSE, deprecated: true }),
+    isDeleted: column.boolean({ default: FALSE }),
   },
 });
 

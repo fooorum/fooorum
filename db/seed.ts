@@ -28,6 +28,14 @@ export default async function () {
         "$argon2id$v=19$m=19456,t=2,p=1$afTS6QJOzL56oj87Ef1Z4w$2RVCDKDVQ50P1q21q/uyKZlZV0EcAXh/tHRDZ8pljd4",
       description: "Hallo!",
     },
+    {
+      id: users.admin,
+      name: "admin",
+      password:
+        "$argon2id$v=19$m=19456,t=2,p=1$0B6bfF3mTciOSl2nonIDjw$xJqXa0kdj7boeXWvTGPSrlT/4tuKjk+5A+PFX4c172A",
+      description: "👮",
+      isAdmin: true,
+    },
   ]);
 
   await db.insert(Member).values([

@@ -2,7 +2,6 @@ import type { APIContext } from "astro";
 import { db, eq, Post } from "astro:db";
 
 export async function POST({
-  request,
   locals,
   params,
   redirect,
@@ -21,9 +20,10 @@ export async function POST({
     .from(Post)
     .where(eq(Post.id, postId));
 
-  if (userId !== user.id) return new Response(null, { status: 403 });
+  if (userId !== user.id && !user.isAdmin)
+    return new Response(null, { status: 403 });
 
-  await db.update(Post).set({ deleted: true }).where(eq(Post.id, postId));
+  await db.update(Post).set({ isDeleted: true }).where(eq(Post.id, postId));
 
   return redirect(
     parentId !== null ? `/posts/${parentId}` : `/forums/${forumId}`,

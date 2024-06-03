@@ -86,6 +86,6 @@ const votes = [upvotes, downvotes].every((v) => v != undefined);
         <Reply postId={postId} />
       )
     }
-    {userId === user?.id && <Delete postId={postId} />}
+    {(userId === user?.id || user?.isAdmin) && <Delete postId={postId} />}
   </form>
 </Card>
