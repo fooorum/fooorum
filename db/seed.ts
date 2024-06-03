@@ -119,11 +119,37 @@ export default async function () {
       forumId: forums.fragen,
     },
     {
-      id: posts.longUrl,
+      id: posts.url,
       title: "Dieser Beitrag enthält einen langen Link.",
       description: "hi",
+      attachementUrl: "https://github.com/fooorum/fooorum",
+      userId: users.test,
+      forumId: forums.meta,
+    },
+    {
+      id: posts.image,
+      title: "Dieser Beitrag enthält einen Bild.",
+      description: "hi",
       attachementUrl:
-        "https://www.google.com/imgres?q=falsch%20geparktes%20auto&imgurl=https%3A%2F%2Fwww.krzbb.de%2Fmedia.facebook.00d7e55d-ff83-4e4f-85b2-40ce0b8dfef7.normalized.jpg&imgrefurl=https%3A%2F%2Fwww.krzbb.de%2Finhalt.garmisch-partenkirchen-mann-schiebt-falsch-geparktes-auto-mit-bulldog-weg.a670efd4-8a18-43a1-a662-f60c85f2717a.html&docid=bCjVKxIY1pp8gM&tbnid=cknNkRgt8W5XmM&vet=12ahUKEwjP4tT-lKOGAxXyRvEDHXqLCtEQM3oECBkQAA..i&w=510&h=335&hcb=2&ved=2ahUKEwjP4tT-lKOGAxXyRvEDHXqLCtEQM3oECBkQAA.",
+        "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
+      userId: users.test,
+      forumId: forums.meta,
+    },
+    {
+      id: posts.sound,
+      title: "Dieser Beitrag enthält ein Geräusch.",
+      description: "hi",
+      attachementUrl:
+        "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3",
+      userId: users.test,
+      forumId: forums.meta,
+    },
+    {
+      id: posts.video,
+      title: "Dieser Beitrag enthält ein Video.",
+      description: "hi",
+      attachementUrl:
+        "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
       userId: users.test,
       forumId: forums.meta,
     },
