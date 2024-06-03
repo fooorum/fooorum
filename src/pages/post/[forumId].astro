@@ -23,13 +23,13 @@ const [forum] = await db.select().from(Forum).where(eq(Forum.id, forumId));
       autofocus={true}
       name="title"
       required="true"
-      placeholder="Schreibe einen Titel..."
+      placeholder="Schreibe einen Titel"
     />
     <textarea
       rows={5}
       name="description"
       required="true"
-      placeholder="Schreibe einen Kommentar..."></textarea>
+      placeholder="Schreibe einen Kommentar"></textarea>
     <Send />
   </form>
 </Layout>
