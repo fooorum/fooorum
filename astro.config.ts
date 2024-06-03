@@ -36,6 +36,9 @@ export default defineConfig({
   vite: {
     css: { transformer: "lightningcss" },
     build: { cssMinify: "lightningcss" },
+    optimizeDeps: {
+      exclude: ["astro:db"],
+    },
   },
   image: {
     remotePatterns: [{ protocol: "https" }],
