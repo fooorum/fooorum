@@ -18,14 +18,14 @@ export default async function () {
       id: users.test,
       name: "test",
       password:
-        "$argon2id$v=19$m=19456,t=2,p=1$Mjcw59YVdSxeT9Y7r9hshQ$YDswmN5sqVvbxKRIJP/NLoPAg89+w6XyeWebL5QcXvE",
+        "$argon2id$v=19$m=19456,t=2,p=1$/03dpq/qPRyemPPUotRqzQ$D5yyotxTGwiTDXKn3Ry6HjdAxt6d56f+N9LrN5UzV9A",
       description: "Ich bin ein test.",
     },
     {
       id: users.ich,
       name: "ich",
       password:
-        "$argon2id$v=19$m=19456,t=2,p=1$Mjcw59YVdSxeT9Y7r9hshQ$YDswmN5sqVvbxKRIJP/NLoPAg89+w6XyeWebL5QcXvE",
+        "$argon2id$v=19$m=19456,t=2,p=1$afTS6QJOzL56oj87Ef1Z4w$2RVCDKDVQ50P1q21q/uyKZlZV0EcAXh/tHRDZ8pljd4",
       description: "Hallo!",
     },
   ]);
