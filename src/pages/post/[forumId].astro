@@ -4,6 +4,7 @@ import Card from "@components/cards/Forum.astro";
 import { db, eq, Forum } from "astro:db";
 import Separator from "@components/feeds/Separator.astro";
 import Send from "@components/actions/Send.astro";
+import { urlValidator } from "@lib/validate";
 
 const forumId = parseInt(Astro.params.forumId!);
 
@@ -30,19 +31,27 @@ const [forum] = await db.select().from(Forum).where(eq(Forum.id, forumId));
       name="description"
       required="true"
       placeholder="Schreibe einen Kommentar"></textarea>
+    <input
+      name="attachement"
+      type="url"
+      placeholder="Verlinke externe Inhalte"
+      {...urlValidator.toJSON()}
+    />
     <Send />
   </form>
-</Layout>
 
-<style lang="scss">
-  .header {
-    display: flex;
-    gap: 1em;
-    align-items: center;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-  }
-</style>
+  <script></script>
+
+  <style lang="scss">
+    .header {
+      display: flex;
+      gap: 1em;
+      align-items: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+  </style>
+</Layout>

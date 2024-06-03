@@ -48,3 +48,8 @@ const passwordOptions = {
 export const passwordValidator = new StringValidator<typeof passwordOptions>(
   passwordOptions,
 );
+
+const urlOptions = {
+  pattern: /^https:\/\/.+\..+/,
+};
+export const urlValidator = new StringValidator<typeof urlOptions>(urlOptions);

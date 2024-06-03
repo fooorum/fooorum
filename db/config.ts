@@ -47,6 +47,7 @@ const Post = defineTable({
     id: column.number({ primaryKey: true }),
     title: column.text({ optional: true }),
     description: column.text(),
+    attachementUrl: column.text({ optional: true }),
     userId: column.number({ references: () => User.columns.id }),
     forumId: column.number({ references: () => Forum.columns.id }),
     parentId: column.number({

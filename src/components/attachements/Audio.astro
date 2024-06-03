@@ -1,0 +1,16 @@
+---
+interface Props {
+  url: string;
+}
+const { url } = Astro.props;
+---
+
+<audio controls src={url}></audio>
+
+<style>
+  audio {
+    border-radius: 1em;
+    position: relative;
+    z-index: 1;
+  }
+</style>
