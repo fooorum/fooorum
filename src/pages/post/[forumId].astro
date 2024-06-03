@@ -45,10 +45,4 @@ const [forum] = await db.select().from(Forum).where(eq(Forum.id, forumId));
     flex-direction: column;
     gap: 0.5em;
   }
-  input,
-  textarea {
-    width: 100%;
-    background: var(--surface);
-    color: var(--text);
-  }
 </style>

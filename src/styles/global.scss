@@ -56,11 +56,18 @@ button {
 }
 
 input,
-select,
+textarea,
+select {
+  background: none;
+  border: none;
+  border-bottom: solid 0.5px white;
+  color: inherit;
+}
+
 progress {
-  background: unset;
-  border: unset;
-  color: unset;
+  background: none;
+  border: none;
+  color: inherit;
 }
 
 input {
