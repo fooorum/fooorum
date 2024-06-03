@@ -1,19 +1,35 @@
 ---
+import Image from "@components/attachements/Image.astro";
+import Cover from "@components/links/Cover.astro";
+import ogs from "open-graph-scraper";
+
 interface Props {
   url: string;
 }
 const { url } = Astro.props;
+
+const og = await ogs({ url });
+const { ogTitle, ogDescription, ogImage } = og.result;
 ---
 
-<a href={url}>{url}</a>
+<div class="embed">
+  <a href={url}>{ogTitle ?? url}<Cover /></a>
+  {ogDescription}
+  {ogImage?.length && <Image url={ogImage[0].url} />}
+</div>
 
 <style>
+  .embed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    position: relative;
+    z-index: 1;
+  }
+
   a {
     display: inline-block;
     width: 100%;
-    position: relative;
-    z-index: 1;
-
     text-wrap: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
