@@ -8,7 +8,7 @@ export async function POST({
   const theme = formData.get("theme");
 
   if (typeof theme !== "string" || !theme) {
-    return new Response("Incorrect theme", {
+    return new Response("Invalid theme", {
       status: 400,
     });
   }

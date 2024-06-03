@@ -18,19 +18,19 @@ export async function POST({
   const attachement = formData.get("attachement");
 
   if (typeof title !== "string" || !title) {
-    return new Response("Incorrect title", {
+    return new Response("Invalid title", {
       status: 400,
     });
   }
 
   if (typeof description !== "string" || !description) {
-    return new Response("Incorrect description", {
+    return new Response("Invalid description", {
       status: 400,
     });
   }
 
   if (typeof attachement !== "string" || !urlValidator.validate(attachement)) {
-    return new Response("Incorrect attachement", {
+    return new Response("Invalid attachement", {
       status: 400,
     });
   }

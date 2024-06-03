@@ -15,17 +15,20 @@ export async function POST({
   const description = formData.get("description");
 
   if (typeof description !== "string" || !description) {
-    return new Response("Incorrect description", {
+    return new Response("Invalid description", {
       status: 400,
     });
   }
 
-  const [{postId: commentId}] = await db.insert(Post).values({
-    description,
-    parentId: postId,
-    userId: user.id,
-    forumId: sql`(select forumId from ${Post} where id = ${postId})`,
-  }).returning({postId: Post.id});
+  const [{ postId: commentId }] = await db
+    .insert(Post)
+    .values({
+      description,
+      parentId: postId,
+      userId: user.id,
+      forumId: sql`(select forumId from ${Post} where id = ${postId})`,
+    })
+    .returning({ postId: Post.id });
 
   return redirect(`/posts/${commentId}`);
 }
