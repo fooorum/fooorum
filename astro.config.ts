@@ -24,6 +24,7 @@ export default defineConfig({
           "light-mode",
           "dark-mode",
         ],
+        tabler: ["brand-foursquare"],
       },
     }),
     favicons({

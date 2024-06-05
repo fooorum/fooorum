@@ -1,12 +1,13 @@
 ---
 import Link from "@components/nav/Link.astro";
+import Logo from "@components/nav/Logo.astro";
 import Theme from "@components/actions/Themes.astro";
 const { session } = Astro.locals;
 ---
 
 <header>
   <nav>
-    <Link href="/"><h1 slot="title">Fooorum</h1></Link>
+    <Link href="/"><h1 slot="title"><Logo /></h1></Link>
     <Link href="/posts" icon="material-symbols:comment" title="Beiträge" />
     <Link href="/forums" icon="material-symbols:forum" title="Foren" />
     <Link href="/users" icon="material-symbols:person" title="Nutzer" />

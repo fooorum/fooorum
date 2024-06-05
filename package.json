@@ -17,6 +17,7 @@
     "@fontsource-variable/montserrat": "^5.0.19",
     "@fontsource/poppins": "^5.0.14",
     "@iconify-json/material-symbols": "^1.1.80",
+    "@iconify-json/tabler": "^1.1.113",
     "@types/open-graph-scraper": "^4.8.5",
     "argon2": "^0.40.1",
     "astro": "^4.8.3",

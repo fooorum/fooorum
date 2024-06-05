@@ -23,6 +23,9 @@ dependencies:
   '@iconify-json/material-symbols':
     specifier: ^1.1.80
     version: 1.1.80
+  '@iconify-json/tabler':
+    specifier: ^1.1.113
+    version: 1.1.113
   '@types/open-graph-scraper':
     specifier: ^4.8.5
     version: 4.8.5
@@ -984,6 +987,12 @@ packages:
 
   /@iconify-json/material-symbols@1.1.80:
     resolution: {integrity: sha512-JrDMmWeHxFFMp3BBSsjvDvSiYzJ0qdYmHAQYWY/L5fxVZcIoeoQvtQR0wM1iJN4UDIsnHwbpJQ/sqZ/cvph6sw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify-json/tabler@1.1.113:
+    resolution: {integrity: sha512-dT34D0gyqxgK2t91+8scQ+U387yZ/zb4r7/3CHqhmvaVMsnOT8DFtX0FhJzdr6ldnVH82pGAp59GGr97IT/UfQ==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false
