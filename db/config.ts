@@ -57,7 +57,6 @@ const Post = defineTable({
       optional: true,
     }),
     createdAt: column.date({ default: NOW }),
-    deleted: column.boolean({ default: FALSE, deprecated: true }),
     isDeleted: column.boolean({ default: FALSE }),
   },
 });
@@ -77,9 +76,6 @@ const Vote = defineTable({
   },
 });
 
-const Upvote = defineTable({ columns: BaseVote.columns, deprecated: true });
-const Downvote = defineTable({ columns: BaseVote.columns, deprecated: true });
-
 export default defineDb({
   tables: {
     Forum,
@@ -88,7 +84,5 @@ export default defineDb({
     Member,
     Post,
     Vote,
-    Upvote,
-    Downvote,
   },
 });
