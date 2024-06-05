@@ -14,9 +14,9 @@ dependencies:
   '@astrojs/vercel':
     specifier: ^7.6.0
     version: 7.6.0(astro@4.8.3)
-  '@fontsource/twinkle-star':
-    specifier: ^5.0.20
-    version: 5.0.20
+  '@fontsource/poppins':
+    specifier: ^5.0.14
+    version: 5.0.14
   '@iconify-json/material-symbols':
     specifier: ^1.1.80
     version: 1.1.80
@@ -1966,8 +1966,8 @@ packages:
     dev: false
     optional: true
 
-  /@fontsource/twinkle-star@5.0.20:
-    resolution: {integrity: sha512-kVuvs1ohuYOheEEWwwp/GsfGOnEML8W7GBcuo/iLk0GQs5sPVXcJalVjzeV11RIUiWTEg53rfVxhUIVG5v/xCQ==}
+  /@fontsource/poppins@5.0.14:
+    resolution: {integrity: sha512-nmM1zpPo3Uh4JcGAVSQuWaZNYh2FbbwWhZ5t6hRaynmJaNTBW85d3nEh9zMmzI0HX7X5xqQVdRHeDatKpOGsnA==}
     dev: false
 
   /@iconify-json/material-symbols@1.1.80:
