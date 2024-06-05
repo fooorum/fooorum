@@ -17,8 +17,6 @@
     "@fontsource/poppins": "^5.0.14",
     "@iconify-json/material-symbols": "^1.1.80",
     "@types/open-graph-scraper": "^4.8.5",
-    "@vite-pwa/assets-generator": "^0.2.4",
-    "@vite-pwa/astro": "^0.4.0",
     "argon2": "^0.40.1",
     "astro": "^4.8.3",
     "astro-favicons": "^2.0.2",
