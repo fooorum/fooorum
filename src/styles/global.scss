@@ -79,3 +79,7 @@ input {
     text-decoration: red wavy underline;
   }
 }
+
+svg[data-icon] {
+  vertical-align: middle;
+}
