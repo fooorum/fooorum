@@ -8,14 +8,14 @@ interface Props {
 }
 const { url } = Astro.props;
 
-const og = await ogs({ url });
-const { ogTitle, ogDescription, ogImage } = og.result;
+const og = await ogs({ url }).catch(() => {});
+const res = og?.result;
 ---
 
 <div class="embed">
-  <a href={url}>{ogTitle ?? url}<Cover /></a>
-  {ogDescription}
-  {ogImage?.length && <Image url={ogImage[0].url} />}
+  <a href={url}>{res?.ogTitle ?? url}<Cover /></a>
+  {res?.ogDescription}
+  {res?.ogImage?.length && <Image url={res.ogImage[0].url} />}
 </div>
 
 <style>
