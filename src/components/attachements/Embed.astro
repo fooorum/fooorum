@@ -2,14 +2,14 @@
 import Image from "@components/attachements/Image.astro";
 import Cover from "@components/links/Cover.astro";
 import ogs from "open-graph-scraper";
+import embeds from "@lib/caches/Embeds";
 
 interface Props {
   url: string;
 }
 const { url } = Astro.props;
 
-const og = await ogs({ url }).catch(() => {});
-const res = og?.result;
+const res = await embeds.fetch(url);
 ---
 
 <div class="embed">

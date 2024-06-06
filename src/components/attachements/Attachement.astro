@@ -2,7 +2,8 @@
 import Image from "@components/attachements/Image.astro";
 import Audio from "@components/attachements/Audio.astro";
 import Video from "@components/attachements/Video.astro";
-import Generic from "@components/attachements/Generic.astro";
+import Embed from "@components/attachements/Embed.astro";
+import blobTypes from "@lib/caches/BlobTypes";
 
 interface Props {
   url: string;
@@ -15,11 +16,8 @@ const components = {
   video: Video,
 };
 
-const response = await fetch(url).catch(() => {});
-const blob = await response?.blob();
-const type = blob?.type.split("/")[0] as keyof typeof components;
-
-const Component = type in components ? components[type] : Generic;
+const type = (await blobTypes.fetch(url)) as keyof typeof components;
+const Component = type in components ? components[type] : Embed;
 ---
 
 <Component url={url} />
