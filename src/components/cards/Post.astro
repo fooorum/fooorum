@@ -14,7 +14,8 @@ import type { PostSelection } from "@lib/db";
 
 const { user } = Astro.locals;
 
-interface Props extends PostSelection {
+interface Props extends Omit<PostSelection, "comments"> {
+  comments?: number;
   active?: boolean;
 }
 

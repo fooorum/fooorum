@@ -15,6 +15,6 @@ if (post.isDeleted) return new Response(null, { status: 410 });
 ---
 
 <Layout title={post.postTitle ?? "Post"}>
-  <Card active {...post} />
+  <Card active {...post} comments={undefined} />
   <Comments parent={post.postId} />
 </Layout>

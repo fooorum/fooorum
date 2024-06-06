@@ -22,7 +22,7 @@ const comments = await selectPosts({ userId: Astro.locals.user?.id }).where(
     {
       comments.map((comment) => [
         <Separator />,
-        <Card {...comment} />,
+        <Card {...comment} comments={undefined} />,
         <Astro.self parent={comment.postId} />,
       ])
     }
