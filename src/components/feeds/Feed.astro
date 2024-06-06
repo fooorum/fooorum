@@ -12,6 +12,7 @@ import { Comment, selectPosts } from "@lib/db";
 import type { SQLWrapper } from "drizzle-orm/sql";
 import {
   and,
+  or,
   eq,
   sum,
   like,
@@ -37,7 +38,10 @@ const search: Query = { param: "q" };
 
 const query = getQuery(search, Astro.url);
 const filters = [isNull(Post.parentId), ne(Post.isDeleted, TRUE)];
-if (query?.length) filters.push(like(Post.title, `%${query}%`));
+if (query?.length)
+  filters.push(
+    or(like(Post.title, `%${query}%`), like(Post.description, `%${query}%`))!,
+  );
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
 
