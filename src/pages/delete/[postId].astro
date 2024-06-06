@@ -7,17 +7,8 @@ import { Icon } from "astro-icon/components";
 const { user } = Astro.locals;
 if (!user) return Astro.redirect("/login");
 
-import {
-  db,
-  alias,
-  eq,
-  and,
-  countDistinct,
-  Post,
-  User,
-  Forum,
-  Vote,
-} from "astro:db";
+import { alias, eq, Post, Vote } from "astro:db";
+import { selectPosts } from "@lib/db";
 
 const postId = parseInt(Astro.params.postId!);
 
@@ -25,33 +16,9 @@ const Upvote = alias(Vote, "upvote");
 const Downvote = alias(Vote, "downvote");
 const Voted = alias(Vote, "Voted");
 
-const [post] = await db
-  .select({
-    postTitle: Post.title,
-    postDescription: Post.description,
-    postId: Post.id,
-    userName: User.name,
-    userId: User.id,
-    forumName: Forum.name,
-    forumId: Forum.id,
-    upvotes: countDistinct(Upvote.userId),
-    downvotes: countDistinct(Downvote.userId),
-    votedScore: Voted.score,
-  })
-  .from(Post)
-  .where(eq(Post.id, postId))
-  .innerJoin(User, eq(Post.userId, User.id))
-  .innerJoin(Forum, eq(Post.forumId, Forum.id))
-  .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
-  .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
-  .leftJoin(
-    Voted,
-    and(
-      eq(Voted.postId, Post.id),
-      eq(Voted.userId, Astro.locals.user?.id ?? -1),
-    ),
-  )
-  .groupBy(Post.id);
+const [post] = await selectPosts({ userId: Astro.locals.user?.id }).where(
+  eq(Post.id, postId),
+);
 if (user.id !== post.userId && !user.isAdmin)
   return new Response(null, { status: 403 });
 ---

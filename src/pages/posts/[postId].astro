@@ -2,40 +2,14 @@
 import Layout from "@layouts/Layout.astro";
 import Comments from "@components/feeds/CommentTree.astro";
 import Card from "@components/cards/Post.astro";
-import { db, eq, and, countDistinct, Post, User, Forum } from "astro:db";
-import { Upvote, Downvote, Voted } from "@lib/db";
+import { eq, Post } from "astro:db";
+import { selectPosts } from "@lib/db";
 
 const postId = parseInt(Astro.params.postId!);
 
-const [post] = await db
-  .select({
-    postTitle: Post.title,
-    postDescription: Post.description,
-    postId: Post.id,
-    isDeleted: Post.isDeleted,
-    attachementUrl: Post.attachementUrl,
-    userName: User.name,
-    userId: User.id,
-    forumName: Forum.name,
-    forumId: Forum.id,
-    upvotes: countDistinct(Upvote.userId),
-    downvotes: countDistinct(Downvote.userId),
-    votedScore: Voted.score,
-  })
-  .from(Post)
-  .where(eq(Post.id, postId))
-  .innerJoin(User, eq(Post.userId, User.id))
-  .innerJoin(Forum, eq(Post.forumId, Forum.id))
-  .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
-  .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
-  .leftJoin(
-    Voted,
-    and(
-      eq(Voted.postId, Post.id),
-      eq(Voted.userId, Astro.locals.user?.id ?? -1),
-    ),
-  )
-  .groupBy(Post.id);
+const [post] = await selectPosts({ userId: Astro.locals.user?.id }).where(
+  eq(Post.id, postId),
+);
 
 if (post.isDeleted) return new Response(null, { status: 410 });
 ---

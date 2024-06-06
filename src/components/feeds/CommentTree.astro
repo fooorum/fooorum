@@ -2,18 +2,8 @@
 import Stack from "@components/feeds/Stack.astro";
 import Card from "@components/cards/Post.astro";
 import Separator from "./Separator.astro";
-import {
-  db,
-  countDistinct,
-  eq,
-  and,
-  Post,
-  User,
-  Vote,
-  ne,
-  TRUE,
-} from "astro:db";
-import { Upvote, Downvote, Voted } from "@lib/db";
+import { eq, and, Post, ne, TRUE } from "astro:db";
+import { selectPosts } from "@lib/db";
 
 interface Props {
   parent: number;
@@ -22,27 +12,9 @@ interface Props {
 const { parent } = Astro.props;
 const { user } = Astro.locals;
 
-const comments = await db
-  .select({
-    postTitle: Post.title,
-    postDescription: Post.description,
-    postId: Post.id,
-    upvotes: countDistinct(Upvote.userId),
-    downvotes: countDistinct(Downvote.userId),
-    votedScore: Voted.score,
-    userName: User.name,
-    userId: User.id,
-  })
-  .from(Post)
-  .where(and(eq(Post.parentId, parent), ne(Post.isDeleted, TRUE)))
-  .innerJoin(User, eq(Post.userId, User.id))
-  .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
-  .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
-  .leftJoin(
-    Voted,
-    and(eq(Voted.postId, Post.id), eq(Voted.userId, user?.id ?? -1)),
-  )
-  .groupBy(Post.id);
+const comments = await selectPosts({ userId: Astro.locals.user?.id }).where(
+  and(eq(Post.parentId, parent), ne(Post.isDeleted, TRUE)),
+);
 ---
 
 <div class="comments">

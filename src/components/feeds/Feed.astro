@@ -3,7 +3,6 @@ import Stack from "@components/feeds/Stack.astro";
 import Card from "@components/cards/Post.astro";
 import Separator from "./Separator.astro";
 import {
-  db,
   and,
   eq,
   sum,
@@ -11,14 +10,12 @@ import {
   asc,
   desc,
   Post,
-  User,
-  Forum,
   Vote,
   countDistinct,
   TRUE,
   ne,
 } from "astro:db";
-import { Upvote, Downvote, Voted, Comment } from "@lib/db";
+import { Comment, selectPosts } from "@lib/db";
 import { Icon } from "astro-icon/components";
 
 interface Props {
@@ -58,38 +55,9 @@ const filters = [isNull(Post.parentId), ne(Post.isDeleted, TRUE)];
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
 
-const posts = await db
-  .select({
-    postTitle: Post.title,
-    postDescription: Post.description,
-    postId: Post.id,
-    attachementUrl: Post.attachementUrl,
-    userName: User.name,
-    userId: User.id,
-    forumName: Forum.name,
-    forumId: Forum.id,
-    upvotes: countDistinct(Upvote.userId),
-    downvotes: countDistinct(Downvote.userId),
-    votedScore: Voted.score,
-    comments: countDistinct(Comment.id),
-  })
-  .from(Post)
+const posts = await selectPosts({ userId: Astro.locals.user?.id })
   .where(and(...filters))
-  .orderBy(order(sort))
-  .innerJoin(User, eq(Post.userId, User.id))
-  .innerJoin(Forum, eq(Post.forumId, Forum.id))
-  .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
-  .leftJoin(Downvote, and(eq(Downvote.postId, Post.id), eq(Downvote.score, -1)))
-  .leftJoin(Vote, and(Vote.postId, Post.id))
-  .leftJoin(
-    Voted,
-    and(
-      eq(Voted.postId, Post.id),
-      eq(Voted.userId, Astro.locals.user?.id ?? -1),
-    ),
-  )
-  .leftJoin(Comment, eq(Comment.parentId, Post.id))
-  .groupBy(Post.id);
+  .orderBy(order(sort));
 ---
 
 <form>
