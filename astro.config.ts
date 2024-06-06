@@ -33,6 +33,7 @@ export default defineConfig({
       appDescription: "Ein Internet-Forum.",
       path: "/",
       masterPicture: "./src/assets/favicon.svg",
+      background: "#121212",
     }),
   ],
   vite: {
