@@ -10,7 +10,6 @@ interface Props {
 }
 
 const { parent } = Astro.props;
-const { user } = Astro.locals;
 
 const comments = await selectPosts({ userId: Astro.locals.user?.id }).where(
   and(eq(Post.parentId, parent), ne(Post.isDeleted, TRUE)),

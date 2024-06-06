@@ -1,7 +1,11 @@
 ---
 import Stack from "@components/feeds/Stack.astro";
-import Card from "@components/cards/Post.astro";
-import Separator from "./Separator.astro";
+import Selections from "@components/feeds/Selections.astro";
+import Select, {
+  getSelected,
+  type Selection,
+} from "@components/feeds/Select.astro";
+import Separator from "@components/feeds/Separator.astro";
 import {
   and,
   eq,
@@ -15,8 +19,9 @@ import {
   TRUE,
   ne,
 } from "astro:db";
+import Card from "@components/cards/Post.astro";
 import { Comment, selectPosts } from "@lib/db";
-import { Icon } from "astro-icon/components";
+import type { SQLWrapper } from "drizzle-orm/sql";
 
 interface Props {
   forum?: number;
@@ -24,65 +29,44 @@ interface Props {
 }
 
 const { forum, user } = Astro.props;
-const { searchParams } = Astro.url;
-const sortParam = searchParams.get("sort") ?? "created";
-const sorts = {
-  created: Post.createdAt,
-  title: Post.title,
-  id: Post.id,
-  comments: countDistinct(Comment.id),
-  votes: sum(Vote.score),
-};
-const sortNames: Record<string, string> = {
-  created: "Erstellt",
-  title: "Titel",
-  id: "Index",
-  comments: "Kommentare",
-  votes: "Bewertungen",
-};
-// @ts-expect-error
-const sort = sorts[sortParam];
-const orderParam = searchParams.get("order") ?? "desc";
-const orders = { asc, desc };
-const orderNames: Record<string, string> = {
-  asc: "Aufsteigend",
-  desc: "Absteigend",
-};
-// @ts-expect-error
-const order = orders[orderParam];
 
 const filters = [isNull(Post.parentId), ne(Post.isDeleted, TRUE)];
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
+
+const sortSelection: Selection<SQLWrapper> = {
+  param: "sort",
+  default: "created",
+  options: [
+    { name: "Erstellt", id: "created", value: Post.createdAt },
+    { name: "Titel", id: "title", value: Post.title },
+    { name: "Index", id: "id", value: Post.id },
+    { name: "Kommentare", id: "comments", value: countDistinct(Comment.id) },
+    { name: "Bewertungen", id: "votes", value: sum(Vote.score) },
+  ],
+};
+
+const orderSelection: Selection<typeof asc | typeof desc> = {
+  param: "order",
+  default: "desc",
+  options: [
+    { name: "Aufsteigend", id: "asc", value: asc },
+    { name: "Absteigend", id: "desc", value: desc },
+  ],
+};
+
+const sort = getSelected(sortSelection, Astro.url).value;
+const order = getSelected(orderSelection, Astro.url).value;
 
 const posts = await selectPosts({ userId: Astro.locals.user?.id })
   .where(and(...filters))
   .orderBy(order(sort));
 ---
 
-<form>
-  <select name="sort">
-    {
-      Object.keys(sorts).map((s) => (
-        <option selected={s === sortParam} value={s}>
-          {sortNames[s]}
-        </option>
-      ))
-    }
-  </select>
-  <select name="order">
-    {
-      Object.keys(orders).map((o) => (
-        <option selected={o === orderParam} value={o}>
-          {orderNames[o]}
-        </option>
-      ))
-    }
-  </select>
-  <button type="submit">
-    <Icon name="material-symbols:send" title="Sortieren" /> Sortieren
-  </button>
-</form>
+<Selections>
+  <Select {...sortSelection} />
+  <Select {...orderSelection} />
+</Selections>
 <Stack>
   {
     posts
