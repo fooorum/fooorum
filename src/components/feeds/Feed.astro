@@ -26,6 +26,7 @@ import {
   ne,
   sql,
 } from "astro:db";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   forum?: number;
@@ -74,11 +75,16 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
   .orderBy(order(sort));
 ---
 
-<Bar>
+<form class="bar">
   <Search {...search} />
-  <Select {...sortSelection} />
-  <Select {...orderSelection} />
-</Bar>
+  <div class="sort">
+    <Select {...sortSelection} />
+    <Select {...orderSelection} />
+  </div>
+  <button type="submit">
+    <Icon name="material-symbols:send" title="Anwenden" /> Anwenden
+  </button>
+</form>
 <Stack>
   {
     posts
@@ -86,3 +92,16 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
       .slice(0, -1)
   }
 </Stack>
+
+<style>
+  .bar,
+  .sort {
+    display: flex;
+    gap: 0.5em;
+  }
+
+  .bar {
+    margin: 0.5em 0.5em;
+    flex-wrap: wrap;
+  }
+</style>
