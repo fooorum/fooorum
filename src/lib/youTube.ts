@@ -1,12 +1,10 @@
 export async function getYouTubeEmbedUrl(href: URL | string) {
   let url = new URL(href);
-  const hostname = url.hostname.replace("www.", "");
-
-  if (hostname === "youtu.be")
+  if (url.hostname === "youtu.be")
     url = new URL(`https://www.youtube.com/watch?v=${url.pathname}`);
 
   const instances = ["youtube.com", ...(await getInvidiousInstances())];
-  if (!instances.includes(hostname)) return;
+  if (!instances.includes(url.hostname.replace("www.", ""))) return;
 
   const videoId = url.searchParams.get("v");
   return `https://${url.hostname}/embed/${videoId}?autoplay=0`;
