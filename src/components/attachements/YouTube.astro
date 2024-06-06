@@ -1,21 +1,12 @@
 ---
+import { getYouTubeEmbedUrl } from "@lib/youTube";
+
 interface Props {
   url: string;
 }
 const { url } = Astro.props;
 
-const embedId = getYouTubeId(url);
-const embedUrl = `https://www.youtube.com/embed/${embedId}`;
-
-export function getYouTubeId(href: URL | string) {
-  const url = new URL(href);
-  const hostname = url.hostname.replace("www.", "");
-  if (hostname === "youtube.com") {
-    return url.searchParams.get("v");
-  } else if (hostname === "youtu.be") {
-    return url.pathname;
-  }
-}
+const embedUrl = await getYouTubeEmbedUrl(url);
 ---
 
 <iframe src={embedUrl}> </iframe>
