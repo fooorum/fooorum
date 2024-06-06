@@ -15,9 +15,9 @@ const components = {
   video: Video,
 };
 
-const response = await fetch(url);
-const blob = await response.blob();
-const type = blob.type.split("/")[0] as keyof typeof components;
+const response = await fetch(url).catch(() => {});
+const blob = await response?.blob();
+const type = blob?.type.split("/")[0] as keyof typeof components;
 
 const Component = type in components ? components[type] : Generic;
 ---
