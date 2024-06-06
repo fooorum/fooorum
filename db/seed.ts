@@ -128,10 +128,18 @@ export default async function () {
     },
     {
       id: posts.url,
-      title: "Dieser Beitrag enthält einen langen Link.",
-      description: "hi",
+      title: "Dieser Beitrag enthält einen Link",
+      description: "Hier.",
       attachementUrl: "https://github.com/fooorum/fooorum",
       userId: users.test,
+      forumId: forums.meta,
+    },
+    {
+      parentId: posts.url,
+      id: posts.commentUrl,
+      description: "Dieser Kommentar enthält auch einen Link.",
+      attachementUrl: "https://github.com/fooorum/fooorum",
+      userId: users.ich,
       forumId: forums.meta,
     },
     {
