@@ -2,22 +2,32 @@
 import Image from "@components/attachements/Image.astro";
 import Audio from "@components/attachements/Audio.astro";
 import Video from "@components/attachements/Video.astro";
+import YouTube, { getYouTubeId } from "@components/attachements/YouTube.astro";
 import Embed from "@components/attachements/Embed.astro";
-import blobTypes from "@lib/caches/BlobTypes";
+import mimeTypes from "@lib/caches/MimeTypes";
 
 interface Props {
   url: string;
 }
 const { url } = Astro.props;
 
-const components = {
-  image: Image,
-  audio: Audio,
-  video: Video,
-};
+const Component = await selectComponent(url);
 
-const type = (await blobTypes.fetch(url)) as keyof typeof components;
-const Component = type in components ? components[type] : Embed;
+export async function selectComponent(url: string) {
+  const mimeType = await mimeTypes.fetch(url);
+  switch (mimeType) {
+    case "image":
+      return Image;
+    case "audio":
+      return Audio;
+    case "video":
+      return Video;
+  }
+  if (getYouTubeId(url)) {
+    return YouTube;
+  }
+  return Embed;
+}
 ---
 
 <Component url={url} />

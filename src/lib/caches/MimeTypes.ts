@@ -1,6 +1,6 @@
 import Cache from "./Cache";
 
-export class BlobTypes extends Cache<string, string> {
+export class MimeTypes extends Cache<string, string> {
   protected override async obtain(url: string) {
     const response = await fetch(url).catch(() => {});
     const blob = await response?.blob();
@@ -8,5 +8,5 @@ export class BlobTypes extends Cache<string, string> {
   }
 }
 
-export const blobTypes = new BlobTypes();
-export default blobTypes;
+export const mimeTypes = new MimeTypes();
+export default mimeTypes;

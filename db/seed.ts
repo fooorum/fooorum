@@ -128,8 +128,8 @@ export default async function () {
     },
     {
       id: posts.url,
-      title: "Dieser Beitrag enthält einen Link",
-      description: "Hier.",
+      title: "Fooorum",
+      description: "Dieser Beitrag enthält einen Link.",
       attachementUrl: "https://github.com/fooorum/fooorum",
       userId: users.test,
       forumId: forums.meta,
@@ -144,8 +144,8 @@ export default async function () {
     },
     {
       id: posts.image,
-      title: "Dieser Beitrag enthält einen Bild.",
-      description: "hi",
+      title: "Grapefruit",
+      description: "Dieser Beitrag enthält einen Bild.",
       attachementUrl:
         "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
       userId: users.test,
@@ -153,8 +153,8 @@ export default async function () {
     },
     {
       id: posts.sound,
-      title: "Dieser Beitrag enthält ein Geräusch.",
-      description: "hi",
+      title: "T-Rex-Schrei",
+      description: "Dieser Beitrag enthält eine Audio.",
       attachementUrl:
         "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3",
       userId: users.test,
@@ -162,20 +162,22 @@ export default async function () {
     },
     {
       id: posts.video,
-      title: "Dieser Beitrag enthält ein Video.",
-      description: "hi",
+      title: "Blume",
+      description: "Dieser Beitrag enthält ein Video.",
       attachementUrl:
         "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
       userId: users.test,
       forumId: forums.meta,
     },
-    ...Array.from({ length: 5 }, (v, i) => ({
-      id: posts[`test${i}`],
-      title: `Test ${i}`,
-      description: "Das hier ist ein Test.",
+    {
+      id: posts.youTube,
+      title:
+        "10 Minutes of Adorable cats and kittens videos to Keep You Smiling! 🐱",
+      description: "Dieser Beitrag enthält ein YouTube Video.",
+      attachementUrl: "https://youtu.be/msbp1FO87x0?feature=shared",
       userId: users.test,
       forumId: forums.meta,
-    })),
+    },
   ]);
 
   await db.insert(Vote).values([
