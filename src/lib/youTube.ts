@@ -9,7 +9,7 @@ export async function getYouTubeEmbedUrl(href: URL | string) {
   if (!instances.includes(hostname)) return;
 
   const videoId = url.searchParams.get("v");
-  return `https://${url.hostname}/embed/${videoId}`;
+  return `https://${url.hostname}/embed/${videoId}?autoplay=0`;
 }
 
 let invidiousInstances: string[] | null = null;
