@@ -1,0 +1,22 @@
+---
+type Props = Query;
+const search = Astro.props;
+
+export interface Query {
+  param: string;
+}
+
+const query = getQuery(search, Astro.url);
+
+export function getQuery({ param }: Query, { searchParams }: URL) {
+  return searchParams.get(param)?.toLowerCase();
+}
+---
+
+<input name={search.param} placeholder="Suche Beiträge" value={query} />
+
+<style>
+  input {
+    flex: 1;
+  }
+</style>

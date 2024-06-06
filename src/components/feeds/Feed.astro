@@ -1,15 +1,20 @@
 ---
 import Stack from "@components/feeds/Stack.astro";
-import Selections from "@components/feeds/Selections.astro";
+import Bar from "@components/feeds/Bar.astro";
 import Select, {
   getSelected,
   type Selection,
 } from "@components/feeds/Select.astro";
+import Search, { getQuery, type Query } from "./Search.astro";
 import Separator from "@components/feeds/Separator.astro";
+import Card from "@components/cards/Post.astro";
+import { Comment, selectPosts } from "@lib/db";
+import type { SQLWrapper } from "drizzle-orm/sql";
 import {
   and,
   eq,
   sum,
+  like,
   isNull,
   asc,
   desc,
@@ -18,10 +23,8 @@ import {
   countDistinct,
   TRUE,
   ne,
+  sql,
 } from "astro:db";
-import Card from "@components/cards/Post.astro";
-import { Comment, selectPosts } from "@lib/db";
-import type { SQLWrapper } from "drizzle-orm/sql";
 
 interface Props {
   forum?: number;
@@ -30,12 +33,16 @@ interface Props {
 
 const { forum, user } = Astro.props;
 
+const search: Query = { param: "q" };
+
+const query = getQuery(search, Astro.url);
 const filters = [isNull(Post.parentId), ne(Post.isDeleted, TRUE)];
+if (query?.length) filters.push(like(Post.title, `%${query}%`));
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
 
 const sortSelection: Selection<SQLWrapper> = {
-  param: "sort",
+  param: "s",
   default: "created",
   options: [
     { name: "Erstellt", id: "created", value: Post.createdAt },
@@ -47,7 +54,7 @@ const sortSelection: Selection<SQLWrapper> = {
 };
 
 const orderSelection: Selection<typeof asc | typeof desc> = {
-  param: "order",
+  param: "o",
   default: "desc",
   options: [
     { name: "Aufsteigend", id: "asc", value: asc },
@@ -63,10 +70,11 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
   .orderBy(order(sort));
 ---
 
-<Selections>
+<Bar>
+  <Search {...search} />
   <Select {...sortSelection} />
   <Select {...orderSelection} />
-</Selections>
+</Bar>
 <Stack>
   {
     posts
