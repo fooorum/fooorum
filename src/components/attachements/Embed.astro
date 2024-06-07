@@ -14,7 +14,7 @@ const res = await embeds.fetch(url);
 
 <div class="embed">
   <a href={url}>{res?.ogTitle ?? url}<Cover /></a>
-  {res?.ogDescription}
+  <span class="description">{res?.ogDescription}</span>
   {res?.ogImage?.length && <Image url={res.ogImage[0].url} />}
 </div>
 
@@ -25,6 +25,14 @@ const res = await embeds.fetch(url);
     gap: 0.5em;
     position: relative;
     z-index: 1;
+  }
+
+  .description {
+    overflow: hidden;
+    overflow-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   a {
