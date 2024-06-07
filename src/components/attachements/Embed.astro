@@ -14,7 +14,7 @@ const res = await embeds.fetch(url);
 
 <div class="embed">
   <a href={url}>{res?.ogTitle ?? url}<Cover /></a>
-  <span class="description">{res?.ogDescription}</span>
+  <span class="description">{res?.ogDescription?.slice(0, 200)}</span>
   {res?.ogImage?.length && <Image url={res.ogImage[0].url} />}
 </div>
 
