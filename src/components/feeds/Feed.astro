@@ -90,6 +90,7 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
       .flatMap((post) => [<Card {...post} />, <Separator id={post.postId} />])
       .slice(0, -1)
   }
+  {!posts.length && "Es wurden keine Beiträge gefunden."}
 </Stack>
 
 <style>
