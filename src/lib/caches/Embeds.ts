@@ -4,7 +4,7 @@ import type { OgObject } from "open-graph-scraper/dist/lib/types";
 
 export class Embeds extends Cache<string, OgObject> {
   protected override async obtain(url: string) {
-    const result = await ogs({ url }).catch(() => {});
+    const result = await ogs({ url, timeout: 1 }).catch(() => {});
     if (!result || result.error) return undefined;
     return result.result;
   }
