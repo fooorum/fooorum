@@ -32,15 +32,12 @@ export async function POST({
     });
   }
 
-  const [{ commentId }] = await db
-    .insert(Comment)
-    .values({
-      description,
-      userId: user.id,
-      postId: parseInt(postId),
-      parentId: parentId ? parseInt(parentId) : undefined,
-    })
-    .returning({ commentId: Comment.id });
+  await db.insert(Comment).values({
+    description,
+    userId: user.id,
+    postId: parseInt(postId),
+    parentId: parentId ? parseInt(parentId) : undefined,
+  });
 
   return redirect(`/posts/view/${postId}`);
 }
