@@ -1,0 +1,17 @@
+---
+interface Props {
+  target: string;
+}
+const { target } = Astro.props;
+---
+
+<button formaction={target}>
+  <slot />
+</button>
+
+<style lang="scss">
+  button {
+    position: relative;
+    z-index: 1;
+  }
+</style>

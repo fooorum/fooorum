@@ -2,25 +2,22 @@
 import Link from "@components/nav/Link.astro";
 import Logo from "@components/nav/Logo.astro";
 import Theme from "@components/actions/Themes.astro";
-const { session } = Astro.locals;
 ---
 
 <header>
   <nav>
     <Link href="/"><h1 slot="title"><Logo /></h1></Link>
-    <Link href="/posts" icon="material-symbols:comment" title="Beiträge" />
-    <Link href="/forums" icon="material-symbols:forum" title="Foren" />
-    <Link href="/users" icon="material-symbols:person" title="Nutzer" />
-    {
-      session ? (
-        <Link href="/logout" icon="material-symbols:logout" title="Abmelden" />
-      ) : (
-        <Link href="/login" icon="material-symbols:login" title="Anmelden" />
-      )
-    }
+    <Link href="/posts/list" icon="material-symbols:comment" title="Beiträge" />
+    <Link href="/forums/list" icon="material-symbols:forum" title="Foren" />
+    <Link href="/users/list" icon="material-symbols:person" title="Nutzer" />
   </nav>
-  <form data-astro-reload>
+  <form class="settings" data-astro-reload>
     <Theme />
+    <Link
+      href="/account"
+      icon="material-symbols:account-circle"
+      title="Account"
+    />
   </form>
 </header>
 
@@ -41,7 +38,8 @@ const { session } = Astro.locals;
     transition: top 0.25s;
     border-bottom: 1px solid var(--text);
   }
-  nav {
+  nav,
+  .settings {
     display: flex;
     align-items: center;
     gap: 1em;

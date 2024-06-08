@@ -1,0 +1,19 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Stack from "@components/feeds/Stack.astro";
+import Card from "@components/cards/Forum.astro";
+import Separator from "@components/feeds/Separator.astro";
+import { selectForums } from "@lib/db";
+
+const forums = await selectForums();
+---
+
+<Layout title="Foren">
+  <Stack>
+    {
+      forums
+        .flatMap((forum) => [<Card {...forum} />, <Separator />])
+        .slice(0, -1)
+    }
+  </Stack>
+</Layout>

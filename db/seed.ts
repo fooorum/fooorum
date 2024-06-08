@@ -1,35 +1,39 @@
-import { db, Forum, User, Member, Post, Vote } from "astro:db";
+import { db, Forum, User, Post, Embed, Media, Comment, Vote } from "astro:db";
 import UniqueIds from "@lib/UniqueIds";
 
 export default async function () {
-  const forums = UniqueIds();
+  const { metaForum, fragenForum } = UniqueIds();
   await db.insert(Forum).values([
-    { id: forums.meta, name: "meta", description: "Über Fooorum." },
     {
-      id: forums.fragen,
+      id: metaForum,
+      name: "meta",
+      description: "Über Fooorum.",
+    },
+    {
+      id: fragenForum,
       name: "fragen",
       description: "Ein Forum für alle Fragen.",
     },
   ]);
 
-  const users = UniqueIds();
+  const { testUser, ichUser, adminUser } = UniqueIds();
   await db.insert(User).values([
     {
-      id: users.test,
+      id: testUser,
       name: "test",
       password:
         "$argon2id$v=19$m=19456,t=2,p=1$/03dpq/qPRyemPPUotRqzQ$D5yyotxTGwiTDXKn3Ry6HjdAxt6d56f+N9LrN5UzV9A",
       description: "Ich bin ein test.",
     },
     {
-      id: users.ich,
+      id: ichUser,
       name: "ich",
       password:
         "$argon2id$v=19$m=19456,t=2,p=1$afTS6QJOzL56oj87Ef1Z4w$2RVCDKDVQ50P1q21q/uyKZlZV0EcAXh/tHRDZ8pljd4",
       description: "Hallo!",
     },
     {
-      id: users.admin,
+      id: adminUser,
       name: "admin",
       password:
         "$argon2id$v=19$m=19456,t=2,p=1$0B6bfF3mTciOSl2nonIDjw$xJqXa0kdj7boeXWvTGPSrlT/4tuKjk+5A+PFX4c172A",
@@ -38,155 +42,220 @@ export default async function () {
     },
   ]);
 
-  await db.insert(Member).values([
-    { userId: users.test, forumId: forums.meta },
-    { userId: users.ich, forumId: forums.fragen },
+  const { fooorumMedia, imageMedia, audioMedia, videoMedia, iframeMedia } =
+    UniqueIds();
+  await db.insert(Media).values([
+    {
+      id: fooorumMedia,
+      type: "image/png",
+      url: "https://opengraph.githubassets.com/1453636fa3c90d3340ed4bee452e4e987956658e4f58b72a22faaa81d54cf51d/fooorum/fooorum",
+      width: 1200,
+      height: 600,
+    },
+    {
+      id: imageMedia,
+      type: "image/jpg",
+      url: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
+      width: 332,
+      height: 332,
+    },
+    {
+      id: audioMedia,
+      type: "audio/mp3",
+      url: "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3",
+    },
+    {
+      id: videoMedia,
+      type: "video/webm",
+      url: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+    },
+    {
+      id: iframeMedia,
+      type: "iframe/",
+      url: "https://www.youtube.com/embed/msbp1FO87x0?autoplay=0",
+      width: 560,
+      height: 315,
+    },
   ]);
 
-  const posts = UniqueIds();
-  await db.insert(Post).values([
+  const { linkEmbed, imageEmbed, audioEmbed, videoEmbed, iframeEmbed } =
+    UniqueIds();
+  await db.insert(Embed).values([
     {
-      id: posts.comments,
-      title: "Kommentare",
-      description: "Dieser Beitrag demonstriert die Kommentarfunktion.",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      parentId: posts.comments,
-      id: posts.comment,
-      description: "Das hier ist ein Kommentar.",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      parentId: posts.comment,
-      id: posts.subcomment,
-      description: "Auch ich kann hierrauf kommentieren.",
-      userId: users.ich,
-      forumId: forums.meta,
-    },
-    {
-      parentId: posts.subcomment,
-      id: posts.references,
-      description: "Kommentare können sich auf andere beziehen.",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      parentId: posts.comment,
-      id: posts.multipleComments,
-      description: "Mehrere Kommentare können sich auf den gleichen beziehen",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      parentId: posts.comments,
-      id: posts.commentWithTitle,
-      title: "Kommentar mit einem Titel",
-      description: "Kommentare können theoretisch auch einen Titel besitzen.",
-      userId: users.ich,
-      forumId: forums.meta,
-    },
-    {
-      id: posts.votes,
-      title: "Bewertungen",
-      description: "Dieser Beitrag demonstriert die Bewertungsfunktion.",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      parentId: posts.votes,
-      id: posts.vote,
+      id: linkEmbed,
+      mediaId: fooorumMedia,
+      url: "https://github.com/fooorum/fooorum",
+      title: "fooorum/fooorum: Ein simples Internetforum.",
       description:
-        "Jeder Nutzer kann jedem Beitrag jeweils eine einzige Bewertung geben.",
-      userId: users.test,
-      forumId: forums.meta,
+        "Ein simples Internetforum. Contribute to fooorum/fooorum development by creating an account on GitHub.",
     },
     {
-      parentId: posts.vote,
-      id: posts.selfvote,
-      description:
-        "Eigenbewertungen sind erlaubt und könnten in Zukunft bei der Erstellung des Beitrags automatisch hinzugefügt werden.",
-      userId: users.ich,
-      forumId: forums.meta,
+      id: imageEmbed,
+      url: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
+      mediaId: imageMedia,
     },
     {
-      parentId: posts.votes,
-      id: posts.downvote,
-      description: "Schlechte posts werden heruntergewählt",
-      userId: users.ich,
-      forumId: forums.meta,
+      id: audioEmbed,
+      url: "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3",
+      mediaId: audioMedia,
     },
     {
-      id: posts.otherForum,
-      title: "Was ist eure Lieblingsfunktion auf Fooorum?",
-      description:
-        "Meine ist, dass man in verschiedenen Foren Beiträge veröffentlichen kann.",
-      userId: users.ich,
-      forumId: forums.fragen,
+      id: videoEmbed,
+      url: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
+      mediaId: videoMedia,
     },
     {
-      id: posts.url,
-      title: "Fooorum",
-      description: "Dieser Beitrag enthält einen Link.",
-      attachementUrl: "https://github.com/fooorum/fooorum",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      parentId: posts.url,
-      id: posts.commentUrl,
-      description: "Dieser Kommentar enthält auch einen Link.",
-      attachementUrl: "https://github.com/fooorum/fooorum",
-      userId: users.ich,
-      forumId: forums.meta,
-    },
-    {
-      id: posts.image,
-      title: "Grapefruit",
-      description: "Dieser Beitrag enthält einen Bild.",
-      attachementUrl:
-        "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      id: posts.sound,
-      title: "T-Rex-Schrei",
-      description: "Dieser Beitrag enthält eine Audio.",
-      attachementUrl:
-        "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      id: posts.video,
-      title: "Blume",
-      description: "Dieser Beitrag enthält ein Video.",
-      attachementUrl:
-        "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",
-      userId: users.test,
-      forumId: forums.meta,
-    },
-    {
-      id: posts.youTube,
+      id: iframeEmbed,
       title:
         "10 Minutes of Adorable cats and kittens videos to Keep You Smiling! 🐱",
+      url: "https://www.youtube.com/watch?v=msbp1FO87x0",
+      mediaId: iframeMedia,
+    },
+  ]);
+
+  const {
+    commentsPost,
+    votesPost,
+    otherForumPost,
+    linkPost,
+    imagePost,
+    audioPost,
+    videoPost,
+    iframePost,
+  } = UniqueIds();
+  await db.insert(Post).values([
+    {
+      id: commentsPost,
+      userId: testUser,
+      title: "Kommentare",
+      description: "Dieser Beitrag demonstriert die Kommentarfunktion.",
+      forumId: metaForum,
+    },
+    {
+      id: votesPost,
+      description: "Dieser Beitrag demonstriert die Bewertungsfunktion.",
+      userId: testUser,
+      title: "Bewertungen",
+      forumId: metaForum,
+    },
+    {
+      id: otherForumPost,
+      description:
+        "Meine ist, dass man in verschiedenen Foren Beiträge veröffentlichen kann.",
+      userId: ichUser,
+      title: "Was ist eure Lieblingsfunktion auf Fooorum?",
+      forumId: fragenForum,
+    },
+    {
+      id: linkPost,
+      embedId: linkEmbed,
+      description: "Dieser Beitrag enthält einen Link.",
+      userId: testUser,
+      title: "Fooorum",
+      forumId: metaForum,
+    },
+    {
+      id: imagePost,
+      embedId: imageEmbed,
+      description: "Dieser Beitrag enthält einen Bild.",
+      userId: testUser,
+      title: "Grapefruit",
+      forumId: metaForum,
+    },
+    {
+      id: audioPost,
+      embedId: audioEmbed,
+      description: "Dieser Beitrag enthält eine Audio.",
+      userId: testUser,
+      title: "T-Rex-Schrei",
+      forumId: metaForum,
+    },
+    {
+      id: videoPost,
+      embedId: videoEmbed,
+      description: "Dieser Beitrag enthält ein Video.",
+      userId: testUser,
+      title: "Blume",
+      forumId: metaForum,
+    },
+    {
+      id: iframePost,
+      embedId: iframeEmbed,
       description: "Dieser Beitrag enthält ein YouTube Video.",
-      attachementUrl: "https://youtu.be/msbp1FO87x0?feature=shared",
-      userId: users.test,
-      forumId: forums.meta,
+      userId: testUser,
+      title: "Iframe",
+      forumId: metaForum,
+    },
+  ]);
+
+  const {
+    commentComment,
+    subcommentComment,
+    referencesComment,
+    multipleCommentsComment,
+    voteComment,
+    selfvoteComment,
+    downvoteComment,
+  } = UniqueIds();
+  await db.insert(Comment).values([
+    {
+      id: commentComment,
+      postId: commentsPost,
+      description: "Das hier ist ein Kommentar.",
+      userId: testUser,
+    },
+    {
+      id: subcommentComment,
+      postId: commentsPost,
+      parentId: commentComment,
+      description: "Auch ich kann hierrauf kommentieren.",
+      userId: ichUser,
+    },
+    {
+      id: referencesComment,
+      postId: commentsPost,
+      parentId: subcommentComment,
+      description: "Kommentare können sich auf andere beziehen.",
+      userId: testUser,
+    },
+    {
+      id: multipleCommentsComment,
+      postId: commentsPost,
+      parentId: commentComment,
+      description: "Mehrere Kommentare können sich auf den gleichen beziehen",
+      userId: testUser,
+    },
+    {
+      id: voteComment,
+      postId: votesPost,
+      description:
+        "Jeder Nutzer kann jedem Beitrag jeweils eine einzige Bewertung geben.",
+      userId: testUser,
+    },
+    {
+      id: selfvoteComment,
+      postId: votesPost,
+      parentId: voteComment,
+      description:
+        "Eigenbewertungen sind erlaubt und könnten in Zukunft bei der Erstellung des Beitrags automatisch hinzugefügt werden.",
+      userId: ichUser,
+    },
+    {
+      id: downvoteComment,
+      postId: votesPost,
+      description: "Schlechte messages werden heruntergewählt",
+      userId: ichUser,
     },
   ]);
 
   await db.insert(Vote).values([
-    { userId: users.test, postId: posts.votes, score: 1 },
-    { userId: users.ich, postId: posts.votes, score: 1 },
-    { userId: users.test, postId: posts.vote, score: 1 },
-    { userId: users.ich, postId: posts.vote, score: -1 },
-    { userId: users.test, postId: posts.selfvote, score: 1 },
-    { userId: users.ich, postId: posts.downvote, score: -1 },
-    { userId: users.ich, postId: posts.otherForum, score: 1 },
+    { userId: testUser, postId: votesPost, score: 1 },
+    { userId: ichUser, postId: votesPost, score: 1 },
+    { userId: ichUser, postId: otherForumPost, score: 1 },
+
+    { userId: testUser, commentId: selfvoteComment, score: 1 },
+    { userId: ichUser, commentId: downvoteComment, score: -1 },
+    { userId: testUser, commentId: voteComment, score: 1 },
+    { userId: ichUser, commentId: voteComment, score: -1 },
   ]);
 }

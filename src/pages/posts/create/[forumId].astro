@@ -1,0 +1,50 @@
+---
+import ForumView from "@layouts/ForumView.astro";
+import { eq, Forum } from "astro:db";
+import Send from "@components/actions/Send.astro";
+import { urlValidator } from "@lib/validate";
+import { selectForums } from "@lib/db";
+
+const { user } = Astro.locals;
+if (!user) return Astro.redirect("/account/login");
+
+const forumId = parseInt(Astro.params.forumId!);
+const [forum] = await selectForums().where(eq(Forum.id, forumId));
+---
+
+<ForumView {...forum}>
+  <form method="post" action="/api/post/create">
+    <input name="forumId" type="hidden" value={forumId} />
+    <input
+      autofocus={true}
+      name="title"
+      required="true"
+      placeholder="Schreibe einen Titel"
+    />
+    <textarea
+      rows={5}
+      name="description"
+      required="true"
+      placeholder="Schreibe einen Kommentar"></textarea>
+    <input
+      name="embedUrl"
+      type="url"
+      placeholder="Verlinke externe Inhalte"
+      {...urlValidator.toJSON()}
+    />
+    <Send />
+  </form>
+</ForumView>
+
+<style lang="scss">
+  .header {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+</style>

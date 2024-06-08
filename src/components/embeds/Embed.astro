@@ -1,0 +1,65 @@
+---
+import Media from "@components/media/Media.astro";
+import Cover from "@components/links/Cover.astro";
+import MaybeLink from "@components/links/MaybeLink.astro";
+import { unprefixAttributes } from "@lib/prefixes";
+import { getFilename } from "@lib/url";
+
+interface Props {
+  url: string;
+  title: string | null;
+  description: string | null;
+  mediaUrl: string | null;
+  mediaType: string | null;
+  mediaAlt: string | null;
+  mediaWidth: number | null;
+  mediaHeight: number | null;
+}
+const { url, title: rawTitle, description } = Astro.props;
+const title = rawTitle || getFilename(url);
+
+const media = unprefixAttributes(Astro.props, "media");
+---
+
+<div class="embed">
+  {
+    title && (
+      <MaybeLink url={url}>
+        <h3>{title}</h3>
+        <Cover />
+      </MaybeLink>
+    )
+  }
+  {description && <span class="description">{description?.slice(0, 200)}</span>}
+  {
+    media.url && media.type && (
+      <Media {...{ ...media, url: media.url, type: media.type }} />
+    )
+  }
+</div>
+
+<style>
+  .embed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .description {
+    overflow: hidden;
+    overflow-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  a {
+    display: inline-block;
+    width: 100%;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

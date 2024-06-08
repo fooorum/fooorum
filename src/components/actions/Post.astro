@@ -6,7 +6,7 @@ interface Props {
 const { forumId } = Astro.props;
 ---
 
-<button formaction={`/post/${forumId}`}>
+<button formaction={`/posts/create/${forumId}`}>
   <Icon name="material-symbols:comment" />
 </button>
 

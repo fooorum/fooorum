@@ -1,18 +1,24 @@
 ---
 import Stack from "@components/feeds/Stack.astro";
-import Card from "@components/cards/Post.astro";
+import Card from "@components/cards/Comment.astro";
 import Separator from "./Separator.astro";
-import { eq, and, Post, ne, TRUE } from "astro:db";
-import { selectPosts } from "@lib/db";
+import { eq, and, Comment, ne, TRUE } from "astro:db";
+import { selectComments } from "@lib/db";
+import { isNull } from "astro:db";
 
 interface Props {
-  parent: number;
+  postId: number;
+  parentId?: number;
 }
 
-const { parent } = Astro.props;
+const { postId, parentId } = Astro.props;
 
-const comments = await selectPosts({ userId: Astro.locals.user?.id }).where(
-  and(eq(Post.parentId, parent), ne(Post.isDeleted, TRUE)),
+const filters = [ne(Comment.deleted, TRUE), eq(Comment.postId, postId)];
+if (parentId === undefined) filters.push(isNull(Comment.parentId));
+else filters.push(eq(Comment.parentId, parentId));
+
+const comments = await selectComments({ userId: Astro.locals.user?.id }).where(
+  and(...filters),
 );
 ---
 
@@ -21,8 +27,8 @@ const comments = await selectPosts({ userId: Astro.locals.user?.id }).where(
     {
       comments.map((comment) => [
         <Separator />,
-        <Card {...comment} comments={undefined} />,
-        <Astro.self parent={comment.postId} />,
+        <Card {...comment} />,
+        <Astro.self postId={postId} parentId={comment.id} />,
       ])
     }
   </Stack>

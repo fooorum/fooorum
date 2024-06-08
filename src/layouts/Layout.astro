@@ -12,6 +12,15 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+  const theme = formData.get("theme");
+
+  if (typeof theme === "string") {
+    Astro.cookies.set("theme", theme, { path: "/" });
+  }
+}
 const theme = Astro.cookies.get("theme")?.value ?? "dark";
 ---
 

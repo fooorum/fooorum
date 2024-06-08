@@ -1,0 +1,15 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Card from "@components/cards/User.astro";
+import { type UserData } from "@lib/db";
+import Separator from "@components/feeds/Separator.astro";
+
+type Props = UserData;
+const { name } = Astro.props;
+---
+
+<Layout title={name}>
+  <Card active {...Astro.props} />
+  <Separator />
+  <slot />
+</Layout>

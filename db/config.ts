@@ -1,7 +1,5 @@
 import { defineDb, defineTable, column, NOW, FALSE } from "astro:db";
 
-type Id = ReturnType<typeof column.number<{ primaryKey: true }>>;
-
 const Forum = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
@@ -34,44 +32,72 @@ const Session = defineTable({
   },
 });
 
-const Member = defineTable({
-  columns: {
-    userId: column.number({ references: () => User.columns.id }),
-    forumId: column.number({ references: () => Forum.columns.id }),
-    createdAt: column.date({ default: NOW }),
-    isAdmin: column.boolean({ default: FALSE }),
-  },
-  indexes: [{ on: ["userId", "forumId"], unique: true, name: "memberId" }],
-});
-
 const Post = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
-    title: column.text({ optional: true }),
+    title: column.text(),
     description: column.text(),
-    attachementUrl: column.text({ optional: true }),
+    embedId: column.number({
+      optional: true,
+      references: () => Embed.columns.id,
+    }),
     userId: column.number({ references: () => User.columns.id }),
     forumId: column.number({ references: () => Forum.columns.id }),
-    parentId: column.number({
-      references: (): Id => Post.columns.id,
-      optional: true,
-    }),
     createdAt: column.date({ default: NOW }),
-    isDeleted: column.boolean({ default: FALSE }),
+    deleted: column.boolean({ default: FALSE }),
   },
 });
 
-const BaseVote = defineTable({
+const Comment = defineTable({
   columns: {
+    id: column.number({ primaryKey: true }),
+    description: column.text(),
     userId: column.number({ references: () => User.columns.id }),
     postId: column.number({ references: () => Post.columns.id }),
+    parentId: column.number({
+      optional: true,
+      references: (): any => Comment.columns.id,
+    }),
+    createdAt: column.date({ default: NOW }),
+    deleted: column.boolean({ default: FALSE }),
   },
-  indexes: [{ on: ["userId", "postId"], unique: true, name: "voteId" }],
+});
+
+const Embed = defineTable({
+  columns: {
+    id: column.number({ primaryKey: true }),
+    url: column.text({ unique: true }),
+    title: column.text({ optional: true }),
+    description: column.text({ optional: true }),
+    mediaId: column.number({
+      optional: true,
+      references: () => Media.columns.id,
+    }),
+  },
+});
+
+const Media = defineTable({
+  columns: {
+    id: column.number({ primaryKey: true }),
+    url: column.text({ unique: true }),
+    type: column.text(),
+    alt: column.text({ optional: true }),
+    width: column.number({ optional: true }),
+    height: column.number({ optional: true }),
+  },
 });
 
 const Vote = defineTable({
   columns: {
-    ...BaseVote.columns,
+    userId: column.number({ references: () => User.columns.id }),
+    postId: column.number({
+      references: () => Post.columns.id,
+      optional: true,
+    }),
+    commentId: column.number({
+      references: () => Comment.columns.id,
+      optional: true,
+    }),
     score: column.number(),
   },
 });
@@ -81,8 +107,10 @@ export default defineDb({
     Forum,
     User,
     Session,
-    Member,
     Post,
+    Comment,
+    Embed,
+    Media,
     Vote,
   },
 });

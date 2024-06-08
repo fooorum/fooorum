@@ -7,9 +7,9 @@ interface Props {
 const { postId, amount } = Astro.props;
 ---
 
-<button formaction={`/posts/${postId}`}>
+<button formaction={`/posts/view/${postId}`}>
   <Icon name="material-symbols:comment" />
-  {amount}{amount ? "+" : ""}
+  {amount}
 </button>
 
 <style lang="scss">

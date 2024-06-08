@@ -1,0 +1,15 @@
+---
+import Feed from "@components/feeds/Feed.astro";
+import UserView from "@layouts/UserView.astro";
+import Card from "@components/cards/User.astro";
+import { eq, User } from "astro:db";
+import Separator from "@components/feeds/Separator.astro";
+import { selectUsers } from "@lib/db";
+
+const userId = parseInt(Astro.params.userId!);
+const [user] = await selectUsers().where(eq(User.id, userId));
+---
+
+<UserView {...user}>
+  <Feed user={user.id} />
+</UserView>

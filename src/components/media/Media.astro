@@ -1,0 +1,29 @@
+---
+import Image from "@components/media/Image.astro";
+import Audio from "@components/media/Audio.astro";
+import Video from "@components/media/Video.astro";
+import Iframe from "@components/media/Iframe.astro";
+
+interface Props {
+  url: string;
+  type: string;
+  alt: string | null;
+  width: number | null;
+  height: number | null;
+}
+const { type: mimeType } = Astro.props;
+
+const type = mimeType.split("/")[0];
+
+const components = {
+  image: Image,
+  audio: Audio,
+  video: Video,
+  iframe: Iframe,
+};
+
+const Component =
+  type in components ? components[type as keyof typeof components] : undefined;
+---
+
+{Component && <Component {...Astro.props} />}

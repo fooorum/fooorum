@@ -1,0 +1,15 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Stack from "@components/feeds/Stack.astro";
+import Card from "@components/cards/User.astro";
+import Separator from "@components/feeds/Separator.astro";
+import { selectUsers } from "@lib/db";
+
+const users = await selectUsers();
+---
+
+<Layout title="Nutzer">
+  <Stack>
+    {users.flatMap((user) => [<Card {...user} />, <Separator />]).slice(0, -1)}
+  </Stack>
+</Layout>

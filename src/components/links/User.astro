@@ -6,7 +6,7 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<a class="user-link" rel="author" href={`/users/${id}`}>
+<a class="user-link" rel="author" href={`/users/view/${id}`}>
   <Icon name="material-symbols:person" />
   <slot />
 </a>

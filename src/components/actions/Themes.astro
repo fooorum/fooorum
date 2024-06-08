@@ -20,6 +20,6 @@ const toggledThemeName = themeName == "dark" ? "light" : "dark";
 ---
 
 <input type="hidden" name="theme" value={toggledThemeName} />
-<button formaction="/api/settings/theme" formmethod="post">
+<button formmethod="post">
   <Icon name={theme.icon} title={theme.name} />
 </button>

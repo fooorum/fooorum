@@ -6,7 +6,7 @@ interface Props {
 const { postId } = Astro.props;
 ---
 
-<button formaction={`/delete/${postId}`}>
+<button formaction={`/posts/delete/${postId}`}>
   <Icon name="material-symbols:delete" />
 </button>
 

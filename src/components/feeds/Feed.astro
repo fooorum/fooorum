@@ -7,7 +7,7 @@ import Select, {
 import Search, { getQuery, type Query } from "./Search.astro";
 import Separator from "@components/feeds/Separator.astro";
 import Card from "@components/cards/Post.astro";
-import { Comment, selectPosts } from "@lib/db";
+import { selectPosts } from "@lib/db";
 import type { SQLWrapper } from "drizzle-orm/sql";
 import {
   and,
@@ -15,7 +15,6 @@ import {
   eq,
   sum,
   like,
-  isNull,
   asc,
   desc,
   Post,
@@ -23,7 +22,7 @@ import {
   countDistinct,
   TRUE,
   ne,
-  sql,
+  Comment,
 } from "astro:db";
 import { Icon } from "astro-icon/components";
 
@@ -37,7 +36,7 @@ const { forum, user } = Astro.props;
 const search: Query = { param: "q" };
 
 const query = getQuery(search, Astro.url);
-const filters = [isNull(Post.parentId), ne(Post.isDeleted, TRUE)];
+const filters = [ne(Post.deleted, TRUE)];
 if (query?.length)
   filters.push(
     or(like(Post.title, `%${query}%`), like(Post.description, `%${query}%`))!,
@@ -87,7 +86,7 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
 <Stack>
   {
     posts
-      .flatMap((post) => [<Card {...post} />, <Separator id={post.postId} />])
+      .flatMap((post) => [<Card {...post} />, <Separator id={post.id} />])
       .slice(0, -1)
   }
   {!posts.length && "Es wurden keine Beiträge gefunden."}

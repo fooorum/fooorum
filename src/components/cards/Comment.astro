@@ -1,0 +1,55 @@
+---
+import Card from "@components/cards/Card.astro";
+import Float from "@components/links/Float.astro";
+import User from "@components/links/User.astro";
+import Votes from "@components/actions/Votes.astro";
+import Reply from "@components/actions/Comment.astro";
+import Action from "@components/actions/Action.astro";
+import type { CommentData } from "@lib/db";
+import { Icon } from "astro-icon/components";
+import Authorized from "@components/auth/Authorized.astro";
+
+interface Props extends CommentData {
+  active?: boolean;
+}
+
+const {
+  id,
+  postId,
+  description,
+  userId,
+  userName,
+  upvotes,
+  downvotes,
+  votedScore,
+  active = false,
+} = Astro.props;
+---
+
+<Card active={active}>
+  <address slot="header">
+    <Float>
+      <User id={userId}>{userName}</User>
+    </Float>
+    <slot name="forum" />
+  </address>
+  <slot name="title" slot="header" />
+  {description}
+  <slot name="embed" slot="embed" />
+  <Votes slot="footer" {...{ commentId: id, upvotes, downvotes, votedScore }} />
+  <form slot="footer" data-astro-reload>
+    <input name="id" type="hidden" value={id} />
+    <Reply postId={postId} parentId={id} />
+    <Authorized userId={userId}>
+      <Action target=`/comments/delete/${id}`>
+        <Icon name="material-symbols:delete" title="delete" />
+      </Action>
+    </Authorized>
+  </form>
+</Card>
+
+<style>
+  form {
+    display: inline;
+  }
+</style>

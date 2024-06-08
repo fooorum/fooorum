@@ -17,13 +17,7 @@ const { active = false } = Astro.props;
   <div class="content">
     <slot />
   </div>
-  {
-    Astro.slots.has("attachements") && (
-      <div class="attachements">
-        <slot name="attachements" />
-      </div>
-    )
-  }
+  <slot name="embed" />
   {
     Astro.slots.has("footer") && (
       <footer>

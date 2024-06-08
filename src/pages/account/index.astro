@@ -1,0 +1,27 @@
+---
+import UserLayout from "@layouts/UserView.astro";
+import { Icon } from "astro-icon/components";
+import { User, eq } from "astro:db";
+import { selectUsers } from "@lib/db";
+
+const { user } = Astro.locals;
+if (!user) {
+  return Astro.redirect("/account/login");
+}
+
+const [fullUser] = await selectUsers().where(eq(User.id, user.id));
+---
+
+<UserLayout {...fullUser}>
+  <form method="post" action="/api/account/logout" data-astro-reload>
+    <button><Icon name="material-symbols:logout" /> Abmelden</button>
+  </form>
+</UserLayout>
+
+<style lang="scss">
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+</style>

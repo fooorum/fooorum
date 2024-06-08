@@ -1,0 +1,35 @@
+---
+import PostView from "@layouts/PostView.astro";
+import { Icon } from "astro-icon/components";
+import { eq, Post } from "astro:db";
+import { selectPosts } from "@lib/db";
+
+const { user } = Astro.locals;
+if (!user) return Astro.redirect("/account/login");
+
+const postId = parseInt(Astro.params.postId!);
+
+const [post] = await selectPosts({ userId: Astro.locals.user?.id }).where(
+  eq(Post.id, postId),
+);
+
+if (user.id !== post.userId && !user.isAdmin)
+  return new Response(null, { status: 403 });
+---
+
+<PostView {...post}>
+  <form method="post" action="/api/post/delete">
+    <button type="submit">
+      <input name="id" type="hidden" value={post.id} />
+      <Icon name="material-symbols:delete" /> Löschen
+    </button>
+  </form>
+</PostView>
+
+<style lang="scss">
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+</style>

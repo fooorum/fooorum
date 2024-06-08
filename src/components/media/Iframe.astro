@@ -1,0 +1,23 @@
+---
+interface Props {
+  url: string;
+  width: number | null;
+  height: number | null;
+}
+const { url, width, height } = Astro.props;
+
+const aspectRatio = width && height ? width / height : undefined;
+---
+
+<iframe src={url} loading="lazy" style={{ aspectRatio }}> </iframe>
+
+<style>
+  iframe {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    border: none;
+    border-radius: 1em;
+  }
+</style>

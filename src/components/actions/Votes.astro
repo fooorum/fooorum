@@ -2,38 +2,42 @@
 import { Icon } from "astro-icon/components";
 
 interface Props {
-  postId: number;
+  postId?: number;
+  commentId?: number;
   upvotes: number;
   downvotes: number;
   votedScore?: number | null;
 }
-const { postId, upvotes, downvotes, votedScore = 0 } = Astro.props;
+const { postId, commentId, upvotes, downvotes, votedScore = 0 } = Astro.props;
 const upvoted = votedScore === 1;
 const downvoted = votedScore === -1;
 ---
 
-<button
-  class:list={[{ active: upvoted }]}
-  type="submit"
-  formaction={`/api/vote/${postId}/${upvoted ? 0 : 1}`}
-  formmethod="post"
->
-  <Icon name={"material-symbols:thumb-up"} />
-  {upvotes}
-</button>
-<button
-  class:list={[{ active: downvoted }]}
-  type="submit"
-  formaction={`/api/vote/${postId}/${downvoted ? 0 : -1}`}
-  formmethod="post"
->
-  <Icon name={"material-symbols:thumb-down"} />
-  {downvotes}
-</button>
+<form action="/api/vote/edit" method="post" data-astro-reload>
+  <input name="postId" type="hidden" value={postId ?? -1} />
+  <input name="commentId" type="hidden" value={commentId ?? -1} />
+  <input name="score" type="hidden" value={upvoted ? 0 : 1} />
+  <button class:list={[{ active: upvoted }]} type="submit">
+    <Icon name={"material-symbols:thumb-up"} />
+    {upvotes}
+  </button>
+</form>
+<form action="/api/vote/edit" method="post" data-astro-reload>
+  <input name="postId" type="hidden" value={postId ?? -1} />
+  <input name="commentId" type="hidden" value={commentId ?? -1} />
+  <input name="score" type="hidden" value={downvoted ? 0 : -1} />
+  <button class:list={[{ active: downvoted }]} type="submit">
+    <Icon name={"material-symbols:thumb-down"} />
+    {downvotes}
+  </button>
+</form>
 
 <style lang="scss">
   button {
     position: relative;
     z-index: 1;
+  }
+  form {
+    display: inline;
   }
 </style>

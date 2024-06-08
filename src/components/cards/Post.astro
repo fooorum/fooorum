@@ -1,81 +1,77 @@
 ---
-import Card from "./Card.astro";
+import Card from "@components/cards/Card.astro";
 import Cover from "@components/links/Cover.astro";
 import Float from "@components/links/Float.astro";
 import Title from "@components/links/Post.astro";
-import User from "@components/links/User.astro";
 import Forum from "@components/links/Forum.astro";
-import Votes from "@components/actions/Votes.astro";
 import Comments from "@components/actions/Comments.astro";
-import Reply from "@components/actions/Reply.astro";
-import Attachement from "@components/attachements/Attachement.astro";
+import Embed from "@components/embeds/Embed.astro";
+import type { PostData } from "@lib/db";
+import { unprefixAttributes, getPrefixedAttributes } from "@lib/prefixes";
+import User from "@components/links/User.astro";
+import Comment from "@components/actions/Comment.astro";
+import Votes from "@components/actions/Votes.astro";
 import Delete from "@components/actions/Delete.astro";
-import type { PostSelection } from "@lib/db";
 
-const { user } = Astro.locals;
-
-interface Props extends Omit<PostSelection, "comments"> {
-  comments?: number;
+interface Props extends PostData {
   active?: boolean;
 }
 
 const {
-  postTitle,
-  postDescription,
-  postId,
-  attachementUrl,
-  userName,
+  id,
+  title,
+  description,
   userId,
-  forumName,
+  userName,
   forumId,
+  forumName,
   upvotes,
   downvotes,
   votedScore,
   comments,
   active = false,
 } = Astro.props;
-const votes = [upvotes, downvotes].every((v) => v != undefined);
+const { user } = Astro.locals;
+
+const embed = unprefixAttributes(Astro.props, "embed");
+const media = getPrefixedAttributes(Astro.props, "media");
 ---
 
 <Card active={active}>
   <address slot="header">
-    {
-      userName && (
-        <Float>
-          <User id={userId}>{userName}</User>
-        </Float>
-      )
-    }
-    {
-      forumName && (
-        <>
-          in{" "}
-          <Float>
-            <Forum id={forumId ?? 0}>{forumName}</Forum>
-          </Float>
-        </>
-      )
-    }
+    <Float>
+      <User id={userId}>{userName}</User>
+    </Float>
+    in
+    <Float>
+      <Forum id={forumId ?? 0}>{forumName}</Forum>
+    </Float>
   </address>
+  <Title id={id} slot="header">
+    {title}
+    {!active && <Cover />}
+  </Title>
+  {description}
   {
-    postTitle && (
-      <Title id={postId} slot="header">
-        {postTitle}
-        {!active && <Cover />}
-      </Title>
+    embed.url && (
+      <Embed slot="embed" {...{ ...embed, url: embed.url, ...media }} />
     )
   }
-  {postDescription}
-  {attachementUrl && <Attachement url={attachementUrl} slot="attachements" />}
+  <Votes slot="footer" {...{ postId: id, upvotes, downvotes, votedScore }} />
   <form slot="footer" data-astro-reload>
-    {votes && <Votes {...{ postId, upvotes, downvotes, votedScore }} />}
     {
-      comments != undefined ? (
-        <Comments postId={postId} amount={comments} />
+      active ? (
+        <Comment postId={id} parentId={null} />
       ) : (
-        <Reply postId={postId} />
+        <Comments postId={id} amount={comments} />
       )
     }
-    {(userId === user?.id || user?.isAdmin) && <Delete postId={postId} />}
+    {(userId === user?.id || user?.isAdmin) && <Delete postId={id} />}
   </form>
 </Card>
+
+<style>
+  form {
+    display: inline;
+  }
+</style>

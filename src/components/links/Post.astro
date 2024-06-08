@@ -6,7 +6,7 @@ const { id } = Astro.props;
 ---
 
 <h2 class="title" transition:name={`post-link-${id}`}>
-  <a href={`/posts/${id}`}>
+  <a href={`/posts/view/${id}`}>
     <slot />
   </a>
 </h2>

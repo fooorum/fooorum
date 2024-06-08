@@ -1,0 +1,39 @@
+---
+import { getFilename } from "@lib/url";
+import { Image as Img } from "astro:assets";
+
+interface Props {
+  url: string;
+  alt: string | null;
+  width: number | null;
+  height: number | null;
+}
+let { url, alt, width, height } = Astro.props;
+
+if (width && height && height > 400) {
+  width = Math.round((width * 400) / height);
+  height = 400;
+}
+if (width && height && width > 584) {
+  height = Math.round((height * 584) / width);
+  width = 584;
+}
+---
+
+<Img
+  src={url}
+  alt={alt ?? getFilename(url) ?? null}
+  width={width ?? undefined}
+  height={height ?? undefined}
+  inferSize={!(width && height) as true}
+  loading="lazy"
+/>
+
+<style>
+  img {
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 1em;
+  }
+</style>
