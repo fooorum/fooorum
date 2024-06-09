@@ -36,7 +36,9 @@ export async function POST({
     });
   }
 
-  const zEmbedUrl = z.nullable(z.string().url()).safeParse(embedUrl);
+  const zEmbedUrl = z
+    .union([z.string().url().nullish(), z.literal("")])
+    .safeParse(embedUrl);
   if (!zEmbedUrl.success)
     return new Response(zEmbedUrl.error.toString(), { status: 400 });
 
