@@ -5,10 +5,14 @@ import { type ForumData } from "@lib/db";
 import Separator from "@components/feeds/Separator.astro";
 
 type Props = ForumData;
-const { name } = Astro.props;
+const { name, description } = Astro.props;
+
+let layoutTitle = `${name}`;
+if (description) layoutTitle += `: ${description}`;
+layoutTitle += ` • Forum`;
 ---
 
-<Layout title={name}>
+<Layout title={layoutTitle}>
   <Card active {...Astro.props} />
   <Separator />
   <slot />

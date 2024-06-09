@@ -4,16 +4,15 @@ import Card from "@components/cards/Comment.astro";
 import { type CommentData } from "@lib/db";
 import Separator from "@components/feeds/Separator.astro";
 
-interface Props extends CommentData {
-  separator?: boolean;
-}
-const { description, deleted, separator = true } = Astro.props;
+type Props = CommentData;
+const { description, deleted, userName } = Astro.props;
 
 if (deleted) return new Response(null, { status: 410 });
+const layoutTitle = `${description} • Kommentar von ${userName}`;
 ---
 
-<Layout title={description}>
+<Layout title={layoutTitle}>
   <Card active {...Astro.props} />
-  {separator && <Separator />}
+  <Separator />
   <slot />
 </Layout>

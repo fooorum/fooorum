@@ -7,12 +7,13 @@ import Separator from "@components/feeds/Separator.astro";
 interface Props extends PostData {
   separator?: boolean;
 }
-const { title, deleted, separator = true } = Astro.props;
+const { title, deleted, userName, separator = true } = Astro.props;
 
 if (deleted) return new Response(null, { status: 410 });
+const layoutTitle = `${title} • Beitrag von ${userName}`;
 ---
 
-<Layout title={title}>
+<Layout title={layoutTitle}>
   <Card active {...Astro.props} />
   {separator && <Separator />}
   <slot />
