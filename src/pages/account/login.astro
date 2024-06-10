@@ -28,16 +28,16 @@ const passwordInputProps = inputProps({
   >
     <Stack>
       <label for="username-input">Nutzername</label>
-      <input id="username-input" {...usernameInputProps} />
+      <input id="username-input" autofocus {...usernameInputProps} />
       <label for="password-input">Passwort</label>
       <div id="password">
         <input id="password-input" type="password" {...passwordInputProps} />
         <button type="button" id="visibility-toggle">
-          <span id="visibility-off">
-            <Icon name="material-symbols:visibility-off" />
-          </span>
           <span id="visibility" hidden>
             <Icon name="material-symbols:visibility" />
+          </span>
+          <span id="visibility-off">
+            <Icon name="material-symbols:visibility-off" />
           </span>
         </button>
       </div>
@@ -68,12 +68,12 @@ const passwordInputProps = inputProps({
   visibilityToggle.addEventListener("click", () => {
     if (passwordInput.type === "text") {
       passwordInput.type = "password";
-      visibility.hidden = false;
-      visibilityOff.hidden = true;
-    } else {
-      passwordInput.type = "text";
       visibility.hidden = true;
       visibilityOff.hidden = false;
+    } else {
+      passwordInput.type = "text";
+      visibility.hidden = false;
+      visibilityOff.hidden = true;
     }
   });
 
