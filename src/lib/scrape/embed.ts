@@ -1,6 +1,6 @@
 import ogs from "open-graph-scraper";
 import type { OgObject } from "open-graph-scraper/dist/lib/types";
-import { prefixAttributes } from "./prefixes";
+import { prefixAttributes } from "../prefixes";
 import { getYouTubeMedia } from "./youTube";
 
 export async function fetchEmbedData(url: string | URL) {

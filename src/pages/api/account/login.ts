@@ -1,11 +1,17 @@
 import { lucia } from "@lib/auth";
-import { hashOptions } from "@lib/hash";
 import type { APIContext } from "astro";
 import { db, User, eq } from "astro:db";
 import { hash, verify } from "argon2";
 import { loginForm } from "@lib/zod/schemata";
 import { securePassword } from "@lib/zod/schemata/password";
 import { responseFromZodError } from "@lib/zod/responseFromZodError";
+
+const hashOptions = {
+  memoryCost: 19456,
+  timeCost: 2,
+  hashLength: 32,
+  parallelism: 1,
+};
 
 export async function POST({
   request,

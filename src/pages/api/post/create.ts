@@ -1,4 +1,4 @@
-import { fetchEmbedData } from "@lib/embed";
+import { fetchEmbedData } from "@lib/scrape/embed";
 import { unprefixAttributes } from "@lib/prefixes";
 import { responseFromZodError } from "@lib/zod/responseFromZodError";
 import { postCreationForm } from "@lib/zod/schemata";

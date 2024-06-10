@@ -1,7 +1,7 @@
 import { z, type RefinementCtx } from "zod";
 import { password } from ".";
 import zxcvbn from "zxcvbn";
-import { getBreaches } from "@lib/haveIBeenPwned";
+import { getBreaches } from "@lib/scrape/haveIBeenPwned";
 
 export function passwordStrengthRefinement(val: string, ctx: RefinementCtx) {
   const result = zxcvbn(val);
