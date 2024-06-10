@@ -10,8 +10,8 @@ export const lucia = new Lucia(adapter, {
       secure: import.meta.env.PROD,
     },
   },
-  getUserAttributes: (attributes) => {
-    return { username: attributes.name, isAdmin: attributes.isAdmin };
+  getUserAttributes: ({ name, isAdmin }) => {
+    return { name, isAdmin };
   },
 });
 

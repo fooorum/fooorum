@@ -17,6 +17,7 @@ Ein simples Internetforum.
 - [Astro](https://astro.build) als vielfältiges Webframework
 - [Drizzle ORM](https://orm.drizzle.team) als SQL-Wrapper
 - [Lucia](https://lucia-auth.com) zur sicheren Nutzerauthentifizierung
+- [Zod](https://zod.dev) zur Eingabevalidierung
 - Material Design [Palette](https://m3.material.io/styles/color/static/baseline) und [Icons](https://m3.material.io/styles/icons/overview)
 
 ## Struktur

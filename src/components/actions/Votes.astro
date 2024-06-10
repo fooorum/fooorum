@@ -14,8 +14,8 @@ const downvoted = votedScore === -1;
 ---
 
 <form action="/api/vote/edit" method="post" data-astro-reload>
-  <input name="postId" type="hidden" value={postId ?? -1} />
-  <input name="commentId" type="hidden" value={commentId ?? -1} />
+  <input name="postId" type="hidden" value={postId} />
+  <input name="commentId" type="hidden" value={commentId} />
   <input name="score" type="hidden" value={upvoted ? 0 : 1} />
   <button class:list={[{ active: upvoted }]} type="submit">
     <Icon name={"material-symbols:thumb-up"} />
@@ -23,8 +23,8 @@ const downvoted = votedScore === -1;
   </button>
 </form>
 <form action="/api/vote/edit" method="post" data-astro-reload>
-  <input name="postId" type="hidden" value={postId ?? -1} />
-  <input name="commentId" type="hidden" value={commentId ?? -1} />
+  <input name="postId" type="hidden" value={postId} />
+  <input name="commentId" type="hidden" value={commentId} />
   <input name="score" type="hidden" value={downvoted ? 0 : -1} />
   <button class:list={[{ active: downvoted }]} type="submit">
     <Icon name={"material-symbols:thumb-down"} />

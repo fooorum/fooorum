@@ -1,62 +1,34 @@
 import { lucia } from "@lib/auth";
-import { userNameValidator, passwordValidator } from "@lib/validate";
 import { hashOptions } from "@lib/hash";
 import type { APIContext } from "astro";
 import { db, User, eq } from "astro:db";
 import { hash, verify } from "argon2";
-import zxcvbn from "zxcvbn";
-import { getBreaches } from "@lib/haveIBeenPwned";
+import { loginForm } from "@lib/zod/schemata";
+import { securePassword } from "@lib/zod/schemata/password";
+import { responseFromZodError } from "@lib/zod/responseFromZodError";
 
 export async function POST({
   request,
   cookies,
   redirect,
 }: APIContext): Promise<Response> {
-  const formData = await request.formData();
-  const userName = formData.get("username");
-  const password = formData.get("password");
+  const formData = Object.fromEntries(await request.formData());
+  const { success, data, error } = loginForm.safeParse(formData);
+  if (!success) return responseFromZodError(error);
 
-  if (typeof userName !== "string" || !userNameValidator.validate(userName)) {
-    return new Response("Invalid username", {
-      status: 400,
-    });
-  }
-  if (typeof password !== "string" || !passwordValidator.validate(password)) {
-    return new Response("Invalid password", {
-      status: 400,
-    });
-  }
+  const { username, password } = data;
 
-  let user = await getUser(userName);
+  let user = await selectUser(username);
   if (!user) {
-    const warnings: string[] = [];
-    const passwordRating = zxcvbn(password);
-    if (passwordRating.score < 4) {
-      warnings.push("weak");
-    }
-    const breaches = await getBreaches(password);
-    if (breaches > 0) {
-      warnings.push(`breaches=${breaches}`);
-    }
+    const { success, error } = await securePassword.safeParseAsync(password);
+    if (!success) return responseFromZodError(error);
 
-    if (warnings.length) {
-      return redirect(`/login?username=${userName}&${warnings.join("&")}`);
-    }
-
-    await createUser(userName, password);
-    user = await getUser(userName);
-
-    if (!user) {
-      return new Response(null, {
-        status: 500,
-      });
-    }
+    await createUser(username, password);
+    user = await selectUser(username);
   }
 
   const passwordIsValid = await verify(user.password, password);
-  if (!passwordIsValid) {
-    return redirect(`/login?invalid&username=${userName}`);
-  }
+  if (!passwordIsValid) return redirect(`/login?invalid`);
 
   const session = await lucia.createSession(user.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
@@ -69,15 +41,15 @@ export async function POST({
   return redirect("/");
 }
 
-async function getUser(userName: string) {
-  const users = await db.select().from(User).where(eq(User.name, userName));
-  return users.at(0);
-}
-
-async function createUser(userName: string, password: string) {
+async function createUser(username: string, password: string) {
   const passwordHash = await hash(password, hashOptions);
   await db.insert(User).values({
-    name: userName,
+    name: username,
     password: passwordHash,
   });
+}
+
+async function selectUser(username: string) {
+  const [user] = await db.select().from(User).where(eq(User.name, username));
+  return user;
 }

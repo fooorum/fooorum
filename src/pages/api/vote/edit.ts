@@ -1,6 +1,7 @@
+import { responseFromZodError } from "@lib/zod/responseFromZodError";
+import { voteEditForm } from "@lib/zod/schemata";
 import type { APIContext } from "astro";
 import { db, and, eq, Vote } from "astro:db";
-import { z } from "zod";
 
 export async function POST({
   locals,
@@ -10,45 +11,35 @@ export async function POST({
   const { user } = locals;
   if (!user) return redirect("/account/login");
 
-  const formData = await request.formData();
-  const postId = z.coerce.number().safeParse(formData.get("postId"));
-  const commentId = z.coerce.number().safeParse(formData.get("commentId"));
-  const score = z.coerce.number().safeParse(formData.get("score"));
-  console.log(postId.data, commentId.data, score.data);
+  const formData = Object.fromEntries(await request.formData());
+  const { success, data, error } = voteEditForm.safeParse(formData);
+  if (!success) return responseFromZodError(error);
 
-  if (
-    postId.data !== undefined &&
-    postId.data > -1 &&
-    score.data !== undefined
-  ) {
+  const { postId, commentId, score } = data;
+
+  if (postId !== null) {
     await db.batch([
       db
         .delete(Vote)
-        .where(and(eq(Vote.userId, user.id), eq(Vote.postId, postId.data))),
+        .where(and(eq(Vote.userId, user.id), eq(Vote.postId, postId))),
 
       db.insert(Vote).values({
         userId: user.id,
-        postId: postId.data,
-        score: score.data,
+        postId: postId,
+        score: score,
       }),
     ]);
   }
-  if (
-    commentId?.data !== undefined &&
-    commentId.data > -1 &&
-    score.data !== undefined
-  ) {
+  if (commentId !== null) {
     await db.batch([
       db
         .delete(Vote)
-        .where(
-          and(eq(Vote.userId, user.id), eq(Vote.commentId, commentId.data)),
-        ),
+        .where(and(eq(Vote.userId, user.id), eq(Vote.commentId, commentId))),
 
       db.insert(Vote).values({
         userId: user.id,
-        commentId: commentId.data,
-        score: score.data,
+        commentId: commentId,
+        score: score,
       }),
     ]);
   }

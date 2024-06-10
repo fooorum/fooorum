@@ -1,3 +1,5 @@
+import { responseFromZodError } from "@lib/zod/responseFromZodError";
+import { commentCreationForm } from "@lib/zod/schemata";
 import type { APIContext } from "astro";
 import { Comment, db } from "astro:db";
 
@@ -9,34 +11,17 @@ export async function POST({
   const { user } = locals;
   if (!user) return redirect("/account/login");
 
-  const formData = await request.formData();
-  const postId = formData.get("postId");
-  const parentId = formData.get("parentId");
-  const description = formData.get("description");
+  const formData = Object.fromEntries(await request.formData());
+  const { success, data, error } = commentCreationForm.safeParse(formData);
+  if (!success) return responseFromZodError(error);
 
-  if (typeof postId !== "string" || !postId) {
-    return new Response("Invalid postId", {
-      status: 400,
-    });
-  }
-
-  if (typeof parentId !== "string" && parentId) {
-    return new Response("Invalid parentId", {
-      status: 400,
-    });
-  }
-
-  if (typeof description !== "string" || !description) {
-    return new Response("Invalid description", {
-      status: 400,
-    });
-  }
+  const { description, postId, parentId } = data;
 
   await db.insert(Comment).values({
     description,
     userId: user.id,
-    postId: parseInt(postId),
-    parentId: parentId ? parseInt(parentId) : undefined,
+    postId: postId,
+    parentId: parentId,
   });
 
   return redirect(`/posts/view/${postId}`);

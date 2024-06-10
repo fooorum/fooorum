@@ -1,8 +1,9 @@
 import { fetchEmbedData } from "@lib/embed";
 import { unprefixAttributes } from "@lib/prefixes";
+import { responseFromZodError } from "@lib/zod/responseFromZodError";
+import { postCreationForm } from "@lib/zod/schemata";
 import type { APIContext } from "astro";
 import { db, Post, Embed, Media, eq } from "astro:db";
-import { z } from "zod";
 
 export async function POST({
   request,
@@ -12,46 +13,22 @@ export async function POST({
   const { user } = locals;
   if (!user) return redirect("/account/login");
 
-  const formData = await request.formData();
-  const forumId = formData.get("forumId");
-  const title = formData.get("title");
-  const description = formData.get("description");
-  const embedUrl = formData.get("embedUrl");
+  const formData = Object.fromEntries(await request.formData());
+  const { success, data, error } = postCreationForm.safeParse(formData);
+  if (!success) return responseFromZodError(error);
 
-  if (typeof forumId !== "string" || !forumId) {
-    return new Response("Invalid forumId", {
-      status: 400,
-    });
-  }
+  const { forumId, title, description, embedUrl } = data;
 
-  if (typeof title !== "string" || !title) {
-    return new Response("Invalid title", {
-      status: 400,
-    });
-  }
-
-  if (typeof description !== "string" || !description) {
-    return new Response("Invalid description", {
-      status: 400,
-    });
-  }
-
-  const zEmbedUrl = z
-    .union([z.string().url().nullish(), z.literal("")])
-    .safeParse(embedUrl);
-  if (!zEmbedUrl.success)
-    return new Response(zEmbedUrl.error.toString(), { status: 400 });
-
-  let embedId: number | undefined = undefined;
-  if (zEmbedUrl.data) {
+  let embedId: number | null = null;
+  if (embedUrl) {
     const [embed] = await db
       .select({ id: Embed.id })
       .from(Embed)
-      .where(eq(Embed.url, zEmbedUrl.data));
+      .where(eq(Embed.url, embedUrl));
     if (embed) embedId = embed.id;
 
     if (embedId === undefined) {
-      const embedData = await fetchEmbedData(zEmbedUrl.data);
+      const embedData = await fetchEmbedData(embedUrl);
       let mediaId: number | undefined = undefined;
 
       if (embedData.mediaUrl && embedData.mediaType) {
@@ -82,7 +59,7 @@ export async function POST({
       title,
       description,
       userId: user.id,
-      forumId: parseInt(forumId),
+      forumId,
       embedId,
     })
     .returning({ postId: Post.id });

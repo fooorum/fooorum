@@ -2,7 +2,6 @@
 import ForumView from "@layouts/ForumView.astro";
 import { eq, Forum } from "astro:db";
 import Send from "@components/actions/Send.astro";
-import { urlValidator } from "@lib/validate";
 import { selectForums } from "@lib/db";
 
 const { user } = Astro.locals;
@@ -26,12 +25,7 @@ const [forum] = await selectForums().where(eq(Forum.id, forumId));
       name="description"
       required="true"
       placeholder="Schreibe einen Kommentar"></textarea>
-    <input
-      name="embedUrl"
-      type="url"
-      placeholder="Verlinke externe Inhalte"
-      {...urlValidator.toJSON()}
-    />
+    <input name="embedUrl" type="url" placeholder="Verlinke externe Inhalte" />
     <Send />
   </form>
 </ForumView>

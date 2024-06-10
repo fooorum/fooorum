@@ -1,3 +1,5 @@
+import { responseFromZodError } from "@lib/zod/responseFromZodError";
+import { commentDeletionForm } from "@lib/zod/schemata";
 import type { APIContext } from "astro";
 import { db, eq, and, Comment } from "astro:db";
 import { z } from "zod";
@@ -10,15 +12,11 @@ export async function POST({
   const { user } = locals;
   if (!user) return redirect("/account/login");
 
-  const formData = await request.formData();
-  const {
-    success: validId,
-    error: idError,
-    data: id,
-  } = z.coerce.number().safeParse(formData.get("id"));
-  if (!validId) {
-    return new Response(idError.toString(), { status: 400 });
-  }
+  const formData = Object.fromEntries(await request.formData());
+  const { success, data, error } = commentDeletionForm.safeParse(formData);
+  if (!success) return responseFromZodError(error);
+
+  const { id } = data;
 
   const filters = [eq(Comment.id, id)];
   if (!user.isAdmin) filters.push(eq(Comment.userId, user.id));

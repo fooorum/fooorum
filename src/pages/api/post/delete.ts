@@ -1,6 +1,7 @@
+import { responseFromZodError } from "@lib/zod/responseFromZodError";
+import { postDeletionForm } from "@lib/zod/schemata";
 import type { APIContext } from "astro";
 import { db, eq, and, Post } from "astro:db";
-import { z } from "zod";
 
 export async function POST({
   locals,
@@ -10,15 +11,11 @@ export async function POST({
   const { user } = locals;
   if (!user) return redirect("/account/login");
 
-  const formData = await request.formData();
-  const {
-    success: validId,
-    error: idError,
-    data: id,
-  } = z.coerce.number().safeParse(formData.get("id"));
-  if (!validId) {
-    return new Response(idError.toString(), { status: 400 });
-  }
+  const formData = Object.fromEntries(await request.formData());
+  const { success, data, error } = postDeletionForm.safeParse(formData);
+  if (!success) return responseFromZodError(error);
+
+  const { id } = data;
 
   const filters = [eq(Post.id, id)];
   if (!user.isAdmin) filters.push(eq(Post.userId, user.id));
