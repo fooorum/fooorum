@@ -31,6 +31,14 @@ interface Props {
   user?: number;
 }
 
+const pageSize = 10;
+const indexStr = Astro.url.searchParams.get("i");
+const index = indexStr && /[0-9]+/.test(indexStr) ? parseInt(indexStr) : 0;
+const nextUrl = new URL(Astro.url);
+const prevUrl = new URL(Astro.url);
+nextUrl.searchParams.set("i", `${index + pageSize}`);
+prevUrl.searchParams.set("i", `${Math.max(0, index - pageSize)}`);
+
 const { forum, user } = Astro.props;
 
 const search: Query = { param: "q" };
@@ -44,7 +52,7 @@ if (query?.length)
 if (forum !== undefined) filters.push(eq(Post.forumId, forum));
 if (user !== undefined) filters.push(eq(Post.userId, user));
 
-const sortSelection: Selection<SQLWrapper> = {
+const sortSelection: Selection<any> = {
   param: "s",
   default: "created",
   options: [
@@ -70,7 +78,9 @@ const order = getSelected(orderSelection, Astro.url).value;
 
 const posts = await selectPosts({ userId: Astro.locals.user?.id })
   .where(and(...filters))
-  .orderBy(order(sort));
+  .orderBy(order(sort))
+  .limit(pageSize)
+  .offset(index);
 ---
 
 <form class="bar">
@@ -92,6 +102,11 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
   {!posts.length && "Es wurden keine Beiträge gefunden."}
 </Stack>
 
+<div class="pagination-nav">
+  <a href={prevUrl}>{index > 0 && "Zurück"}</a>
+  <a href={nextUrl}>{posts.length === pageSize && "Weiter"}</a>
+</div>
+
 <style>
   .bar,
   .sort {
@@ -100,7 +115,13 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
   }
 
   .bar {
-    margin: 0.5em 0.5em;
+    padding: 0.5em;
     flex-wrap: wrap;
+  }
+
+  .pagination-nav {
+    display: flex;
+    padding: 0.5em;
+    justify-content: space-between;
   }
 </style>
