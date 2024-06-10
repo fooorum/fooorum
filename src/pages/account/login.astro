@@ -7,6 +7,7 @@ import { loginForm } from "@lib/zod/schemata";
 
 const { user } = Astro.locals;
 if (user) return Astro.redirect("/account");
+const invalid = Astro.url.searchParams.has("invalid");
 
 const usernameInputProps = inputProps({
   name: "username",
@@ -29,8 +30,20 @@ const passwordInputProps = inputProps({
       <label for="username-input">Nutzername</label>
       <input id="username-input" {...usernameInputProps} />
       <label for="password-input">Passwort</label>
-      <input id="password-input" type="password" {...passwordInputProps} />
-      <span id="issues"></span>
+      <div id="password">
+        <input id="password-input" type="password" {...passwordInputProps} />
+        <button type="button" id="visibility-toggle">
+          <span id="visibility-off">
+            <Icon name="material-symbols:visibility-off" />
+          </span>
+          <span id="visibility" hidden>
+            <Icon name="material-symbols:visibility" />
+          </span>
+        </button>
+      </div>
+      <div id="issues">
+        {invalid && <span>Password is invalid</span>}
+      </div>
       <button>
         <Icon name="material-symbols:login" /> Anmelden oder registrieren
       </button>
@@ -46,6 +59,23 @@ const passwordInputProps = inputProps({
     "password-input",
   ) as HTMLInputElement;
   const issuesWrapper = document.getElementById("issues") as HTMLSpanElement;
+  const visibilityToggle = document.getElementById(
+    "visibility-toggle",
+  ) as HTMLButtonElement;
+  const visibility = document.getElementById("visibility")!;
+  const visibilityOff = document.getElementById("visibility-off")!;
+
+  visibilityToggle.addEventListener("click", () => {
+    if (passwordInput.type === "text") {
+      passwordInput.type = "password";
+      visibility.hidden = false;
+      visibilityOff.hidden = true;
+    } else {
+      passwordInput.type = "text";
+      visibility.hidden = true;
+      visibilityOff.hidden = false;
+    }
+  });
 
   let timeout: NodeJS.Timeout;
   passwordInput?.addEventListener("input", async () => {
@@ -64,7 +94,6 @@ const passwordInputProps = inputProps({
       for (const issue of error.issues) {
         const element = document.createElement("span");
         element.innerText = issue.message;
-        element.className = "issue";
         issuesWrapper.append(element);
       }
       passwordInput.setCustomValidity(fromZodError(error).toString());
@@ -80,11 +109,14 @@ const passwordInputProps = inputProps({
     display: flex;
     flex-direction: column;
     gap: 0.5em;
-  }
-</style>
-
-<style is:global lang="scss">
-  .issue {
     color: var(--error);
+  }
+
+  #password {
+    display: flex;
+  }
+
+  #password-input {
+    flex-grow: 1;
   }
 </style>

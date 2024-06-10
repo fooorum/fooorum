@@ -24,6 +24,8 @@ export default defineConfig({
           "logout",
           "light-mode",
           "dark-mode",
+          "visibility",
+          "visibility-off",
         ],
         tabler: ["brand-foursquare"],
       },

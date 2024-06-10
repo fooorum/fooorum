@@ -34,7 +34,7 @@ export async function POST({
   }
 
   const passwordIsValid = await verify(user.password, password);
-  if (!passwordIsValid) return redirect(`/login?invalid`);
+  if (!passwordIsValid) return redirect(`/account/login?invalid`);
 
   const session = await lucia.createSession(user.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
