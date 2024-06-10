@@ -34,6 +34,7 @@ const theme = Astro.cookies.get("theme")?.value ?? "dark";
     <main>
       <span id="top"></span>
       <slot />
+      <span id="bottom"></span>
     </main>
 
     <Footer />
