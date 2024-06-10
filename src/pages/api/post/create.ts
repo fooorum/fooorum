@@ -27,9 +27,9 @@ export async function POST({
       .where(eq(Embed.url, embedUrl));
     if (embed) embedId = embed.id;
 
-    if (embedId === undefined) {
+    if (embedId === null) {
       const embedData = await fetchEmbedData(embedUrl);
-      let mediaId: number | undefined = undefined;
+      let mediaId: number | null = null;
 
       if (embedData.mediaUrl && embedData.mediaType) {
         const [media] = await db
@@ -38,7 +38,7 @@ export async function POST({
           .where(eq(Media.url, embedData.mediaUrl));
         if (media) mediaId = media.id;
 
-        if (mediaId === undefined) {
+        if (mediaId === null) {
           [{ mediaId }] = await db
             .insert(Media)
             .values(unprefixAttributes(embedData, "media"))

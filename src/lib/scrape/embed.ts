@@ -4,10 +4,10 @@ import { prefixAttributes } from "../prefixes";
 import { getYouTubeMedia } from "./youTube";
 
 export async function fetchEmbedData(url: string | URL) {
-  const href = new URL(url).href;
   const response = await fetch(url);
+  const href = new URL(url).href;
 
-  const blob = await response.blob();
+  const blob = await (response as Response).blob();
   const type = blob.type;
 
   if (["image", "video", "audio"].includes(type.split("/")[0])) {
@@ -17,7 +17,7 @@ export async function fetchEmbedData(url: string | URL) {
       mediaType: type,
     };
   } else {
-    const { result } = await ogs({ url: href });
+    const { result, response, error } = await ogs({ html: await blob.text() });
     const embedMedia = extractEmbedMedia(result);
     return {
       url: href,
@@ -34,8 +34,10 @@ export function extractEmbedMedia(og: OgObject) {
   }
 
   const [image] = og.ogImage ?? [];
-  if (image) return { type: "image/", ...image };
+  if (!image?.type?.startsWith("image/")) image.type = `image/${image.type}`;
+  if (image) return image;
 
   const [video] = og.ogVideo ?? [];
-  if (video) return { type: "video/", ...video };
+  if (!video?.type?.startsWith("video/")) video.type = `video/${video.type}`;
+  if (video) return video;
 }
