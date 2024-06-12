@@ -6,7 +6,7 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<a class="forum-link" href={`/forums/view/${id}`}>
+<a class="forum-link" href={`/forums/view/${id}/posts`}>
   <Icon name="material-symbols:forum" />
   <slot />
 </a>
