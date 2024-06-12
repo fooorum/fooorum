@@ -13,7 +13,7 @@ import {
   and,
   or,
   eq,
-  sum,
+  sql,
   like,
   asc,
   desc,
@@ -60,7 +60,7 @@ const sortSelection: Selection<any> = {
     { name: "Titel", id: "title", value: Post.title },
     { name: "Index", id: "id", value: Post.id },
     { name: "Kommentare", id: "comments", value: countDistinct(Comment.id) },
-    { name: "Bewertungen", id: "votes", value: sum(Vote.score) },
+    { name: "Bewertungen", id: "votes", value: sql`total(${Vote.score})` },
   ],
 };
 
