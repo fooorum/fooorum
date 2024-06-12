@@ -11,6 +11,7 @@ import {
   Embed,
   Media,
   Vote,
+  sum,
 } from "astro:db";
 
 export const Upvote = alias(Vote, "upvote");
@@ -29,6 +30,7 @@ export function selectPosts(options: { userId?: number }) {
       userId: User.id,
       forumName: Forum.name,
       forumId: Forum.id,
+      score: sum(Vote.score),
       upvotes: countDistinct(Upvote.userId),
       downvotes: countDistinct(Downvote.userId),
       votedScore: Voted.score,
@@ -47,6 +49,7 @@ export function selectPosts(options: { userId?: number }) {
     .innerJoin(Forum, eq(Post.forumId, Forum.id))
     .leftJoin(Embed, eq(Post.embedId, Embed.id))
     .leftJoin(Media, eq(Embed.mediaId, Media.id))
+    .leftJoin(Vote, eq(Vote.postId, Post.id))
     .leftJoin(Upvote, and(eq(Upvote.postId, Post.id), eq(Upvote.score, 1)))
     .leftJoin(
       Downvote,
@@ -69,12 +72,14 @@ export function selectComments(options: { userId?: number }) {
       deleted: Comment.deleted,
       userName: User.name,
       userId: User.id,
+      score: sum(Vote.score),
       upvotes: countDistinct(Upvote.userId),
       downvotes: countDistinct(Downvote.userId),
       votedScore: Voted.score,
     })
     .from(Comment)
     .innerJoin(User, eq(Comment.userId, User.id))
+    .leftJoin(Vote, eq(Vote.postId, Post.id))
     .leftJoin(
       Upvote,
       and(eq(Upvote.commentId, Comment.id), eq(Upvote.score, 1)),
