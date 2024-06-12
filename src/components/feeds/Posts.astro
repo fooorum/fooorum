@@ -86,7 +86,7 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
   {
     commentsUrl && (
       <div class="list-selection">
-        <a href=".">
+        <a href={new URL(Astro.url.pathname, Astro.url).href}>
           <Icon name="material-symbols:comment" title="Beiträge" />
         </a>
         <a href={commentsUrl} class="inactive">
