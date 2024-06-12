@@ -1,12 +1,13 @@
 ---
+import { Icon } from "astro-icon/components";
+
 type Props = {
   id: number;
 };
 const { id } = Astro.props;
 ---
 
-<h2 class="title" transition:name={`post-link-${id}`}>
-  <a href={`/posts/view/${id}`}>
-    <slot />
-  </a>
-</h2>
+<a href={`/posts/view/${id}`}>
+  <Icon name="material-symbols:comment" />
+  <slot />
+</a>

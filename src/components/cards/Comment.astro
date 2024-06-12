@@ -2,6 +2,7 @@
 import Card from "@components/cards/Card.astro";
 import Float from "@components/links/Float.astro";
 import User from "@components/links/User.astro";
+import Post from "@components/links/Post.astro";
 import Votes from "@components/actions/Votes.astro";
 import Reply from "@components/actions/ReplyComment.astro";
 import Action from "@components/actions/Action.astro";
@@ -22,15 +23,25 @@ const {
   upvotes,
   downvotes,
   votedScore,
-  active = true,
+  active = false,
 } = Astro.props;
 ---
 
-<Card active={active}>
+<Card active={true}>
   <address slot="header">
     <Float>
       <User id={userId}>{userName}</User>
     </Float>
+    {
+      active && (
+        <span>
+          auf{" "}
+          <Float>
+            <Post id={postId}>ursprünglichen Beitrag</Post>
+          </Float>
+        </span>
+      )
+    }
     <slot name="forum" />
   </address>
   <slot name="title" slot="header" />
