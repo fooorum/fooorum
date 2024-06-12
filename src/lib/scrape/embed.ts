@@ -1,6 +1,6 @@
 import ogs from "open-graph-scraper";
 import type { OgObject } from "open-graph-scraper/dist/lib/types";
-import { prefixAttributes } from "../prefixes";
+import { prefixAttributes } from "@lib/prefixes";
 import { getYouTubeMedia } from "./youTube";
 
 export async function fetchEmbedData(url: string | URL) {
@@ -17,8 +17,8 @@ export async function fetchEmbedData(url: string | URL) {
       mediaType: type,
     };
   } else {
-    const { result, response, error } = await ogs({ html: await blob.text() });
-    const embedMedia = extractEmbedMedia(result);
+    const { result } = await ogs({ html: await blob.text() });
+    const embedMedia = extractEmbedMedia(href, result);
     return {
       url: href,
       title: result.ogTitle,
@@ -27,11 +27,9 @@ export async function fetchEmbedData(url: string | URL) {
   }
 }
 
-export function extractEmbedMedia(og: OgObject) {
-  if (og.requestUrl) {
-    const youTubeMedia = getYouTubeMedia(og.requestUrl);
-    if (youTubeMedia) return youTubeMedia;
-  }
+export function extractEmbedMedia(url: string, og: OgObject) {
+  const youTubeMedia = getYouTubeMedia(url);
+  if (youTubeMedia) return youTubeMedia;
 
   const [image] = og.ogImage ?? [];
   if (!image?.type?.startsWith("image/")) image.type = `image/${image.type}`;
