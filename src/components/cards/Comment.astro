@@ -3,7 +3,7 @@ import Card from "@components/cards/Card.astro";
 import Float from "@components/links/Float.astro";
 import User from "@components/links/User.astro";
 import Votes from "@components/actions/Votes.astro";
-import Reply from "@components/actions/Comment.astro";
+import Reply from "@components/actions/ReplyComment.astro";
 import Action from "@components/actions/Action.astro";
 import type { CommentData } from "@lib/db";
 import { Icon } from "astro-icon/components";
@@ -39,7 +39,7 @@ const {
   <Votes slot="footer" {...{ commentId: id, upvotes, downvotes, votedScore }} />
   <form slot="footer" data-astro-reload>
     <input name="id" type="hidden" value={id} />
-    <Reply postId={postId} parentId={id} />
+    <Reply parentId={id} postId={postId} />
     <Authorized userId={userId}>
       <Action target=`/comments/delete/${id}`>
         <Icon name="material-symbols:delete" title="delete" />

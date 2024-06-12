@@ -1,0 +1,42 @@
+---
+import CommentView from "@layouts/CommentView.astro";
+import Send from "@components/actions/Send.astro";
+import { eq, Comment } from "astro:db";
+import { selectComments } from "@lib/db";
+import { commentReplyParams } from "@lib/zod/schemata";
+import { responseFromZodError } from "@lib/zod/responseFromZodError";
+
+const { user } = Astro.locals;
+if (!user) return Astro.redirect("/account/login");
+
+const { success, data, error } = commentReplyParams.safeParse(Astro.params);
+if (!success) return responseFromZodError(error);
+
+const { postId, parentId } = data;
+
+const [parent] = await selectComments({ userId: user.id }).where(
+  eq(Comment.id, parentId),
+);
+---
+
+<CommentView {...parent}>
+  <form method="post" action="/api/comment/create">
+    <input name="postId" type="hidden" value={postId} />
+    <input name="parentId" type="hidden" value={parentId} />
+    <textarea
+      autofocus={true}
+      rows={5}
+      name="description"
+      required="true"
+      placeholder="Schreibe einen Kommentar"></textarea>
+    <Send />
+  </form>
+</CommentView>
+
+<style lang="scss">
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+</style>

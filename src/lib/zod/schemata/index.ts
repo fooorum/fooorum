@@ -55,3 +55,11 @@ export const commentVoteEditForm = z.object({
 });
 
 export const voteEditForm = z.union([postVoteEditForm, commentVoteEditForm]);
+
+export const postReplyParams = z.object({
+  postId: requiredNumberCoercable,
+});
+export const commentReplyParams = z.object({
+  postId: requiredNumberCoercable,
+  parentId: requiredNumberCoercable,
+});

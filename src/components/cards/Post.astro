@@ -9,7 +9,7 @@ import Embed from "@components/embeds/Embed.astro";
 import type { PostData } from "@lib/db";
 import { unprefixAttributes, getPrefixedAttributes } from "@lib/prefixes";
 import User from "@components/links/User.astro";
-import Comment from "@components/actions/Comment.astro";
+import Comment from "@components/actions/ReplyPost.astro";
 import Votes from "@components/actions/Votes.astro";
 import Delete from "@components/actions/Delete.astro";
 
@@ -61,7 +61,7 @@ const media = getPrefixedAttributes(Astro.props, "media");
   <form slot="footer" data-astro-reload>
     {
       active ? (
-        <Comment postId={id} parentId={null} />
+        <Comment postId={id} />
       ) : (
         <Comments postId={id} amount={comments} />
       )

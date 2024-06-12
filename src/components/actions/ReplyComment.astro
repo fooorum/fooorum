@@ -1,0 +1,19 @@
+---
+import { Icon } from "astro-icon/components";
+interface Props {
+  postId: number;
+  parentId: number;
+}
+const { postId, parentId } = Astro.props;
+---
+
+<button formaction={`/comments/create/${postId}/${parentId}`}>
+  <Icon name="material-symbols:reply" />
+</button>
+
+<style lang="scss">
+  button {
+    position: relative;
+    z-index: 1;
+  }
+</style>
