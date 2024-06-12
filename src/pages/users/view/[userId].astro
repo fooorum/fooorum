@@ -9,5 +9,5 @@ const [user] = await selectUsers().where(eq(User.id, userId));
 ---
 
 <UserView {...user}>
-  <Feed user={user.id} />
+  <Feed userId={user.id} />
 </UserView>

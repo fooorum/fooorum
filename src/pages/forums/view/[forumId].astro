@@ -9,5 +9,5 @@ const [forum] = await selectForums().where(eq(Forum.id, forumId));
 ---
 
 <ForumView {...forum}>
-  <Feed forum={forum.id} />
+  <Feed forumId={forum.id} />
 </ForumView>

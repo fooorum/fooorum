@@ -8,7 +8,6 @@ import Search, { getQuery, type Query } from "./Search.astro";
 import Separator from "@components/feeds/Separator.astro";
 import Card from "@components/cards/Post.astro";
 import { selectPosts } from "@lib/db";
-import type { SQLWrapper } from "drizzle-orm/sql";
 import {
   and,
   or,
@@ -27,8 +26,8 @@ import {
 import { Icon } from "astro-icon/components";
 
 interface Props {
-  forum?: number;
-  user?: number;
+  forumId?: number;
+  userId?: number;
 }
 
 const pageSize = 10;
@@ -39,7 +38,7 @@ const prevUrl = new URL(Astro.url);
 nextUrl.searchParams.set("i", `${index + pageSize}`);
 prevUrl.searchParams.set("i", `${Math.max(0, index - pageSize)}`);
 
-const { forum, user } = Astro.props;
+const { forumId, userId } = Astro.props;
 
 const search: Query = { param: "q" };
 
@@ -49,8 +48,8 @@ if (query?.length)
   filters.push(
     or(like(Post.title, `%${query}%`), like(Post.description, `%${query}%`))!,
   );
-if (forum !== undefined) filters.push(eq(Post.forumId, forum));
-if (user !== undefined) filters.push(eq(Post.userId, user));
+if (forumId !== undefined) filters.push(eq(Post.forumId, forumId));
+if (userId !== undefined) filters.push(eq(Post.userId, userId));
 
 const sortSelection: Selection<any> = {
   param: "s",
@@ -99,7 +98,14 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
       .flatMap((post) => [<Card {...post} />, <Separator id={post.id} />])
       .slice(0, -1)
   }
-  {!posts.length && "Es wurden keine Beiträge gefunden."}
+  {
+    !posts.length && (
+      <span>
+        Es wurden keine Beiträge gefunden.{" "}
+        <a href={`/posts/create/${forumId}`}>Erstelle einen!</a>
+      </span>
+    )
+  }
 </Stack>
 
 <div class="pagination-nav">
