@@ -17,6 +17,7 @@ const passwordInputProps = inputProps({
   name: "password",
   type: loginForm.shape.password,
 });
+passwordInputProps.type = "password";
 ---
 
 <Layout title="Anmelden oder Registrieren">
@@ -31,7 +32,7 @@ const passwordInputProps = inputProps({
       <input id="username-input" autofocus {...usernameInputProps} />
       <label for="password-input">Passwort</label>
       <div id="password">
-        <input id="password-input" type="password" {...passwordInputProps} />
+        <input id="password-input" {...passwordInputProps} />
         <button type="button" id="visibility-toggle">
           <span id="visibility" hidden>
             <Icon name="material-symbols:visibility" />
