@@ -27,7 +27,7 @@ const { name, id, description, active = false } = Astro.props;
     <Post forumId={id} />
 
     <Authorized>
-      <Action target=`/forums/edit/${id}`
+      <Action target={`/forums/edit/${id}`}
         ><Icon name="material-symbols:edit" />
       </Action>
     </Authorized>

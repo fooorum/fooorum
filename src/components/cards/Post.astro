@@ -12,6 +12,9 @@ import User from "@components/links/User.astro";
 import Comment from "@components/actions/ReplyPost.astro";
 import Votes from "@components/actions/Votes.astro";
 import Delete from "@components/actions/Delete.astro";
+import Authorized from "@components/auth/Authorized.astro";
+import { Icon } from "astro-icon/components";
+import Action from "@components/actions/Action.astro";
 
 interface Props extends PostData {
   active?: boolean;
@@ -61,7 +64,14 @@ const media = getPrefixedAttributes(Astro.props, "media");
   <form slot="footer" data-astro-reload>
     <Comments postId={id} amount={comments} />
     {active && <Comment postId={id} />}
-    {(userId === user?.id || user?.isAdmin) && <Delete postId={id} />}
+    <Authorized userId={userId} admin={false}>
+      <Action target={`/posts/edit/${id}`}>
+        <Icon name="material-symbols:edit" />
+      </Action>
+    </Authorized>
+    <Authorized userId={userId}>
+      <Delete postId={id} />
+    </Authorized>
   </form>
 </Card>
 

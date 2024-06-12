@@ -31,7 +31,7 @@ export const forumCreationForm = z.object({
   description: emptyString.nullable().or(z.string()),
 });
 
-export const forumEditForm = forumCreationForm.and(
+export const forumEditForm = forumCreationForm.merge(
   z.object({
     id: requiredNumberCoercable,
   }),
@@ -43,6 +43,12 @@ export const postCreationForm = z.object({
   description: z.string(),
   embedUrl: emptyString.nullable().or(z.string().url()),
 });
+
+export const postEditForm = postCreationForm.omit({ forumId: true }).merge(
+  z.object({
+    id: requiredNumberCoercable,
+  }),
+);
 
 export const postDeletionForm = z.object({
   id: z.coerce.number(),

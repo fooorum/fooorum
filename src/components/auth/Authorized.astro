@@ -1,11 +1,12 @@
 ---
 interface Props {
   userId?: number;
+  admin?: boolean;
 }
-const { userId } = Astro.props;
+const { userId, admin = true } = Astro.props;
 const { user } = Astro.locals;
 
-const authorized = user && (userId === user.id || user.isAdmin);
+const authorized = user && (userId === user.id || (admin && user.isAdmin));
 ---
 
 {authorized ? <slot /> : <slot name="fallback" />}
