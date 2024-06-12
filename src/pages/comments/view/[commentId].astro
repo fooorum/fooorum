@@ -1,0 +1,15 @@
+---
+import CommentView from "@layouts/CommentView.astro";
+import Comments from "@components/feeds/CommentTree.astro";
+import { eq, Comment } from "astro:db";
+import { selectComments } from "@lib/db";
+
+const commentId = parseInt(Astro.params.commentId!);
+const [comment] = await selectComments({ userId: Astro.locals.user?.id }).where(
+  eq(Comment.id, commentId),
+);
+---
+
+<CommentView {...comment} separator={false}>
+  <Comments postId={comment.postId} parentId={comment.id} />
+</CommentView>

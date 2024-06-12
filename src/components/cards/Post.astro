@@ -59,13 +59,8 @@ const media = getPrefixedAttributes(Astro.props, "media");
   }
   <Votes slot="footer" {...{ postId: id, upvotes, downvotes, votedScore }} />
   <form slot="footer" data-astro-reload>
-    {
-      active ? (
-        <Comment postId={id} />
-      ) : (
-        <Comments postId={id} amount={comments} />
-      )
-    }
+    <Comments postId={id} amount={comments} />
+    {active && <Comment postId={id} />}
     {(userId === user?.id || user?.isAdmin) && <Delete postId={id} />}
   </form>
 </Card>

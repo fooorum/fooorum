@@ -50,6 +50,9 @@ const {
   <Votes slot="footer" {...{ commentId: id, upvotes, downvotes, votedScore }} />
   <form slot="footer" data-astro-reload>
     <input name="id" type="hidden" value={id} />
+    <Action target=`/comments/view/${id}`>
+      <Icon name="material-symbols:link" title="link" />
+    </Action>
     <Reply parentId={id} postId={postId} />
     <Authorized userId={userId}>
       <Action target=`/comments/delete/${id}`>

@@ -26,6 +26,7 @@ export default defineConfig({
           "dark-mode",
           "visibility",
           "visibility-off",
+          "link",
         ],
         tabler: ["brand-foursquare"],
       },
