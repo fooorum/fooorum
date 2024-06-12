@@ -10,7 +10,6 @@ export async function POST({
 }: APIContext): Promise<Response> {
   const { user } = locals;
   if (!user) return redirect("/account/login");
-
   if (!user.isAdmin) return new Response(null, { status: 403 });
 
   const formData = Object.fromEntries(await request.formData());

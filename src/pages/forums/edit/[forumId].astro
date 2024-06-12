@@ -1,0 +1,41 @@
+---
+import ForumView from "@layouts/ForumView.astro";
+import Send from "@components/actions/Send.astro";
+import { selectForums } from "@lib/db";
+import { Forum, eq } from "astro:db";
+
+const forumId = parseInt(Astro.params.forumId!);
+
+const { user } = Astro.locals;
+if (!user) return Astro.redirect("/account/login");
+if (!user.isAdmin) return new Response(null, { status: 403 });
+
+const [forum] = await selectForums().where(eq(Forum.id, forumId));
+---
+
+<ForumView {...forum}>
+  <form method="post" action="/api/forum/edit">
+    <input name="id" type="hidden" value={forum.id} />
+    <input
+      autofocus={true}
+      name="name"
+      required="true"
+      value={forum.name}
+      placeholder="Name des Forums"
+    />
+    <input
+      name="description"
+      placeholder="Beschreibung"
+      value={forum.description}
+    />
+    <Send />
+  </form>
+</ForumView>
+
+<style lang="scss">
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+</style>

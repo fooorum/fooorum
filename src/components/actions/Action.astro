@@ -3,7 +3,7 @@ interface Props {
   target: string;
   float?: boolean;
 }
-const { target, float } = Astro.props;
+const { target, float = true } = Astro.props;
 ---
 
 <button class:list={{ float }} formaction={target}>

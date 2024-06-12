@@ -3,6 +3,9 @@ import Card from "./Card.astro";
 import Link from "@components/links/Forum.astro";
 import Cover from "@components/links/Cover.astro";
 import Post from "@components/actions/Post.astro";
+import Action from "@components/actions/Action.astro";
+import Authorized from "@components/auth/Authorized.astro";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   name: string;
@@ -20,5 +23,13 @@ const { name, id, description, active = false } = Astro.props;
   </address>
   {description}
 
-  <form slot="footer" data-astro-reload><Post forumId={id} /></form>
+  <form slot="footer" data-astro-reload>
+    <Post forumId={id} />
+
+    <Authorized>
+      <Action target=`/forums/edit/${id}`
+        ><Icon name="material-symbols:edit" />
+      </Action>
+    </Authorized>
+  </form>
 </Card>

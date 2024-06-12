@@ -27,6 +27,7 @@ export default defineConfig({
           "visibility",
           "visibility-off",
           "link",
+          "edit",
         ],
         tabler: ["brand-foursquare"],
       },

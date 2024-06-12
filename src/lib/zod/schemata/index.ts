@@ -27,9 +27,15 @@ export const userEditForm = z.object({
 });
 
 export const forumCreationForm = z.object({
-  name: z.string(),
+  name: slug,
   description: emptyString.nullable().or(z.string()),
 });
+
+export const forumEditForm = forumCreationForm.and(
+  z.object({
+    id: requiredNumberCoercable,
+  }),
+);
 
 export const postCreationForm = z.object({
   forumId: z.coerce.number(),
