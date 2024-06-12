@@ -29,7 +29,7 @@ interface Props {
   postsUrl?: string;
 }
 
-const pageSize = 10;
+const pageSize = 15;
 const indexStr = Astro.url.searchParams.get("i");
 const index = indexStr && /[0-9]+/.test(indexStr) ? parseInt(indexStr) : 0;
 const nextUrl = new URL(Astro.url);
