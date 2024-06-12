@@ -1,14 +1,15 @@
 ---
 interface Props {
   url: string | null;
+  target?: string;
 }
 
-const { url } = Astro.props;
+const { url, target } = Astro.props;
 ---
 
 {
   url ? (
-    <a href={url}>
+    <a href={url} target={target}>
       <slot />
     </a>
   ) : (
