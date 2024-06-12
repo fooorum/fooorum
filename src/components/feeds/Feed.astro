@@ -56,10 +56,9 @@ const sortSelection: Selection<any> = {
   default: "created",
   options: [
     { name: "Erstellt", id: "created", value: Post.createdAt },
-    { name: "Titel", id: "title", value: Post.title },
-    { name: "Index", id: "id", value: Post.id },
-    { name: "Kommentare", id: "comments", value: countDistinct(Comment.id) },
     { name: "Bewertungen", id: "votes", value: sql`total(${Vote.score})` },
+    { name: "Kommentare", id: "comments", value: countDistinct(Comment.id) },
+    { name: "Titel", id: "title", value: Post.title },
   ],
 };
 
