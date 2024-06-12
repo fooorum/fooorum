@@ -49,9 +49,9 @@ a {
 }
 
 button {
-  background: unset;
-  border: unset;
-  color: unset;
+  background: none;
+  border: none;
+  color: var(--text);
 
   &:hover,
   &.active {
@@ -61,11 +61,16 @@ button {
 
 input,
 textarea,
-select {
+select,
+#password {
   background: none;
   border: none;
   border-bottom: solid 0.5px var(--text);
   color: inherit;
+
+  &#password-input {
+    border-bottom: none;
+  }
 }
 
 progress {
