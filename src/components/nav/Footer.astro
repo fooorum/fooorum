@@ -1,11 +1,17 @@
 ---
-import { GITHUB_URL } from "@consts";
+import { GITHUB_URL, SLIDES_URL } from "@consts";
 ---
 
 <footer>
-  <div class="links"><a href={GITHUB_URL}>GitHub</a></div>
+  <div class="links">
+    <a href={GITHUB_URL}>GitHub</a>
+    <a href={SLIDES_URL}>Slides</a>
+  </div>
   <div>&copy; 2024 Fooorum</div>
-  <div class="footer-nav"><a href="#top">Hoch</a></div>
+  <div class="footer-nav">
+    <a href="#top">Hoch</a>
+    <a href="#bottom">Runter</a>
+  </div>
 </footer>
 
 <style lang="scss">
@@ -28,6 +34,12 @@ import { GITHUB_URL } from "@consts";
 
     &:hover {
       bottom: 0em;
+    }
+
+    .links,
+    .footer-nav {
+      display: flex;
+      gap: 1em;
     }
   }
 </style>
