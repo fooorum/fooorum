@@ -21,6 +21,11 @@ export const loginForm = z.object({
   password: password,
 });
 
+export const userEditForm = z.object({
+  name: slug,
+  description: emptyString.nullable().or(z.string()),
+});
+
 export const forumCreationForm = z.object({
   name: z.string(),
   description: emptyString.nullable().or(z.string()),

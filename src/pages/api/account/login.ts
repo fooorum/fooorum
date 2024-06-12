@@ -44,7 +44,7 @@ export async function POST({
     sessionCookie.attributes,
   );
 
-  return redirect("/");
+  return redirect("/account");
 }
 
 async function createUser(username: string, password: string) {

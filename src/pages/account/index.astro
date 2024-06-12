@@ -3,18 +3,39 @@ import UserLayout from "@layouts/UserView.astro";
 import { Icon } from "astro-icon/components";
 import { User, eq } from "astro:db";
 import { selectUsers } from "@lib/db";
+import Send from "@components/actions/Send.astro";
 
-const { user } = Astro.locals;
-if (!user) {
+const { user: usr } = Astro.locals;
+if (!usr) {
   return Astro.redirect("/account/login");
 }
 
-const [fullUser] = await selectUsers().where(eq(User.id, user.id));
+const [user] = await selectUsers().where(eq(User.id, usr.id));
 ---
 
-<UserLayout {...fullUser}>
-  <form method="post" action="/api/account/logout" data-astro-reload>
-    <button><Icon name="material-symbols:logout" /> Abmelden</button>
+<UserLayout {...user}>
+  <form method="post" action="/api/account/edit" data-astro-reload>
+    <label for="name-input">Name</label>
+    <input
+      name="name"
+      id="name-input"
+      value={user.name}
+      placeholder="Dein Nutzername"
+    />
+    <label for="description-input">Beschreibung</label>
+    <input
+      name="description"
+      id="description-input"
+      value={user.description}
+      placeholder="Füge eine Beschreibung hinzu"
+    />
+    <div class="actions">
+      <Send />
+      <button formaction="/api/account/logout">
+        <Icon name="material-symbols:logout" />
+        Abmelden
+      </button>
+    </div>
   </form>
 </UserLayout>
 
@@ -23,5 +44,9 @@ const [fullUser] = await selectUsers().where(eq(User.id, user.id));
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+  }
+  .actions {
+    display: flex;
+    justify-content: space-between;
   }
 </style>
