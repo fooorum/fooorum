@@ -25,5 +25,5 @@ export async function POST({
     })
     .returning({ id: Forum.id });
 
-  return redirect(`/forums/view/${id}`);
+  return redirect(`/forums/view/${id}/posts`);
 }

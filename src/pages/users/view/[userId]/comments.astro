@@ -1,5 +1,5 @@
 ---
-import Feed from "@components/feeds/Feed.astro";
+import Feed from "@components/feeds/Comments.astro";
 import UserView from "@layouts/UserView.astro";
 import { eq, User } from "astro:db";
 import { selectUsers } from "@lib/db";
@@ -9,5 +9,5 @@ const [user] = await selectUsers().where(eq(User.id, userId));
 ---
 
 <UserView {...user}>
-  <Feed userId={user.id} />
+  <Feed userId={user.id} postsUrl={`/users/view/${userId}/posts`} />
 </UserView>

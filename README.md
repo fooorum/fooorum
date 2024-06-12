@@ -8,8 +8,8 @@ Ein simples Internetforum.
 
 ## Features
 
-- Browse [Beiträge](https://fooorum.vercel.app/posts), [Foren](https://fooorum.vercel.app/forums) und [Nutzer](https://fooorum.vercel.app/users).
-- [Erstelle und verwende Nutzer](https://fooorum.vercel.app/login)
+- Browse [Beiträge](https://fooorum.vercel.app/p), [Kommentare](https://fooorum.vercel.app/c), [Foren](https://fooorum.vercel.app/f) und [Nutzer](https://fooorum.vercel.app/u).
+- [Erstelle und verwende Nutzer](https://fooorum.vercel.app/account)
 - Sende, bewerte und kommentiere Beiträge als Nutzer.
 
 ## Tech Stack

@@ -3,12 +3,16 @@ import { Icon } from "astro-icon/components";
 
 interface Props {
   href: string;
+  scope?: string | string[];
   icon?: string;
   title?: string;
 }
 
-const { href, icon, title } = Astro.props;
-const isActive = Astro.url.href.startsWith(new URL(href, Astro.url).href);
+const { href, icon, title, scope = [href] } = Astro.props;
+const scopes = typeof scope === "string" ? [scope] : scope;
+const isActive = scopes.some((scope) =>
+  Astro.url.href.startsWith(new URL(scope, Astro.url).href),
+);
 ---
 
 <a class={isActive ? "active" : ""} href={new URL(href, Astro.url)}>

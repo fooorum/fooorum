@@ -1,16 +1,17 @@
 ---
 interface Props {
   target: string;
+  float?: boolean;
 }
-const { target } = Astro.props;
+const { target, float } = Astro.props;
 ---
 
-<button formaction={target}>
+<button class:list={{ float }} formaction={target}>
   <slot />
 </button>
 
 <style lang="scss">
-  button {
+  .float {
     position: relative;
     z-index: 1;
   }

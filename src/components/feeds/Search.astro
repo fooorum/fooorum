@@ -4,6 +4,7 @@ const search = Astro.props;
 
 export interface Query {
   param: string;
+  placeholder: string;
 }
 
 const query = getQuery(search, Astro.url);
@@ -13,7 +14,7 @@ export function getQuery({ param }: Query, { searchParams }: URL) {
 }
 ---
 
-<input name={search.param} placeholder="Suche Beiträge" value={query} />
+<input name={search.param} placeholder={search.placeholder} value={query} />
 
 <style>
   input {

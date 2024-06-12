@@ -1,6 +1,6 @@
 ---
 import ForumView from "@layouts/ForumView.astro";
-import Feed from "@components/feeds/Feed.astro";
+import Feed from "@components/feeds/Posts.astro";
 import { eq, Forum } from "astro:db";
 import { selectForums } from "@lib/db";
 
@@ -9,5 +9,5 @@ const [forum] = await selectForums().where(eq(Forum.id, forumId));
 ---
 
 <ForumView {...forum}>
-  <Feed forumId={forum.id} />
+  <Feed forumId={forum.id} commentsUrl={`/forums/view/${forumId}/comments`} />
 </ForumView>

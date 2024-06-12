@@ -14,7 +14,7 @@ const layoutTitle = `${description} • Kommentar von ${userName}`;
 ---
 
 <Layout title={layoutTitle}>
-  <Card active {...Astro.props} />
+  <Card expanded={true} {...Astro.props} />
   {separator && <Separator />}
   <slot />
 </Layout>

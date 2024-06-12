@@ -28,6 +28,7 @@ import { Icon } from "astro-icon/components";
 interface Props {
   forumId?: number;
   userId?: number;
+  commentsUrl?: string;
 }
 
 const pageSize = 10;
@@ -38,9 +39,9 @@ const prevUrl = new URL(Astro.url);
 nextUrl.searchParams.set("i", `${index + pageSize}`);
 prevUrl.searchParams.set("i", `${Math.max(0, index - pageSize)}`);
 
-const { forumId, userId } = Astro.props;
+const { forumId, userId, commentsUrl } = Astro.props;
 
-const search: Query = { param: "q" };
+const search: Query = { param: "q", placeholder: "Suche Beiträge" };
 
 const query = getQuery(search, Astro.url);
 const filters = [ne(Post.deleted, TRUE)];
@@ -82,6 +83,18 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
 ---
 
 <form class="bar">
+  {
+    commentsUrl && (
+      <div class="list-selection">
+        <a href=".">
+          <Icon name="material-symbols:comment" title="Beiträge" />
+        </a>
+        <a href={commentsUrl} class="inactive">
+          <Icon name="material-symbols:reply" title="Kommentare" />
+        </a>
+      </div>
+    )
+  }
   <Search {...search} />
   <div class="sort">
     <Select {...sortSelection} />
@@ -114,9 +127,16 @@ const posts = await selectPosts({ userId: Astro.locals.user?.id })
 
 <style>
   .bar,
-  .sort {
+  .sort,
+  .list-selection {
     display: flex;
     gap: 0.5em;
+  }
+  .inactive {
+    color: var(--text);
+    &:hover {
+      color: var(--accent);
+    }
   }
 
   .bar {

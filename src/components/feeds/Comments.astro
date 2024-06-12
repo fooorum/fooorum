@@ -1,0 +1,144 @@
+---
+import Stack from "@components/feeds/Stack.astro";
+import Select, {
+  getSelected,
+  type Selection,
+} from "@components/feeds/Select.astro";
+import Search, { getQuery, type Query } from "./Search.astro";
+import Separator from "@components/feeds/Separator.astro";
+import Card from "@components/cards/Comment.astro";
+import { selectComments } from "@lib/db";
+import {
+  and,
+  eq,
+  sql,
+  like,
+  asc,
+  desc,
+  Vote,
+  TRUE,
+  ne,
+  Comment,
+  Post,
+} from "astro:db";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  forumId?: number;
+  userId?: number;
+  postsUrl?: string;
+}
+
+const pageSize = 10;
+const indexStr = Astro.url.searchParams.get("i");
+const index = indexStr && /[0-9]+/.test(indexStr) ? parseInt(indexStr) : 0;
+const nextUrl = new URL(Astro.url);
+const prevUrl = new URL(Astro.url);
+nextUrl.searchParams.set("i", `${index + pageSize}`);
+prevUrl.searchParams.set("i", `${Math.max(0, index - pageSize)}`);
+
+const { forumId, userId, postsUrl } = Astro.props;
+
+const search: Query = { param: "q", placeholder: "Suche Kommentare" };
+
+const query = getQuery(search, Astro.url);
+const filters = [ne(Comment.deleted, TRUE)];
+if (query?.length) filters.push(like(Comment.description, `%${query}%`)!);
+if (forumId !== undefined) filters.push(eq(Post.forumId, forumId));
+if (userId !== undefined) filters.push(eq(Comment.userId, userId));
+
+const sortSelection: Selection<any> = {
+  param: "s",
+  default: "created",
+  options: [
+    { name: "Erstellt", id: "created", value: Comment.createdAt },
+    { name: "Bewertungen", id: "votes", value: sql`total(${Vote.score})` },
+  ],
+};
+
+const orderSelection: Selection<typeof asc | typeof desc> = {
+  param: "o",
+  default: "desc",
+  options: [
+    { name: "Aufsteigend", id: "asc", value: asc },
+    { name: "Absteigend", id: "desc", value: desc },
+  ],
+};
+
+const sort = getSelected(sortSelection, Astro.url).value;
+const order = getSelected(orderSelection, Astro.url).value;
+
+const posts = await selectComments({ userId: Astro.locals.user?.id })
+  .innerJoin(Post, eq(Comment.postId, Post.id))
+  .where(and(...filters))
+  .orderBy(order(sort))
+  .limit(pageSize)
+  .offset(index);
+---
+
+<form class="bar">
+  {
+    postsUrl && (
+      <div class="list-selection">
+        <a href={postsUrl} class="inactive">
+          <Icon name="material-symbols:comment" title="Beiträge" />
+        </a>
+        <a href=".">
+          <Icon name="material-symbols:reply" title="Kommentare" />
+        </a>
+      </div>
+    )
+  }
+  <Search {...search} />
+  <div class="sort">
+    <Select {...sortSelection} />
+    <Select {...orderSelection} />
+  </div>
+  <button type="submit">
+    <Icon name="material-symbols:send" title="Anwenden" /> Anwenden
+  </button>
+
+  <Stack>
+    {
+      posts
+        .flatMap((post) => [
+          <Card {...post} active={false} />,
+          <Separator id={post.id} />,
+        ])
+        .slice(0, -1)
+    }
+    {!posts.length && <span>Es wurden keine Kommentare gefunden.</span>}
+  </Stack>
+
+  <div class="pagination-nav">
+    <a href={prevUrl}>{index > 0 && "Zurück"}</a>
+    <a href={nextUrl}>{posts.length === pageSize && "Weiter"}</a>
+  </div>
+
+  <style>
+    .bar,
+    .sort,
+    .list-selection {
+      display: flex;
+      gap: 0.5em;
+    }
+
+    .inactive {
+      color: var(--text);
+      &:hover {
+        color: var(--accent);
+      }
+    }
+
+    .bar {
+      padding: 0.5em;
+      flex-wrap: wrap;
+    }
+
+    .pagination-nav {
+      display: flex;
+      padding: 0.5em;
+      justify-content: space-between;
+    }
+  </style>
+</form>

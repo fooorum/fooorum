@@ -79,7 +79,7 @@ export function selectComments(options: { userId?: number }) {
     })
     .from(Comment)
     .innerJoin(User, eq(Comment.userId, User.id))
-    .leftJoin(Vote, eq(Vote.postId, Comment.id))
+    .leftJoin(Vote, eq(Vote.commentId, Comment.id))
     .leftJoin(
       Upvote,
       and(eq(Upvote.commentId, Comment.id), eq(Upvote.score, 1)),

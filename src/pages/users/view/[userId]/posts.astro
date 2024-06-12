@@ -1,0 +1,13 @@
+---
+import Feed from "@components/feeds/Posts.astro";
+import UserView from "@layouts/UserView.astro";
+import { eq, User } from "astro:db";
+import { selectUsers } from "@lib/db";
+
+const userId = parseInt(Astro.params.userId!);
+const [user] = await selectUsers().where(eq(User.id, userId));
+---
+
+<UserView {...user}>
+  <Feed userId={user.id} commentsUrl={`/users/view/${userId}/comments`} />
+</UserView>

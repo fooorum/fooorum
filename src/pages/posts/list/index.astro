@@ -1,8 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Feed from "@components/feeds/Feed.astro";
+import Feed from "@components/feeds/Posts.astro";
 ---
 
 <Layout title="Beiträge">
-  <Feed />
+  <Feed commentsUrl="/comments/list" />
 </Layout>
