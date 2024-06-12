@@ -1,5 +1,5 @@
 ---
-import { getFilename } from "@lib/scrape/url";
+import { getFallbackTitle } from "@lib/scrape/url";
 import { Image as Img } from "astro:assets";
 
 interface Props {
@@ -22,7 +22,7 @@ if (width && height && width > 584) {
 
 <Img
   src={url}
-  alt={alt ?? getFilename(url) ?? null}
+  alt={alt ?? getFallbackTitle(url) ?? null}
   width={width ?? undefined}
   height={height ?? undefined}
   inferSize={!(width && height) as true}
