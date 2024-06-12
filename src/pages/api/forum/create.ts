@@ -11,6 +11,8 @@ export async function POST({
   const { user } = locals;
   if (!user) return redirect("/account/login");
 
+  if (!user.isAdmin) return new Response(null, { status: 403 });
+
   const formData = Object.fromEntries(await request.formData());
   const { success, data, error } = forumCreationForm.safeParse(formData);
   if (!success) return responseFromZodError(error);
