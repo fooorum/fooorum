@@ -58,7 +58,6 @@ export async function POST({
     .set({
       title,
       description,
-      userId: user.id,
       embedId,
     })
     .where(eq(Post.id, id));

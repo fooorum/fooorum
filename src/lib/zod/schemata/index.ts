@@ -38,7 +38,7 @@ export const forumEditForm = forumCreationForm.merge(
 );
 
 export const postCreationForm = z.object({
-  forumId: z.coerce.number(),
+  forumId: requiredNumberCoercable,
   title: z.string(),
   description: z.string(),
   embedUrl: emptyString.nullable().or(z.string().url()),
@@ -55,10 +55,18 @@ export const postDeletionForm = z.object({
 });
 
 export const commentCreationForm = z.object({
-  postId: z.coerce.number(),
+  postId: requiredNumberCoercable,
   parentId: emptyString.nullable().or(z.coerce.number()),
   description: z.string(),
 });
+
+export const commentEditForm = commentCreationForm
+  .omit({ postId: true, parentId: true })
+  .merge(
+    z.object({
+      id: requiredNumberCoercable,
+    }),
+  );
 
 export const commentDeletionForm = z.object({
   id: z.coerce.number(),

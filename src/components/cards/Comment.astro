@@ -58,6 +58,11 @@ const {
       {!active && <Cover />}
     </Action>
     <Reply parentId={id} postId={postId} />
+    <Authorized userId={userId} admin={false}>
+      <Action target=`/comments/edit/${id}`>
+        <Icon name="material-symbols:edit" title="edit" />
+      </Action>
+    </Authorized>
     <Authorized userId={userId}>
       <Action target=`/comments/delete/${id}`>
         <Icon name="material-symbols:delete" title="delete" />
