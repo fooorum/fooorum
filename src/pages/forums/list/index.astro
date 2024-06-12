@@ -9,7 +9,13 @@ const forums = await selectForums();
 ---
 
 <Layout title="Foren">
-  Forum nicht gefunden? <a href="/forums/create">Erstelle eins!</a>
+  {
+    Astro.locals.user?.isAdmin && (
+      <>
+        Forum nicht gefunden? <a href="/forums/create">Erstelle eins!</a>
+      </>
+    )
+  }
   <Stack>
     {
       forums
