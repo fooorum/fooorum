@@ -21,14 +21,9 @@ export const loginForm = z.object({
   password: password,
 });
 
-export const commentCreationForm = z.object({
-  postId: z.coerce.number(),
-  parentId: emptyString.nullable().or(z.coerce.number()),
-  description: z.string(),
-});
-
-export const commentDeletionForm = z.object({
-  id: z.coerce.number(),
+export const forumCreationForm = z.object({
+  name: z.string(),
+  description: emptyString.nullable().or(z.string()),
 });
 
 export const postCreationForm = z.object({
@@ -39,6 +34,16 @@ export const postCreationForm = z.object({
 });
 
 export const postDeletionForm = z.object({
+  id: z.coerce.number(),
+});
+
+export const commentCreationForm = z.object({
+  postId: z.coerce.number(),
+  parentId: emptyString.nullable().or(z.coerce.number()),
+  description: z.string(),
+});
+
+export const commentDeletionForm = z.object({
   id: z.coerce.number(),
 });
 
